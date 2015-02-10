@@ -2,7 +2,7 @@ public class PhysicsObject {
 	//A basic physics object
 	
 	//Physics variables
-	private static double gravitationalConstant = -100;
+	private static double gravitationalConstant = 30;
 	
 	
 	//Unfortunately, this is Java, so get/set methods for below vars
@@ -41,7 +41,7 @@ public class PhysicsObject {
 	
 	//Returns the gravity that another object inflicts on this
 	public Vector2 calculateGravity(PhysicsObject other){
-		Vector2 distance = getPosition().subtract(other.getPosition());
+		Vector2 distance = other.getPosition().subtract(getPosition());
 		double distanceMag = distance.magnitude();
 		double gravForceMag = gravitationalConstant * getGravitationalMass() * other.getGravitationalMass() / (distanceMag * distanceMag); 
 		return distance.copy().magnitude(gravForceMag);
@@ -52,6 +52,6 @@ public class PhysicsObject {
 	public double getInertialMass(){return inertialMass;}
 	public double getGravitationalMass(){return gravitationalMass;}
 	//TODO This is temporary, radius should be determined by density and also square rooted
-	public double getRadius(){return getGravitationalMass();}
+	public double getRadius(){return Math.sqrt(Math.sqrt(getGravitationalMass()));}
 	
 }
