@@ -26,7 +26,10 @@ public class PhysicsObject {
 	}
 	
 	public void update(Vector2[] forces){
-		Vector2 netForce = addForces(forces);
+		//I moved your addForces method -  it seems that
+		//we will use this method repeatedly, so I made it a 
+		//static method in the Vector2 class
+		Vector2 netForce = Vector2.addVectors(forces);
 		Vector2 acceleration = calculateAcceleration(netForce);
 		position.setAdd(velocity);
 		velocity.setAdd(acceleration);
@@ -34,13 +37,6 @@ public class PhysicsObject {
 	
 	private Vector2 calculateAcceleration(Vector2 force){
 		return force.multiply( 1 / inertialMass);
-	}
-	private Vector2 addForces(Vector2[] forces){
-		Vector2 netForce = new Vector2();
-		for(int i=0;i<forces.length;i++){
-			netForce.setAdd(forces[i]);
-		}
-		return netForce;
 	}
 	
 	//Returns the gravity that another object inflicts on this
@@ -55,7 +51,7 @@ public class PhysicsObject {
 	public Vector2 getPosition(){return position.copy();}
 	public double getInertialMass(){return inertialMass;}
 	public double getGravitationalMass(){return gravitationalMass;}
-	//This is temporary, radius should be determined by density and also square rooted
+	//TODO This is temporary, radius should be determined by density and also square rooted
 	public double getRadius(){return getGravitationalMass();}
 	
 }

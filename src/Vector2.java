@@ -99,4 +99,12 @@ public class Vector2{
 		this.setEquals(normalize());
 	}
 	
+	public static Vector2 addVectors(Vector2[] forces){
+		Vector2 netForce = new Vector2();
+		for(int i=0;i<forces.length;i++){
+			netForce.setAdd(forces[i]);
+		}
+		return netForce;
+	}
+	
 }
