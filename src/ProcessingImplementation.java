@@ -62,6 +62,7 @@ public class ProcessingImplementation extends PApplet {
 		stroke(255);
 		for(PhysicsObject ship : ships){
 			for(PhysicsObject planet: ships){
+				//This won't work
 				if (planet != ship){
 					Vector2 distance = (planet.getPosition().subtract(ship.getPosition()));
 					double radius = distance.magnitude();

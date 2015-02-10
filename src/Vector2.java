@@ -73,19 +73,21 @@ public class Vector2{
 		this.setEquals(multiply(a));
 	}
 	
+	//Returns magnitude of this vector
 	public double magnitude(){
 		return Math.sqrt(x * x + y * y);
 	}
+	
+	//Returns vector with same direction and specified mag
 	public Vector2 magnitude(double mag){
 		double ratio = mag / magnitude();
 		return multiply(ratio);
 	}
 	public void setMagnitude(double mag){
-		double ratio = mag / magnitude();
-		setMultiply(ratio);
+		this.setEquals(magnitude(mag));
 	}
 	
-	//Sets the vector's magnitude to 1
+	//Returns vector with same direction but mag of 1
 	public Vector2 normalize(){
 		Vector2 vec =  new Vector2(0, 0);
 		vec.setEquals(this);
