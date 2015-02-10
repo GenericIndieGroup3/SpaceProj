@@ -21,8 +21,8 @@ public class Vector2{
 	
 	//Add is like '+', setAdd is like '+='
 	
-	private double x;
-	private double y;
+	public double x;
+	public double y;
 	
 	public Vector2(double x, double y){
 		this.x = x;

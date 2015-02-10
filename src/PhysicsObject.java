@@ -2,7 +2,7 @@ public class PhysicsObject {
 	//A basic physics object
 	
 	//Physics variables
-	private static double gravitationalConstant = 3;
+	private static double gravitationalConstant = -100;
 	
 	
 	//Unfortunately, this is Java, so get/set methods for below vars
@@ -26,7 +26,7 @@ public class PhysicsObject {
 	}
 	
 	public void update(Vector2[] forces){
-		//I moved your addForces method -  it seems that
+		//I moved your addForces method - it seems that
 		//we will use this method repeatedly, so I made it a 
 		//static method in the Vector2 class
 		Vector2 netForce = Vector2.addVectors(forces);

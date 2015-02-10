@@ -61,19 +61,16 @@ public class ProcessingImplementation extends PApplet {
 		background(0);
 		stroke(255);
 		for(PhysicsObject ship : ships){
+			Vector2[] forces = new Vector2[ships.size() - 1];
+			int i = 0;
 			for(PhysicsObject planet: ships){
-				//This won't work
 				if (planet != ship){
-					Vector2 distance = (planet.getPosition().subtract(ship.getPosition()));
-					double radius = distance.magnitude();
-					//ship.position = ship.position.subtract(ships.get(0).position).add(new Vector2(400, 400));
-					Vector2 direction = distance.normalize();
-					double grav = 300 * planet.getGravitationalMass() * ship.getGravitationalMass() / (radius * radius * ship.getInertialMass());
-					Vector2 finalGrav = (direction.multiply(grav));
-					ship.addForce(finalGrav);
+					Vector2 gravity = ship.calculateGravity(planet);
+					forces[i] = gravity;
+					i++;
 				}
 			}
-			ship.update();
+			ship.update(forces);
 		}
 		for(PhysicsObject ship : ships){
 			fill(255, 255, 255);
