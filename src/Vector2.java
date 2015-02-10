@@ -4,10 +4,16 @@ public class Vector2{
 		//returns true if it fails the tests
 		boolean check = false;
 		check = check || !new Vector2(3, 4).equals(new Vector2(1, 2).add(new Vector2(2, 2)));
+		Vector2 vec = new Vector2(3, 8); vec.setAdd(new Vector2(2, -3));
+		check = check || !(vec.equals(new Vector2(5, 5)));
+		check = check || !new Vector2(3, 4).equals(new Vector2(1, 2).add(new Vector2(2, 2)));
 		check = check || !new Vector2(3, 4).equals(new Vector2(7, 6).subtract(new Vector2(4, 2)));
 		check = check || !new Vector2(6, 4).equals(new Vector2(3, 2).multiply(new Vector2(2, 2)));
 		check = check || !(new Vector2(4, 9).magnitude() == (Math.sqrt(16 + 81)));
+		check = check || !(new Vector2(2, -5).magnitude() == (Math.sqrt(4 + 25)));
 		check = check || !((float)new Vector2(4, 8).normalize().magnitude() == 1);
+		vec = new Vector2(4, 8); vec.setMagnitude(4);
+		check = check || !((float)vec.magnitude() == 4);
 		return check;
 	}
 	//Double Vector class with x and y
@@ -30,6 +36,9 @@ public class Vector2{
 	
 	public boolean equals(Vector2 a){
 		return (x == a.x && y == a.y);
+	}
+	public Vector2 copy(){
+		return new Vector2(x, y);
 	}
 	
 	public Vector2 add(Vector2 b){
@@ -61,6 +70,10 @@ public class Vector2{
 	
 	public double magnitude(){
 		return Math.sqrt(x * x + y * y);
+	}
+	public Vector2 magnitude(double mag){
+		double ratio = mag / magnitude();
+		return multiply(ratio);
 	}
 	public void setMagnitude(double mag){
 		double ratio = mag / magnitude();
