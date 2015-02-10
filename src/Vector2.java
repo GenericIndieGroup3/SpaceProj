@@ -1,4 +1,15 @@
 public class Vector2{
+	
+	public static boolean runUnitTests(){
+		//returns true if it fails the tests
+		boolean check = false;
+		check = check || !new Vector2(3, 4).equals(new Vector2(1, 2).add(new Vector2(2, 2)));
+		check = check || !new Vector2(3, 4).equals(new Vector2(7, 6).subtract(new Vector2(4, 2)));
+		check = check || !new Vector2(6, 4).equals(new Vector2(3, 2).multiply(new Vector2(2, 2)));
+		check = check || !(new Vector2(4, 9).magnitude() == (Math.sqrt(16 + 81)));
+		check = check || !((float)new Vector2(4, 8).normalize().magnitude() == 1);
+		return check;
+	}
 	//Double Vector class with x and y
 	//
 	
