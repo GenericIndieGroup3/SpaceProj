@@ -21,12 +21,17 @@ public class Vector2{
 	
 	//Add is like '+', setAdd is like '+='
 	
-	public double x;
-	public double y;
+	private double x;
+	private double y;
 	
 	public Vector2(double x, double y){
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Vector2(){
+		this.x = 0;
+		this.y = 0;
 	}
 	
 	public void setEquals(Vector2 a){
