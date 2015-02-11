@@ -48,4 +48,10 @@ public class PhysicsSystem {
 		}
 	}
 	
+	public PhysicsObject[] getObj(){
+		PhysicsObject[] ans = new PhysicsObject[objects.size()];
+		for(int i = 0; i < objects.size(); i++){ans[i] = objects.get(i);}
+		return ans;
+	}
+	
 }
