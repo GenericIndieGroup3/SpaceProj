@@ -40,12 +40,12 @@ public class PhysicsObject {
 	}
 	
 	//Returns the gravity that another object inflicts on this
-	public Vector2 calculateGravity(PhysicsObject other){
-		Vector2 distance = other.getPosition().subtract(getPosition());
-		double distanceMag = distance.magnitude();
-		double gravForceMag = gravitationalConstant * getGravitationalMass() * other.getGravitationalMass() / (distanceMag * distanceMag); 
-		return distance.copy().magnitude(gravForceMag);
-	}
+//	public Vector2 calculateGravity(PhysicsObject other){
+//		Vector2 distance = other.getPosition().subtract(getPosition());
+//		double distanceMag = distance.magnitude();
+//		double gravForceMag = gravitationalConstant * getGravitationalMass() * other.getGravitationalMass() / (distanceMag * distanceMag); 
+//		return distance.copy().magnitude(gravForceMag);
+//	}
 	
 	//Remember this returns a copy
 	public Vector2 getPosition(){return position.copy();}
