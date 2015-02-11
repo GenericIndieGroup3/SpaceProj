@@ -26,8 +26,26 @@ public class PhysicsSystem {
 	private Vector2 getGrav(PhysicsObject a, PhysicsObject b){
 		Vector2 distance = b.getPosition().subtract(a.getPosition());
 		double distanceMag = distance.magnitude();
+		if(distanceMag == 0){return new Vector2();}
 		double gravForceMag = GRAVITATIONAL_CONSTANT * a.getGravitationalMass() * b.getGravitationalMass() / (distanceMag * distanceMag); 
 		return distance.copy().magnitude(gravForceMag);
+	}
+	
+	private void update(PhysicsObject o){
+		Vector2[] localBuffer = new Vector2[objects.size()];
+		for(int i = 0; i < objects.size(); i++){
+			localBuffer[i] = getGrav(o,objects.get(i));
+		}
+		forceBuffer.replace(o, Vector2.addVectors(localBuffer));
+	}
+	
+	public void update(){
+		PhysicsObject curr;
+		for(int i = 0; i < objects.size(); i++){
+			curr = objects.get(i);
+			update(curr);
+			curr.update(forceBuffer.get(curr));
+		}
 	}
 	
 }
