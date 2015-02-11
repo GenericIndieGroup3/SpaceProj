@@ -107,4 +107,10 @@ public class Vector2{
 		return netForce;
 	}
 	
+	public Vector2 negate(){
+		return this.multiply(-1);
+	}
+	
+	public void setNegate(){this.setEquals(this.negate());}
+	
 }
