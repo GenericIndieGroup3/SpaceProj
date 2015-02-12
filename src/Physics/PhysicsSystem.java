@@ -1,7 +1,10 @@
+package Physics;
 import java.util.*;
 
+import Util.Vector2;
+
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 2;
+	private static final double GRAVITATIONAL_CONSTANT = 100;
 	
 	private List<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){

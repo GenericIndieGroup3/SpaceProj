@@ -1,3 +1,4 @@
+package Util;
 public class Vector2{
 	
 	public static boolean runUnitTests(){

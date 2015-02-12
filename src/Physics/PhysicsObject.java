@@ -1,3 +1,6 @@
+package Physics;
+import Util.Vector2;
+
 public class PhysicsObject {
 	//A basic physics object
 	
