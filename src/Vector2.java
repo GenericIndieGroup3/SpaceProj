@@ -110,7 +110,13 @@ public class Vector2{
 	public Vector2 negate(){
 		return this.multiply(-1);
 	}
-	
 	public void setNegate(){this.setEquals(this.negate());}
+	
+	public Vector2 clockwisePerpendicular(){
+		return new Vector2(y, -x);
+	}
+	public Vector2 counterClockwisePerpendicular(){
+		return new Vector2(-y, x);
+	}
 	
 }

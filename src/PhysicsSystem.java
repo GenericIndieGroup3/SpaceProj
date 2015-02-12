@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class PhysicsSystem {
-	private static final int GRAVITATIONAL_CONSTANT = 3;
+	private static final double GRAVITATIONAL_CONSTANT = 2;
 	
 	private List<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -20,6 +20,18 @@ public class PhysicsSystem {
 		forceBuffer.put(o, new Vector2());
 	}
 	
+	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
+		Vector2 acceleration = planet.calculateAcceleration(getGrav(planet, sun));
+		double radius = sun.getPosition().subtract(planet.getPosition()).magnitude();
+		double speed = Math.sqrt(acceleration.magnitude() * radius);
+		Vector2 velocity;
+		if(clockwise)
+			velocity = acceleration.clockwisePerpendicular().magnitude(speed);
+		else
+			velocity = acceleration.counterClockwisePerpendicular().magnitude(speed);
+		return velocity.add(sun.velocity);
+		
+	}
 	Map<PhysicsObject,Vector2> forceBuffer = new HashMap<PhysicsObject,Vector2>();
 	
 	//TODO Will return a one-way vector. Need to figure out force buffer and optimize for 2 objects

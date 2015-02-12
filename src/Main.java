@@ -13,7 +13,7 @@ public class Main {
 	
 	private int screenWidth = 1500;
 	private int screenHeight = 800;
-	private double pixelToUnitRatio = 10;
+	private double unitToPixelRatio = 0.6;
 	
 	public Main(){
 		try {
@@ -26,7 +26,7 @@ public class Main {
 		}
 		
 		//GL11.glLoadIdentity();
-	    GL11.glOrtho(-screenWidth / pixelToUnitRatio, screenWidth / pixelToUnitRatio, -screenHeight / pixelToUnitRatio, screenHeight / pixelToUnitRatio, 1, -1);
+	    GL11.glOrtho(-screenWidth / unitToPixelRatio, screenWidth / unitToPixelRatio, -screenHeight / unitToPixelRatio, screenHeight / unitToPixelRatio, 1, -1);
 	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	    
 	    //EXECUTES INIT LOGIC
@@ -71,24 +71,21 @@ public class Main {
 	
 	public void init(){
 		physicsSystem = new PhysicsSystem();
-		physicsSystem.addObj(new PhysicsObject(
-				new Vector2(),
-				new Vector2(),
-				10,
-				100
-		));
-		physicsSystem.addObj(new PhysicsObject(
-				new Vector2(-100, 0),
-				new Vector2(0, -0.5),
-				1,
-				1
-		));
+		PhysicsObject star = new PhysicsObject(new Vector2(),new Vector2(),100,1000);
+		PhysicsObject planet = new PhysicsObject(new Vector2(-800, 0), new Vector2(0, -0.3), 10, 10);
+		PhysicsObject moon = new PhysicsObject(new Vector2(-1000, 0), new Vector2(), 2, 2);
+		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
+		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
+		physicsSystem.addObj(planet);
+		physicsSystem.addObj(star);
+		physicsSystem.addObj(moon);
+		//physicsSystem.addObj(new PhysicsObject(new Vector2(-150, 0), new Vector2(0, -(0.01 +0.2)), 2, 2));
 	}
 	
 	public void update(int frameNum, double deltaTime){
 		physicsSystem.update();
 		for(PhysicsObject object : physicsSystem.getObj()){
-			circle(object.getPosition().x, object.getPosition().y, object.getRadius(), 100);
+			circle(object.getPosition().x, object.getPosition().y, object.getRadius() *10, 100);
 		}
 	}
 	

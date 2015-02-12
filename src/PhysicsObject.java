@@ -7,7 +7,8 @@ public class PhysicsObject {
 	
 	//Unfortunately, this is Java, so get/set methods for below vars
 	private Vector2 position;
-	private Vector2 velocity;
+	//I needed this public for a thing, which is inefficient so needs to be redone
+	public Vector2 velocity;
 	
 	private Vector2 acceleration = new Vector2();
 	
@@ -35,7 +36,7 @@ public class PhysicsObject {
 		velocity.setAdd(acceleration);
 	}
 	
-	private Vector2 calculateAcceleration(Vector2 force){
+	public Vector2 calculateAcceleration(Vector2 force){
 		return force.multiply( 1 / inertialMass);
 	}
 	
