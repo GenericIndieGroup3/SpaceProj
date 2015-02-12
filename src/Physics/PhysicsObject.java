@@ -1,5 +1,5 @@
 package Physics;
-import Util.Vector2;
+import Structs.Vector2;
 
 public class PhysicsObject {
 	//A basic physics object
@@ -55,7 +55,7 @@ public class PhysicsObject {
 	public Vector2 getPosition(){return position.copy();}
 	public double getInertialMass(){return inertialMass;}
 	public double getGravitationalMass(){return gravitationalMass;}
-	//TODO This is temporary, radius should be determined by density and also square rooted
-	public double getRadius(){return Math.sqrt(Math.sqrt(getGravitationalMass()));}
+	//TODO This is temporary, radius should be determined by density
+	public double getRadius(){return Math.sqrt(1000d * Math.sqrt(getGravitationalMass()));}
 	
 }

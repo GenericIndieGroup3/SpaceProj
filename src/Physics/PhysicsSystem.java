@@ -1,7 +1,7 @@
 package Physics;
 import java.util.*;
 
-import Util.Vector2;
+import Structs.Vector2;
 
 public class PhysicsSystem {
 	private static final double GRAVITATIONAL_CONSTANT = 100;
