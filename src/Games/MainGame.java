@@ -13,10 +13,7 @@ public class MainGame implements GameInterface{
 
 	public MainGame(){}
 	
-	//once again, I don't know if this should be public or not, but it is currently used
-	//in the lwjgl implementation for drawing
-	
-	public PhysicsSystem physicsSystem;
+	private PhysicsSystem physicsSystem;
 	
 	public void setup(){
 		physicsSystem = new PhysicsSystem();
@@ -33,6 +30,22 @@ public class MainGame implements GameInterface{
 		
 		int a = 1;
 		int b = 1;
+		for(int x = 0; x < 100; x++){
+			for(int i = 0; i < 100; i++){
+				
+				int mass = (int)(Math.random() * 20);
+				if (mass == 0)
+					mass = 1;
+				physicsSystem.addObj(new PhysicsObject(
+					new Vector2(1000 + x * 200 , i * 200 * a),
+					new Vector2(0, 0),
+					0.1,
+					0.1
+				));
+				
+				a*= -1;
+			}
+		}
 		
 	}
 	

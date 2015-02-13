@@ -38,13 +38,15 @@ public class PhysicsObject {
 		//we will use this method repeatedly, so I made it a 
 		//static method in the Vector2 class
 		//Vector2 netForce = Vector2.addVectors(forces);
-		Vector2 acceleration = calculateAcceleration(netForce);
-		position.setAdd(velocity);
-		velocity.setAdd(acceleration);
+		Vector2 acceleration = new Vector2();
+		calculateAcceleration(netForce, acceleration);
+		position.add(velocity);
+		velocity.add(acceleration);
 	}
 	
-	public Vector2 calculateAcceleration(Vector2 force){
-		return force.multiply( 1 / inertialMass);
+	public void calculateAcceleration(Vector2 force, Vector2 accelerationOut){
+		accelerationOut.set(force);
+		accelerationOut.multiply( 1 / getInertialMass());
 	}
 	
 	//Returns the gravity that another object inflicts on this
@@ -56,7 +58,7 @@ public class PhysicsObject {
 //	}
 	
 	//Remember this returns a copy
-	public Vector2 getPosition(){return position.copy();}
+	public Vector2 getPosition(){return position;}
 	public double getInertialMass(){return inertialMass;}
 	public double getGravitationalMass(){return gravitationalMass;}
 	//TODO This is temporary, radius should be determined by density

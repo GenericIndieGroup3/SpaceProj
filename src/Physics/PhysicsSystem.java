@@ -4,7 +4,7 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 0.0001;
+	private static final double GRAVITATIONAL_CONSTANT = 2;
 	
 	private List<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -28,50 +28,53 @@ public class PhysicsSystem {
 	}
 	
 	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
-		Vector2 temp = new Vector2();
-		getGrav(planet, sun, temp);
-		Vector2 acceleration = planet.calculateAcceleration(temp);
-		double radius = sun.getPosition().subtract(planet.getPosition()).magnitude();
-		double speed = Math.sqrt(acceleration.magnitude() * radius);
-		Vector2 velocity;
+		Vector2 gravForce = new Vector2();
+		getGrav(planet, sun, gravForce);
+		Vector2 acceleration = new Vector2();
+		planet.calculateAcceleration(gravForce, acceleration);
+		Vector2 distance = sun.getPosition().copy();
+		distance.subtract(planet.getPosition());
+		double radius = distance.getMagnitude();
+		double speed = Math.sqrt(acceleration.getMagnitude() * radius);
 		if(clockwise)
-			velocity = acceleration.clockwisePerpendicular().magnitude(speed);
+			//sets distance to the required velocities direction
+			distance = acceleration.createClockwisePerpendicular();
 		else
-			velocity = acceleration.counterClockwisePerpendicular().magnitude(speed);
-		return velocity.add(sun.velocity);
+			distance = acceleration.createClockwisePerpendicular();
+		//sets distance to the required velocity
+		distance.magnitude(speed);
+		//adds the other objects velocity so that it stays relative to it
+		distance.add(sun.velocity);
+		return distance;
 		
 	}
 	Map<PhysicsObject,Vector2> forceBuffer = new HashMap<PhysicsObject,Vector2>();
 	
 	//TODO Will return a one-way vector. Need to figure out force buffer and optimize for 2 objects
 	private void getGrav(PhysicsObject a, PhysicsObject b, Vector2 gravOut){
-		Vector2 distance = b.getPosition().subtract(a.getPosition());
-		double distanceMag = distance.magnitude();
-		if(distanceMag == 0)
-		{
-			gravOut.x = 0;
-			gravOut.y = 0;
+		
+		Vector2 distance = b.getPosition().copy();
+		distance.subtract(a.getPosition());
+		
+		double distanceMag = distance.getMagnitude();
+		if(distanceMag == 0){
+			gravOut.set(0, 0);
 			return;
 		}
+		
 		double gravForceMag = GRAVITATIONAL_CONSTANT * a.getGravitationalMass() * b.getGravitationalMass() / (distanceMag * distanceMag); 
-		gravOut.CopyFrom(distance);
-		gravOut.MultInPlace(gravForceMag);
+		gravOut.set(distance);
+		gravOut.multiply(gravForceMag);
 	}
 	
-	private void update(PhysicsObject o){
-		Vector2[] localBuffer = new Vector2[objects.size()];
-		for(int i = 0; i < objects.size(); i++){
-			localBuffer[i] = getGrav(o,objects.get(i));
-		}
-		forceBuffer.replace(o, Vector2.addVectors(localBuffer));
-	}
+
 	
 	public void update(){
 		Vector2 grav = new Vector2();
 		for(PhysicsObject p : objects){
 			for(PhysicsObject o: objects){
 				getGrav(p, o, grav);
-				p.force.setAdd(grav);
+				p.force.add(grav);
 				
 			}
 			p.update();
@@ -86,7 +89,15 @@ public class PhysicsSystem {
 			update(curr);
 			curr.update(forceBuffer.get(curr));
 		}
-	}*/
+	}
+	private void update(PhysicsObject o){
+		Vector2[] localBuffer = new Vector2[objects.size()];
+		for(int i = 0; i < objects.size(); i++){
+			localBuffer[i] = getGrav(o,objects.get(i));
+		}
+		forceBuffer.replace(o, Vector2.addVectors(localBuffer));
+	}
+	*/
 	
 	public PhysicsObject[] getObj(){
 		PhysicsObject[] ans = new PhysicsObject[objects.size()];
