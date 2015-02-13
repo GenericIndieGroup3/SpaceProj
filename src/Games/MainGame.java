@@ -20,14 +20,20 @@ public class MainGame implements GameInterface{
 	
 	public void setup(){
 		physicsSystem = new PhysicsSystem();
-		PhysicsObject star = new PhysicsObject(new Vector2(), 100);
-		PhysicsObject planet = new PhysicsObject(new Vector2(-2100, 0), new Vector2(0, -0.3), 10, 10);
-		PhysicsObject moon = new PhysicsObject(new Vector2(-2000, 0), new Vector2(), 2, 2);
+		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 100000);
+		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
+		PhysicsObject moon = new PhysicsObject(new Vector2(-4200, 0), new Vector2(), 40, 40);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
 		physicsSystem.addObj(planet);
 		physicsSystem.addObj(star);
 		physicsSystem.addObj(moon);
+		
+		
+		
+		int a = 1;
+		int b = 1;
+		
 	}
 	
 	public void update(int frameNum, double deltaTime){
@@ -40,10 +46,11 @@ public class MainGame implements GameInterface{
 		for(int i = 0; i < objects.length; i++){
 			PhysicsObject o = objects[i];
 			shapes[i] = new Circle(o.getPosition(), o.getRadius());
+			//break;
 		}
 		return shapes;
 	}
 	public static void main(String[] arg){
-		ImplementationAbstract imp = new ProcessingImplementation(new MainGame(), new Vector2(1500, 1000), 0.2);
+		ImplementationAbstract imp = new LWJGLImplementation(new MainGame(), new Vector2(1500, 1000), 0.2);
 	}
 }

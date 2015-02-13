@@ -13,7 +13,7 @@ public class PhysicsObject {
 	//I needed this public for a thing, which is inefficient so needs to be redone
 	public Vector2 velocity;
 	
-	private Vector2 acceleration = new Vector2();
+	public Vector2 force = new Vector2();
 	
 	private double gravitationalMass;
 	private double inertialMass;
@@ -29,6 +29,10 @@ public class PhysicsObject {
 		this(position, new Vector2(), mass, mass);
 	}
 	
+	public void update(){
+		update(force);
+		force = new Vector2();
+	}
 	public void update(Vector2 netForce){
 		//I moved your addForces method - it seems that
 		//we will use this method repeatedly, so I made it a 

@@ -51,6 +51,8 @@ public abstract class ImplementationAbstract {
 	public void draw(Shape[] shapes){
 		clear();
 		
+		circle((Circle) shapes[0]);
+		
 		for(Shape s : shapes){
 			if( s instanceof Circle )
 				circle((Circle) s);

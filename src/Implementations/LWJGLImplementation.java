@@ -90,6 +90,7 @@ public class LWJGLImplementation extends ImplementationAbstract {
 				
 				GL11.glColor4d(color.a, color.b, color.c, color.d);
 				GL11.glVertex2d(p.position.x , p.position.y);
+				
 			}
 		GL11.glEnd();
 		
@@ -98,7 +99,7 @@ public class LWJGLImplementation extends ImplementationAbstract {
 	public void circle(Circle c){
 		//circle(0, 0, 2000, 100);
 		//TODO add logic to optimize segment count depending on zoom
-		int segments = 5;
+		int segments = 3;
 		Vector4 color = c.color();
 		
 		GL11.glBegin(GL11.GL_TRIANGLE_FAN);

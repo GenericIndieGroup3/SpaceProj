@@ -4,7 +4,7 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 100;
+	private static final double GRAVITATIONAL_CONSTANT = 0.0001;
 	
 	private List<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -23,8 +23,14 @@ public class PhysicsSystem {
 		forceBuffer.put(o, new Vector2());
 	}
 	
+	public PhysicsObject[] explodify(PhysicsObject o){
+		
+	}
+	
 	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
-		Vector2 acceleration = planet.calculateAcceleration(getGrav(planet, sun));
+		Vector2 temp = new Vector2();
+		getGrav(planet, sun, temp);
+		Vector2 acceleration = planet.calculateAcceleration(temp);
 		double radius = sun.getPosition().subtract(planet.getPosition()).magnitude();
 		double speed = Math.sqrt(acceleration.magnitude() * radius);
 		Vector2 velocity;
@@ -38,12 +44,18 @@ public class PhysicsSystem {
 	Map<PhysicsObject,Vector2> forceBuffer = new HashMap<PhysicsObject,Vector2>();
 	
 	//TODO Will return a one-way vector. Need to figure out force buffer and optimize for 2 objects
-	private Vector2 getGrav(PhysicsObject a, PhysicsObject b){
+	private void getGrav(PhysicsObject a, PhysicsObject b, Vector2 gravOut){
 		Vector2 distance = b.getPosition().subtract(a.getPosition());
 		double distanceMag = distance.magnitude();
-		if(distanceMag == 0){return new Vector2();}
+		if(distanceMag == 0)
+		{
+			gravOut.x = 0;
+			gravOut.y = 0;
+			return;
+		}
 		double gravForceMag = GRAVITATIONAL_CONSTANT * a.getGravitationalMass() * b.getGravitationalMass() / (distanceMag * distanceMag); 
-		return distance.copy().magnitude(gravForceMag);
+		gravOut.CopyFrom(distance);
+		gravOut.MultInPlace(gravForceMag);
 	}
 	
 	private void update(PhysicsObject o){
@@ -55,13 +67,26 @@ public class PhysicsSystem {
 	}
 	
 	public void update(){
+		Vector2 grav = new Vector2();
+		for(PhysicsObject p : objects){
+			for(PhysicsObject o: objects){
+				getGrav(p, o, grav);
+				p.force.setAdd(grav);
+				
+			}
+			p.update();
+		}
+	}
+	
+	/*
+	public void update(){
 		PhysicsObject curr;
 		for(int i = 0; i < objects.size(); i++){
 			curr = objects.get(i);
 			update(curr);
 			curr.update(forceBuffer.get(curr));
 		}
-	}
+	}*/
 	
 	public PhysicsObject[] getObj(){
 		PhysicsObject[] ans = new PhysicsObject[objects.size()];

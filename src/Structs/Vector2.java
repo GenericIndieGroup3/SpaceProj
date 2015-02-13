@@ -47,6 +47,12 @@ public class Vector2{
 		return new Vector2(x, y);
 	}
 	
+	public void CopyFrom(Vector2 from)
+	{
+		x = from.x;
+		y = from.y;
+	}
+	
 	public Vector2 add(Vector2 b){
 		return new Vector2(x + b.x, y + b.y);
 	}
@@ -84,6 +90,13 @@ public class Vector2{
 		double ratio = mag / magnitude();
 		return multiply(ratio);
 	}
+	
+	public void MultInPlace(double mag)
+	{
+		x *= mag;
+		y *= mag;
+	}
+	
 	public void setMagnitude(double mag){
 		this.setEquals(magnitude(mag));
 	}
