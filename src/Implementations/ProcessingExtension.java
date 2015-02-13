@@ -5,6 +5,9 @@ import Games.MainGame;
 
 
 public class ProcessingExtension extends PApplet{
+	//Neccesary to avoid conflicts with my repeating update loop
+	
+	//terrible design, but who cares.
 	public static ProcessingExtension a;
 	public static ProcessingImplementation b;
 	public void setup(){
@@ -16,8 +19,8 @@ public class ProcessingExtension extends PApplet{
 	}
 	
 	public void draw(){
+		//this replaces my own update loop, which is never called because it is overriden by an empty function
 		b.update();
-		//TODO add logic to skip draw cycles every now and then if lagging
 		b.draw(b.game.drawShapes());
 	}
 	
