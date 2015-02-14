@@ -29,21 +29,15 @@ public class PhysicsObject {
 		this(position, new Vector2(), mass, mass);
 	}
 	
-	public void update(){
-		update(force);
-		force = new Vector2();
-	}
-	public void update(Vector2 netForce){
-		//I moved your addForces method - it seems that
-		//we will use this method repeatedly, so I made it a 
-		//static method in the Vector2 class
-		//Vector2 netForce = Vector2.addVectors(forces);
-		Vector2 acceleration = new Vector2();
-		calculateAcceleration(netForce, acceleration);
-		position.add(velocity);
-		velocity.add(acceleration);
+	public void updateAcceleration(){
+		force.multiply( 1 / getInertialMass());
+		velocity.add(force);
 	}
 	
+	public void updatePosition(){
+		position.add(velocity);
+	}
+
 	public void calculateAcceleration(Vector2 force, Vector2 accelerationOut){
 		accelerationOut.set(force);
 		accelerationOut.multiply( 1 / getInertialMass());

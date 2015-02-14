@@ -4,9 +4,9 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 2;
+	private static final double GRAVITATIONAL_CONSTANT = 10;
 	
-	private List<PhysicsObject> objects = new ArrayList<PhysicsObject>();
+	private ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
 		
 	}
@@ -69,15 +69,20 @@ public class PhysicsSystem {
 	
 
 	
-	public void update(){
+	public void update(int frameNum){
 		Vector2 grav = new Vector2();
 		for(PhysicsObject p : objects){
-			for(PhysicsObject o: objects){
-				getGrav(p, o, grav);
-				p.force.add(grav);
-				
+			
+			if ((frameNum % 2) == 0 || frameNum == 1)
+			{
+				p.force.clear();
+				for(PhysicsObject o: objects){
+					getGrav(p, o, grav);
+					p.force.add(grav);				
+				}
+				p.updateAcceleration();
 			}
-			p.update();
+			p.updatePosition();
 		}
 	}
 	

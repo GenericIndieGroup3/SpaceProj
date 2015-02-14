@@ -30,8 +30,8 @@ public class MainGame implements GameInterface{
 		
 		int a = 1;
 		int b = 1;
-		for(int x = 0; x < 100; x++){
-			for(int i = 0; i < 100; i++){
+		for(int x = 0; x < 50; x++){
+			for(int i = 0; i < 50; i++){
 				
 				int mass = (int)(Math.random() * 20);
 				if (mass == 0)
@@ -39,8 +39,8 @@ public class MainGame implements GameInterface{
 				physicsSystem.addObj(new PhysicsObject(
 					new Vector2(1000 + x * 200 , i * 200 * a),
 					new Vector2(0, 0),
-					0.1,
-					0.1
+					2,
+					2
 				));
 				
 				a*= -1;
@@ -50,7 +50,7 @@ public class MainGame implements GameInterface{
 	}
 	
 	public void update(int frameNum, double deltaTime){
-		physicsSystem.update();
+		physicsSystem.update(frameNum);
 	}
 	
 	public Shape[] drawShapes(){

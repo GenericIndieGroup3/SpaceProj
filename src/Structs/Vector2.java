@@ -12,8 +12,13 @@ public class Vector2{
 	}
 	
 	public Vector2(){
-		this.x = 0;
-		this.y = 0;
+		clear();
+	}
+	
+	public void clear()
+	{
+		x = 0;
+		y = 0;
 	}
 	
 	public boolean equals(Vector2 a){
