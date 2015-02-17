@@ -99,7 +99,7 @@ public class LWJGLImplementation extends ImplementationAbstract {
 	public void circle(Circle c){
 		//circle(0, 0, 2000, 100);
 		//TODO add logic to optimize segment count depending on zoom
-		int segments = 3;
+		int segments = 20;
 		Vector4 color = c.color();
 		
 		GL11.glBegin(GL11.GL_TRIANGLE_FAN);

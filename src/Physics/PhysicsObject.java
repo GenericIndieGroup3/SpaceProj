@@ -5,7 +5,7 @@ public class PhysicsObject {
 	//A basic physics object
 	
 	//Physics variables
-	private static double gravitationalConstant = 30;
+	//private static double gravitationalConstant = 30;
 	
 	
 	//Unfortunately, this is Java, so get/set methods for below vars
@@ -13,7 +13,7 @@ public class PhysicsObject {
 	//I needed this public for a thing, which is inefficient so needs to be redone
 	public Vector2 velocity;
 	
-	public Vector2 force = new Vector2();
+	//public Vector2 force = new Vector2();
 	
 	private double gravitationalMass;
 	private double inertialMass;
@@ -29,7 +29,7 @@ public class PhysicsObject {
 		this(position, new Vector2(), mass, mass);
 	}
 	
-	public void updateAcceleration(){
+	public void updateAcceleration(Vector2 force){
 		force.multiply( 1 / getInertialMass());
 		velocity.add(force);
 	}

@@ -30,8 +30,8 @@ public class MainGame implements GameInterface{
 		
 		int a = 1;
 		int b = 1;
-		for(int x = 0; x < 50; x++){
-			for(int i = 0; i < 50; i++){
+		for(int x = 0; x < 10; x++){
+			for(int i = 0; i < 10; i++){
 				
 				int mass = (int)(Math.random() * 20);
 				if (mass == 0)

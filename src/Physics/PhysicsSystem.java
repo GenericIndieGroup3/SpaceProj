@@ -4,7 +4,7 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 10;
+	private static final double GRAVITATIONAL_CONSTANT = 0.0010;
 	
 	private ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -73,14 +73,15 @@ public class PhysicsSystem {
 		Vector2 grav = new Vector2();
 		for(PhysicsObject p : objects){
 			
-			if ((frameNum % 2) == 0 || frameNum == 1)
+			if ((frameNum % 1) == 0 || frameNum == 1)
 			{
-				p.force.clear();
+				//p.force.clear();
+				Vector2 pForce = forceBuffer.get(p);
 				for(PhysicsObject o: objects){
 					getGrav(p, o, grav);
-					p.force.add(grav);				
+					pForce.add(grav);
 				}
-				p.updateAcceleration();
+				p.updateAcceleration(pForce);
 			}
 			p.updatePosition();
 		}
