@@ -24,7 +24,7 @@ public class PhysicsSystem {
 	}
 	
 	public PhysicsObject[] explodify(PhysicsObject o){
-		
+		return null;
 	}
 	
 	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
