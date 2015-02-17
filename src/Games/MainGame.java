@@ -17,7 +17,7 @@ public class MainGame implements GameInterface{
 	
 	public void setup(){
 		physicsSystem = new PhysicsSystem();
-		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 100000);
+		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 10000000);
 		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
 		PhysicsObject moon = new PhysicsObject(new Vector2(-4200, 0), new Vector2(), 40, 40);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);

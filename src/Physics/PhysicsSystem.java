@@ -77,12 +77,15 @@ public class PhysicsSystem {
 			{
 				//p.force.clear();
 				Vector2 pForce = forceBuffer.get(p);
+				//pForce.set(0,0);
 				for(PhysicsObject o: objects){
 					getGrav(p, o, grav);
 					pForce.add(grav);
 				}
 				p.updateAcceleration(pForce);
 			}
+		}
+		for(PhysicsObject p : objects){
 			p.updatePosition();
 		}
 	}
