@@ -64,6 +64,6 @@ public class MainGame implements GameInterface{
 		return shapes;
 	}
 	public static void main(String[] arg){
-		ImplementationAbstract imp = new LWJGLImplementation(new MainGame(), new Vector2(1500, 1000), 0.2);
+		ImplementationAbstract imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
 	}
 }
