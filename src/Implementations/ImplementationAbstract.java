@@ -1,4 +1,6 @@
 package Implementations;
+import java.util.List;
+
 import Games.GameInterface;
 import Structs.Circle;
 import Structs.Point;
@@ -47,7 +49,7 @@ public abstract class ImplementationAbstract {
 		game.update(frameNum, deltaTime);
 	}
 	
-	public void draw(Shape[] shapes){
+	public void draw(List<Shape> shapes){
 		clear();
 		
 		for(Shape s : shapes){

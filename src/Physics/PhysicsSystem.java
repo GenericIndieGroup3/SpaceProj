@@ -178,8 +178,10 @@ public class PhysicsSystem {
 			//This will be horribly inefficient
 			//That's fine
 			for(PhysicsObject o : objects){
-				getGrav(tmp,o,out);
-				buff.add(out);
+				if(o != tmp){
+					getGrav(tmp,o,out);
+					buff.add(out);
+				}
 			}
 			tmp.updateAcceleration(buff);
 			tmp.updatePosition();

@@ -1,4 +1,5 @@
 package Games;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -97,15 +98,24 @@ public class MainGame implements GameInterface{
 			this.setup();
 	}
 	
-	public Shape[] drawShapes(){
+	public List<Shape> drawShapes(){
 		List<PhysicsObject> objects = physicsSystem.getObj();
-		Shape[] shapes = new Shape[objects.size()];
+		List<Shape> shapes = new ArrayList<Shape>(objects.size() + 10);
 		for(int i = 0; i < objects.size(); i++){
 			PhysicsObject o = objects.get(i);
-			shapes[i] = new Circle(o.getPosition(), o.getRadius());
+			shapes.add(new Circle(o.getPosition(), o.getRadius()));
 			if(i == 2)
-				shapes[i].color = new Vector4(0, 1, 0, 1);
+				shapes.get(i).color = new Vector4(0, 1, 0, 1);
 			//break;
+		}
+		int i = 0;
+		for(PhysicsObject a : physicsSystem.calculateTrajectory(physicsSystem.getChar(), 10000)){
+			if(i % 50 == 0 && i > 50){
+				Shape s = new Circle(a.getPosition(), a.getRadius());
+				s.color = new Vector4(0, 0.5, 0, 0.5);
+				shapes.add(s);
+			}
+			i++;
 		}
 		return shapes;
 	}

@@ -17,4 +17,6 @@ public class collisionEventArgs {
 		this.a = a;
 		this.b = b;
 	}
+	
+	public void setCanceled()
 }
