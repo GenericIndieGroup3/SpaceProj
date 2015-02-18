@@ -10,6 +10,7 @@ import Physics.PhysicsSystem;
 import Structs.Circle;
 import Structs.Shape;
 import Structs.Vector2;
+import Structs.Vector4;
 
 
 public class MainGame implements GameInterface{
@@ -17,6 +18,8 @@ public class MainGame implements GameInterface{
 	public MainGame(){}
 	
 	private PhysicsSystem physicsSystem;
+	
+	private static ImplementationAbstract imp;
 	
 	public void setup(){
 		physicsSystem = new PhysicsSystem();
@@ -72,6 +75,10 @@ public class MainGame implements GameInterface{
 			physicsSystem.getChar().gravitationalMass += 0.01;
 		if(Keyboard.isKeyDown(Keyboard.KEY_S) && physicsSystem.getChar().gravitationalMass > 0.01)
 			physicsSystem.getChar().gravitationalMass -= 0.01;
+		if(Keyboard.isKeyDown(Keyboard.KEY_Q))
+			imp.keepUpdating = false;
+		if(Keyboard.isKeyDown(Keyboard.KEY_R))
+			this.setup();
 	}
 	
 	public Shape[] drawShapes(){
@@ -80,11 +87,14 @@ public class MainGame implements GameInterface{
 		for(int i = 0; i < objects.size(); i++){
 			PhysicsObject o = objects.get(i);
 			shapes[i] = new Circle(o.getPosition(), o.getRadius());
+			if(i == 2)
+				shapes[i].color = new Vector4(0, 1, 0, 1);
 			//break;
 		}
 		return shapes;
 	}
 	public static void main(String[] arg){
-		ImplementationAbstract imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
+		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
+		imp.beginUpdating();
 	}
 }

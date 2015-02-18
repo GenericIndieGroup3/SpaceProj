@@ -15,7 +15,7 @@ public class PhysicsObject {
 	//public Vector2 force = new Vector2();
 	
 	public double gravitationalMass;
-	private double inertialMass;
+	public double inertialMass;
 	
 	public PhysicsObject(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass){
 		this.position = position;

@@ -2,7 +2,7 @@ package Structs;
 
 public class Shape {
 
-	protected Vector4 color;
+	public Vector4 color;
 	private static Vector4 defaultColor = new Vector4(255, 255, 255, 0);
 	
 	public Vector4 color(){

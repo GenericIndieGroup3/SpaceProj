@@ -17,7 +17,7 @@ public abstract class ImplementationAbstract {
 	protected int frameNum = 0;
 	protected double deltaTime = 0.0001;
 	
-	protected boolean keepUpdating = true;
+	public boolean keepUpdating = true;
 	
 	public ImplementationAbstract(GameInterface game, Vector2 screenDimensions, double unitToPixelRatio){
 		this.screenDimensions = screenDimensions;
@@ -27,8 +27,6 @@ public abstract class ImplementationAbstract {
 		create();
 		
 		this.game.setup();
-		beginUpdating();
-		remove();
 		
 	}
 	
@@ -38,6 +36,7 @@ public abstract class ImplementationAbstract {
 			//TODO add logic to skip draw cycles every now and then if lagging
 			draw(this.game.drawShapes());
 		}
+		remove();
 	}
 	//If this is overriden, make sure to call it in the override method
 	public void update(){
