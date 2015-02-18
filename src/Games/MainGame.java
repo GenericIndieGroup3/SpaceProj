@@ -1,7 +1,8 @@
 package Games;
+import java.util.List;
+
 import Implementations.ImplementationAbstract;
 import Implementations.LWJGLImplementation;
-import Implementations.ProcessingImplementation;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
 import Structs.Circle;
@@ -17,8 +18,8 @@ public class MainGame implements GameInterface{
 	
 	public void setup(){
 		physicsSystem = new PhysicsSystem();
-		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 10000);
-		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, 0), 200, 200);
+		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 1000);
+		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
 		PhysicsObject moon = new PhysicsObject(new Vector2(-4200, 0), new Vector2(), 40, 40);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
@@ -61,10 +62,10 @@ public class MainGame implements GameInterface{
 	}
 	
 	public Shape[] drawShapes(){
-		PhysicsObject[] objects = physicsSystem.getObj();
-		Shape[] shapes = new Shape[objects.length];
-		for(int i = 0; i < objects.length; i++){
-			PhysicsObject o = objects[i];
+		List<PhysicsObject> objects = physicsSystem.getObj();
+		Shape[] shapes = new Shape[objects.size()];
+		for(int i = 0; i < objects.size(); i++){
+			PhysicsObject o = objects.get(i);
 			shapes[i] = new Circle(o.getPosition(), o.getRadius());
 			//break;
 		}

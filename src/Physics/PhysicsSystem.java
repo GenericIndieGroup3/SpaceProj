@@ -4,7 +4,7 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 0.1;
+	private static final double GRAVITATIONAL_CONSTANT = 0.3;
 	
 	private ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -48,9 +48,9 @@ public class PhysicsSystem {
 		return distance;
 		
 	}
+	//Stores the forces sum 
 	Map<PhysicsObject,Vector2> forceBuffer = new HashMap<PhysicsObject,Vector2>();
 	
-	//TODO Will return a one-way vector. Need to figure out force buffer and optimize for 2 objects
 	private void getGrav(PhysicsObject a, PhysicsObject b, Vector2 gravOut){
 		
 		Vector2 distance = b.getPosition().copy();
@@ -69,6 +69,9 @@ public class PhysicsSystem {
 	
 	//TODO this can easily be improved with a collision quad-tree
 	private boolean checkCollision(PhysicsObject a, PhysicsObject b){
+		
+		//These exact calculations are done in getGrav(), maybe we can reuse them somehow by
+		//merging into 1 function
 		Vector2 distance = b.getPosition().copy();
 		distance.subtract(a.getPosition());
 		
@@ -80,80 +83,95 @@ public class PhysicsSystem {
 	}
 	
 	public void update(int frameNum){
+		
+		//These are used because you can't modify the List when you're iterating over it
 		List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
+		
+		//This list is currently unused, but if we use momentum calculations then we would
+		//be removing 2 objects and adding 1
 		List<PhysicsObject> toAdd = new ArrayList<PhysicsObject>();
 		
+		//Vector2 instance to be re-used for calculating gravity
 		Vector2 grav = new Vector2();
+		
+		//Vector2 instance to be re-used for calculating forces
+		Vector2 force = new Vector2();
+		
 		for(PhysicsObject p : objects){
 			
-			if ((frameNum % 1) == 0 || frameNum == 1)
-			{
-				//p.force.clear();
-				Vector2 pForce = forceBuffer.get(p);
-				pForce.set(0, 0);
+			//resets the force instance
+			force.set(0, 0);
+			
+			//I removed your pForce logic for 1 main reason - the forceBuffer may be used
+			//simultaneously by another function, and it makes more sense to do the calculations
+			//on a local variable, and update the forceBuffer only after the calculations.
+			
+			for(PhysicsObject o: objects){
+				//TODO n^2 complexity is really bad and slow, once we get the basic mechanics
+				//we need to heavily optimize this using quad trees and such and centers of mass
 				
-				for(PhysicsObject o: objects){
+				if(o != p){
+					//This check is necessary for collisions, otherwise everything is instantly deleted
 					
-					if(o == p){
+					if(checkCollision(p, o) && !toRemove.contains(p) && !toRemove.contains(o)){
+						//Objects collided and were not already checked
 						
+					
+						//I think proper momentum calculations should be implemented, but
+						//currently it just uses your idea of destroying the smaller object
+						
+						//By the way, what mass should be used to calculate which object is more
+						//massive? On one hand, the greater the gravitational mass, the greater
+						//the object is in size. And it would make sense that the bigger object
+						//survives. On the other hand, it makes more scientific sense to use the
+						//gravitational mass only for gravity, and inertial for everything else
+						
+						if(p.getInertialMass() > o.getInertialMass()){
+							toRemove.add(o);
+						}
+						else if(o.getInertialMass() > p.getInertialMass()){
+							toRemove.add(p);
+						}
+						else if(o.getInertialMass() == p.getInertialMass()){
+							//I just decided to remove this one
+							toRemove.add(o);
+						}
 					}
 					else{
+						//Objects did not collide
+						getGrav(p, o, grav);
 						
-						if(checkCollision(p, o) && !toRemove.contains(p) && !toRemove.contains(o)){
-							if(p.getInertialMass() > o.getInertialMass()){
-								toRemove.add(o);
-							}
-							else if(o.getInertialMass() > p.getInertialMass()){
-								toRemove.add(p);
-							}
-							else if(o.getInertialMass() == p.getInertialMass()){
-								toRemove.add(o);
-							}
-						}
-						else{
-							getGrav(p, o, grav);
-							pForce.add(grav);
-						}
+						force.add(grav);
 					}
 				}
-				p.updateAcceleration(pForce);
 			}
+			
+			p.updateAcceleration(force);
+			
+			//See comment line 105, now the forceBuffer is updated only after the calculations are done
+			forceBuffer.get(p).set(force);
 		}
+		
 		for(PhysicsObject p: toRemove)
 			objects.remove(p);
 		for(PhysicsObject p: toAdd)
 			objects.add(p);
+		
 		for(PhysicsObject p: objects){
-			
+			//This centers the star. It shouldn't be part of the physics system, but it was easiest to put it here.
 			p.position.subtract(getStar().position);
 			p.updatePosition();
 		}
+		
+		
 	}
+	
 	public PhysicsObject getStar(){
 		return objects.get(0);
 	}
-	/*
-	public void update(){
-		PhysicsObject curr;
-		for(int i = 0; i < objects.size(); i++){
-			curr = objects.get(i);
-			update(curr);
-			curr.update(forceBuffer.get(curr));
-		}
-	}
-	private void update(PhysicsObject o){
-		Vector2[] localBuffer = new Vector2[objects.size()];
-		for(int i = 0; i < objects.size(); i++){
-			localBuffer[i] = getGrav(o,objects.get(i));
-		}
-		forceBuffer.replace(o, Vector2.addVectors(localBuffer));
-	}
-	*/
 	
-	public PhysicsObject[] getObj(){
-		PhysicsObject[] ans = new PhysicsObject[objects.size()];
-		for(int i = 0; i < objects.size(); i++){ans[i] = objects.get(i);}
-		return ans;
+	public List<PhysicsObject> getObj(){
+		return objects;
 	}
 	
 }
