@@ -54,5 +54,8 @@ public class PhysicsObject {
 	public double getGravitationalMass(){return gravitationalMass;}
 	//TODO This is temporary, radius should be determined by density
 	public double getRadius(){return Math.sqrt(1000d * Math.sqrt(getGravitationalMass()));}
+	public PhysicsObject copy(){
+		return new PhysicsObject(this.position,this.velocity,this.gravitationalMass,this.inertialMass);
+	}
 	
 }

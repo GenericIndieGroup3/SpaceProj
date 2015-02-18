@@ -170,10 +170,22 @@ public class PhysicsSystem {
 	
 	public List<PhysicsObject> calculateTrajectory(PhysicsObject p, int positions){
 		List<PhysicsObject> trajectory = new ArrayList<PhysicsObject>(positions);
-		
+		PhysicsObject tmp = p.copy();
+		Vector2 out = new Vector2();
+		Vector2 buff = new Vector2();
+		//Vector2 a = new Vector2();
 		for(int i = 0; i < positions; i++){
-			//
+			//This will be horribly inefficient
+			//That's fine
+			for(PhysicsObject o : objects){
+				getGrav(tmp,o,out);
+				buff.add(out);
+			}
+			tmp.updateAcceleration(buff);
+			tmp.updatePosition();
+			trajectory.add(tmp.copy());
 		}
+		return trajectory;
 	}
 	
 	public PhysicsObject getStar(){
