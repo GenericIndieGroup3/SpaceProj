@@ -4,11 +4,10 @@ import Structs.Vector2;
 public class PhysicsObject {
 	//A basic physics object
 	
-	//Physics variables
-	//private static double gravitationalConstant = 30;
-	
 	
 	//Unfortunately, this is Java, so get/set methods for below vars
+	//SCRATCH the above, let's adopt the Python rule of thumb - "we're all adults here", and let's leave everything public
+	//until we have a concrete base that won't be drastically changing as it is now.
 	public Vector2 position;
 	//I needed this public for a thing, which is inefficient so needs to be redone
 	public Vector2 velocity;
@@ -42,14 +41,6 @@ public class PhysicsObject {
 		accelerationOut.set(force);
 		accelerationOut.multiply( 1 / getInertialMass());
 	}
-	
-	//Returns the gravity that another object inflicts on this
-//	public Vector2 calculateGravity(PhysicsObject other){
-//		Vector2 distance = other.getPosition().subtract(getPosition());
-//		double distanceMag = distance.magnitude();
-//		double gravForceMag = gravitationalConstant * getGravitationalMass() * other.getGravitationalMass() / (distanceMag * distanceMag); 
-//		return distance.copy().magnitude(gravForceMag);
-//	}
 	
 	//Remember this returns a copy
 	public Vector2 getPosition(){return position;}
