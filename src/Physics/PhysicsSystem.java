@@ -4,7 +4,7 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 0.3;
+	private static final double GRAVITATIONAL_CONSTANT = 0.001;
 	
 	private ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -122,9 +122,9 @@ public class PhysicsSystem {
 						
 						//By the way, what mass should be used to calculate which object is more
 						//massive? On one hand, the greater the gravitational mass, the greater
-						//the object is in size. And it would make sense that the bigger object
-						//survives. On the other hand, it makes more scientific sense to use the
-						//gravitational mass only for gravity, and inertial for everything else
+						//the object is in size. And it would make more visual sense for the bigger
+						//object to survive. On the other hand, it makes more scientific sense to use
+						// the gravitational mass only for gravity, and inertial for everything else
 						
 						if(p.getInertialMass() > o.getInertialMass()){
 							toRemove.add(o);
@@ -133,14 +133,16 @@ public class PhysicsSystem {
 							toRemove.add(p);
 						}
 						else if(o.getInertialMass() == p.getInertialMass()){
-							//I just decided to remove this one
+							//I just decided to remove o
 							toRemove.add(o);
 						}
 					}
 					else{
 						//Objects did not collide
-						getGrav(p, o, grav);
 						
+						//this modifies the grav variable to be equal to the gravForce
+						//By doing so, it reuses variables and gives a significant performance boost
+						getGrav(p, o, grav);
 						force.add(grav);
 					}
 				}
@@ -168,6 +170,9 @@ public class PhysicsSystem {
 	
 	public PhysicsObject getStar(){
 		return objects.get(0);
+	}
+	public PhysicsObject getChar(){
+		return objects.get(2);
 	}
 	
 	public List<PhysicsObject> getObj(){

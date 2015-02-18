@@ -1,6 +1,8 @@
 package Games;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import Implementations.ImplementationAbstract;
 import Implementations.LWJGLImplementation;
 import Physics.PhysicsObject;
@@ -20,7 +22,7 @@ public class MainGame implements GameInterface{
 		physicsSystem = new PhysicsSystem();
 		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 1000);
 		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
-		PhysicsObject moon = new PhysicsObject(new Vector2(-4200, 0), new Vector2(), 40, 40);
+		PhysicsObject moon = new PhysicsObject(new Vector2(-4500, 0), new Vector2(), 2, 2);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
 		
@@ -32,7 +34,7 @@ public class MainGame implements GameInterface{
 		
 		
 		
-		
+		/*
 		int a = 1;
 		int b = 1;
 		for(int x = 0; x < 20; x++){
@@ -54,11 +56,17 @@ public class MainGame implements GameInterface{
 				a*= -1;
 			}
 		}
+		*/
 		
 	}
 	
 	public void update(int frameNum, double deltaTime){
 		physicsSystem.update(frameNum);
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_W))
+			physicsSystem.getChar().gravitationalMass += 0.01;
+		if(Keyboard.isKeyDown(Keyboard.KEY_S) && physicsSystem.getChar().gravitationalMass > 0.01)
+			physicsSystem.getChar().gravitationalMass -= 0.01;
 	}
 	
 	public Shape[] drawShapes(){
