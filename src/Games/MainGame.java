@@ -23,13 +23,18 @@ public class MainGame implements GameInterface{
 		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 1000);
 		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
 		PhysicsObject moon = new PhysicsObject(new Vector2(-4500, 0), new Vector2(), 2, 2);
+		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
+		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
+		planet2.velocity = physicsSystem.velocityForCircularMotion(planet2, star, false);
+		moon2.velocity = physicsSystem.velocityForCircularMotion(moon2, planet2, true);
 		
 		physicsSystem.addObj(star);
 		physicsSystem.addObj(planet);
 		physicsSystem.addObj(moon);
-		
+		physicsSystem.addObj(planet2);
+		physicsSystem.addObj(moon2);
 		
 		
 		
