@@ -2,17 +2,9 @@ package Physics;
 import Structs.Vector2;
 
 public class PhysicsObject {
-	//A basic physics object
 	
-	
-	//Unfortunately, this is Java, so get/set methods for below vars
-	//SCRATCH the above, let's adopt the Python rule of thumb - "we're all adults here", and let's leave everything public
-	//until we have a concrete base that won't be drastically changing as it is now.
 	public Vector2 position;
-	//I needed this public for a thing, which is inefficient so needs to be redone
 	public Vector2 velocity;
-	
-	//public Vector2 force = new Vector2();
 	
 	public double gravitationalMass;
 	public double inertialMass;
@@ -26,6 +18,14 @@ public class PhysicsObject {
 	
 	public PhysicsObject(Vector2 position, double mass){
 		this(position, new Vector2(), mass, mass);
+	}
+	
+	public PhysicsObject copy(){
+		return new PhysicsObject(this.position.copy(),this.velocity.copy(),this.gravitationalMass,this.inertialMass);
+	}
+	public boolean equals(PhysicsObject o){
+		return (this.position.equals(o.position) && this.velocity.equals(o.velocity) &&
+		this.gravitationalMass == o.gravitationalMass && this.inertialMass == o.inertialMass);
 	}
 	
 	public void updateAcceleration(Vector2 force){
@@ -54,8 +54,6 @@ public class PhysicsObject {
 	public double getGravitationalMass(){return gravitationalMass;}
 	//TODO This is temporary, radius should be determined by density
 	public double getRadius(){return Math.sqrt(1000d * Math.sqrt(getGravitationalMass()));}
-	public PhysicsObject copy(){
-		return new PhysicsObject(this.position.copy(),this.velocity.copy(),this.gravitationalMass,this.inertialMass);
-	}
+	
 	
 }

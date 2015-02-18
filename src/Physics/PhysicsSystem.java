@@ -6,7 +6,10 @@ import Structs.Vector2;
 public class PhysicsSystem {
 	private static final double GRAVITATIONAL_CONSTANT = 0.001;
 	
-	private ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
+	public int charNum =2;
+	public int centerNum = 0;
+	
+	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
 		
 	}
@@ -86,46 +89,23 @@ public class PhysicsSystem {
 		
 		//These are used because you can't modify the List when you're iterating over it
 		List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
-		
-		//This list is currently unused, but if we use momentum calculations then we would
-		//be removing 2 objects and adding 1
 		List<PhysicsObject> toAdd = new ArrayList<PhysicsObject>();
 		
-		//Vector2 instance to be re-used for calculating gravity
+		//Vector2 instances to be re-used for calculating gravity and forces 
 		Vector2 grav = new Vector2();
-		
-		//Vector2 instance to be re-used for calculating forces
 		Vector2 force = new Vector2();
 		
 		for(PhysicsObject p : objects){
-			
-			//resets the force instance
 			force.set(0, 0);
-			
-			//I removed your pForce logic for 1 main reason - the forceBuffer may be used
-			//simultaneously by another function, and it makes more sense to do the calculations
-			//on a local variable, and update the forceBuffer only after the calculations.
-			
 			for(PhysicsObject o: objects){
 				//TODO n^2 complexity is really bad and slow, once we get the basic mechanics
 				//we need to heavily optimize this using quad trees and such and centers of mass
-				
 				if(o != p){
-					//This check is necessary for collisions, otherwise everything is instantly deleted
-					
 					if(checkCollision(p, o) && !toRemove.contains(p) && !toRemove.contains(o)){
 						//Objects collided and were not already checked
 						
-					
 						//I think proper momentum calculations should be implemented, but
 						//currently it just uses your idea of destroying the smaller object
-						
-						//By the way, what mass should be used to calculate which object is more
-						//massive? On one hand, the greater the gravitational mass, the greater
-						//the object is in size. And it would make more visual sense for the bigger
-						//object to survive. On the other hand, it makes more scientific sense to use
-						// the gravitational mass only for gravity, and inertial for everything else
-						
 						if(p.getInertialMass() > o.getInertialMass()){
 							toRemove.add(o);
 						}
@@ -141,16 +121,14 @@ public class PhysicsSystem {
 						//Objects did not collide
 						
 						//this modifies the grav variable to be equal to the gravForce
-						//By doing so, it reuses variables and gives a significant performance boost
 						getGrav(p, o, grav);
 						force.add(grav);
 					}
 				}
 			}
-			
 			p.updateAcceleration(force);
 			
-			//See comment line 105, now the forceBuffer is updated only after the calculations are done
+			//forceBuffer is currently not used for anything, but it might be later on
 			forceBuffer.get(p).set(force);
 		}
 		
@@ -161,10 +139,32 @@ public class PhysicsSystem {
 		
 		for(PhysicsObject p: objects){
 			//This centers the star. It shouldn't be part of the physics system, but it was easiest to put it here.
-			p.position.subtract(getStar().position);
+			//p.position.subtract(getStar().position);
 			p.updatePosition();
 		}
 		
+		
+	}
+	
+	//This is me re-adding the calcGrav function for individual objects
+	//This should be used in both the update() and calculateTrajectory() methods
+	//However, it needs to be extended for more general use before that
+	public void calc(PhysicsObject p){
+		
+		Vector2 grav = new Vector2();
+		Vector2 force = new Vector2();
+		//This was copy-pasta'd, so it doesn't make any contextual sense
+		force.set(0, 0);
+			
+		for(PhysicsObject o: objects){
+			if(o != p){
+				
+					getGrav(p, o, grav);
+					force.add(grav);
+			}
+		}
+		p.updateAcceleration(force);
+		p.updatePosition();
 		
 	}
 	
@@ -173,12 +173,17 @@ public class PhysicsSystem {
 		PhysicsObject tmp = p.copy();
 		Vector2 out = new Vector2();
 		Vector2 buff = new Vector2();
-		//Vector2 a = new Vector2();
+		
 		for(int i = 0; i < positions; i++){
+			//You forgot to reset the buffer!
+			buff.set(0, 0);
 			//This will be horribly inefficient
 			//That's fine
 			for(PhysicsObject o : objects){
-				if(o != tmp){
+				
+				//THIS is the bug that I spent forever trying to locate
+				//the object who's path this is calculating was greatly influencing its own trajectory
+				if(o != tmp && o != p){
 					getGrav(tmp,o,out);
 					buff.add(out);
 				}
@@ -194,7 +199,10 @@ public class PhysicsSystem {
 		return objects.get(0);
 	}
 	public PhysicsObject getChar(){
-		return objects.get(2);
+		return objects.get(charNum);
+	}
+	public PhysicsObject getCenter(){
+		return objects.get(centerNum);
 	}
 	
 	public List<PhysicsObject> getObj(){

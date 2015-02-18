@@ -69,13 +69,17 @@ public class MainGame implements GameInterface{
 		
 	}
 	
+	int mode = 0;
+	double zoom = 1;
+	double zoomSpeed = 0.001;
+	
 	public void update(int frameNum, double deltaTime){
 		physicsSystem.update(frameNum);
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_W))
 			physicsSystem.getChar().gravitationalMass += 0.01;
 		if(Keyboard.isKeyDown(Keyboard.KEY_S) && physicsSystem.getChar().gravitationalMass > 0.01)
-			physicsSystem.getChar().gravitationalMass += 0.01;
+			physicsSystem.getChar().gravitationalMass -= 0.01;
 		if(Keyboard.isKeyDown(Keyboard.KEY_E))
 			physicsSystem.getChar().gravitationalMass += 0.1;
 		if(Keyboard.isKeyDown(Keyboard.KEY_D) && physicsSystem.getChar().gravitationalMass > 0.1)
@@ -96,18 +100,47 @@ public class MainGame implements GameInterface{
 			imp.keepUpdating = false;
 		if(Keyboard.isKeyDown(Keyboard.KEY_R))
 			this.setup();
+		if(Keyboard.isKeyDown(Keyboard.KEY_0)){
+			change(0);
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_1))
+			change(1);
+		if(Keyboard.isKeyDown(Keyboard.KEY_2))
+			change(2);
+		if(Keyboard.isKeyDown(Keyboard.KEY_3))
+			change(3);
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_C))
+			mode = 1;
+		if(Keyboard.isKeyDown(Keyboard.KEY_P))
+			mode = 0;
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_L))
+			zoom -= zoomSpeed;
+		if(Keyboard.isKeyDown(Keyboard.KEY_K))
+			zoom += zoomSpeed;
 	}
-	
+	private void change(int num){
+		if(mode == 0)
+			physicsSystem.charNum = num;
+		else if(mode == 1)
+			physicsSystem.centerNum = num;
+	}
 	public List<Shape> drawShapes(){
 		List<PhysicsObject> objects = physicsSystem.getObj();
 		List<Shape> shapes = new ArrayList<Shape>(objects.size() + 10);
+		
 		for(int i = 0; i < objects.size(); i++){
 			PhysicsObject o = objects.get(i);
-			shapes.add(new Circle(o.getPosition(), o.getRadius()));
-			if(i == 2)
+			Vector2 position = o.getPosition().copy();
+			position.subtract(physicsSystem.getCenter().position);
+			position.multiply(zoom);
+			shapes.add(new Circle(position, o.getRadius()));
+			if(i == physicsSystem.charNum)
 				shapes.get(i).color = new Vector4(0, 1, 0, 1);
 			//break;
 		}
+		/*
 		int i = 0;
 		for(PhysicsObject a : physicsSystem.calculateTrajectory(physicsSystem.getChar(), 10000)){
 			if(i % 50 == 0 && i > 50){
@@ -116,7 +149,25 @@ public class MainGame implements GameInterface{
 				shapes.add(s);
 			}
 			i++;
+		}*/
+		for(PhysicsObject b : physicsSystem.objects){
+			int i = 0;
+			for(PhysicsObject a : physicsSystem.calculateTrajectory(b, 5000)){
+				if(i % 500 == 0 && i > 0){
+					Vector2 position = a.getPosition().copy();
+					position.subtract(physicsSystem.getCenter().position);
+					position.multiply(zoom);
+					Shape s = new Circle(position, a.getRadius() / 2);
+					if(b == physicsSystem.getChar())
+						s.color = new Vector4(0, 0.4, 0, 1);
+					else
+						s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
+					shapes.add(s);
+				}
+				i++;
+			}
 		}
+		
 		return shapes;
 	}
 	public static void main(String[] arg){
