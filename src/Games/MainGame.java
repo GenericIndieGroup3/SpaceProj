@@ -110,7 +110,7 @@ public class MainGame implements GameInterface{
 		return shapes;
 	}
 	public static void main(String[] arg){
-		imp = new LWJGLImplementation(new MainGame(), new Vector2(2000, 1200), 0.2);
+		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
 		imp.beginUpdating();
 	}
 }

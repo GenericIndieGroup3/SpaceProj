@@ -168,6 +168,14 @@ public class PhysicsSystem {
 		
 	}
 	
+	public List<PhysicsObject> calculateTrajectory(PhysicsObject p, int positions){
+		List<PhysicsObject> trajectory = new ArrayList<PhysicsObject>(positions);
+		
+		for(int i = 0; i < positions; i++){
+			//
+		}
+	}
+	
 	public PhysicsObject getStar(){
 		return objects.get(0);
 	}
