@@ -33,6 +33,12 @@ public class PhysicsObject {
 		velocity.add(force);
 	}
 	
+	public void updateAcceleration(double forceX, double forceY){
+		forceX *= (1 / getInertialMass());
+		forceY *= (1 / getInertialMass());
+		velocity.add(forceX, forceY);
+	}
+	
 	public void updatePosition(){
 		position.add(velocity);
 	}

@@ -74,8 +74,24 @@ public class MainGame implements GameInterface{
 		if(Keyboard.isKeyDown(Keyboard.KEY_W))
 			physicsSystem.getChar().gravitationalMass += 0.01;
 		if(Keyboard.isKeyDown(Keyboard.KEY_S) && physicsSystem.getChar().gravitationalMass > 0.01)
-			physicsSystem.getChar().gravitationalMass -= 0.01;
+			physicsSystem.getChar().gravitationalMass += 0.01;
+		if(Keyboard.isKeyDown(Keyboard.KEY_E))
+			physicsSystem.getChar().gravitationalMass += 0.1;
+		if(Keyboard.isKeyDown(Keyboard.KEY_D) && physicsSystem.getChar().gravitationalMass > 0.1)
+			physicsSystem.getChar().gravitationalMass -= 0.1;
 		if(Keyboard.isKeyDown(Keyboard.KEY_Q))
+			physicsSystem.getChar().gravitationalMass += 1;
+		if(Keyboard.isKeyDown(Keyboard.KEY_A) && physicsSystem.getChar().gravitationalMass > 1)
+			physicsSystem.getChar().gravitationalMass -= 1;
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP))
+			physicsSystem.getChar().updateAcceleration(0, 0.001);
+		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+			physicsSystem.getChar().updateAcceleration(0, -0.001);
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			physicsSystem.getChar().updateAcceleration(-0.001, 0);
+		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+			physicsSystem.getChar().updateAcceleration(0.001, 0);
+		if(Keyboard.isKeyDown(Keyboard.KEY_F))
 			imp.keepUpdating = false;
 		if(Keyboard.isKeyDown(Keyboard.KEY_R))
 			this.setup();
@@ -94,7 +110,7 @@ public class MainGame implements GameInterface{
 		return shapes;
 	}
 	public static void main(String[] arg){
-		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
+		imp = new LWJGLImplementation(new MainGame(), new Vector2(2000, 1200), 0.2);
 		imp.beginUpdating();
 	}
 }

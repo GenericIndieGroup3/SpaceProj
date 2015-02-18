@@ -42,8 +42,8 @@ public class Vector2{
 		y += a.y;
 	}
 	public void add(double x, double y){
-		x += x;
-		x += y;
+		this.x += x;
+		this.y += y;
 	}
 	public void subtract(Vector2 a){
 		x -= a.x;
