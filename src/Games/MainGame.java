@@ -119,6 +119,11 @@ public class MainGame implements GameInterface{
 			zoom -= zoomSpeed;
 		if(Keyboard.isKeyDown(Keyboard.KEY_K))
 			zoom += zoomSpeed;
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_T))
+			showTrajectories = true;
+		if(Keyboard.isKeyDown(Keyboard.KEY_Y))
+			showTrajectories = false;
 	}
 	private void change(int num){
 		if(mode == 0)
@@ -135,7 +140,7 @@ public class MainGame implements GameInterface{
 			Vector2 position = o.getPosition().copy();
 			position.subtract(physicsSystem.getCenter().position);
 			position.multiply(zoom);
-			shapes.add(new Circle(position, o.getRadius()));
+			shapes.add(new Circle(position, o.getRadius() * zoom));
 			if(i == physicsSystem.charNum)
 				shapes.get(i).color = new Vector4(0, 1, 0, 1);
 			//break;
@@ -150,24 +155,25 @@ public class MainGame implements GameInterface{
 			}
 			i++;
 		}*/
-		for(PhysicsObject b : physicsSystem.objects){
-			int i = 0;
-			for(PhysicsObject a : physicsSystem.calculateTrajectory(b, 5000)){
-				if(i % 500 == 0 && i > 0){
-					Vector2 position = a.getPosition().copy();
-					position.subtract(physicsSystem.getCenter().position);
-					position.multiply(zoom);
-					Shape s = new Circle(position, a.getRadius() / 2);
-					if(b == physicsSystem.getChar())
-						s.color = new Vector4(0, 0.4, 0, 1);
-					else
-						s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
-					shapes.add(s);
+		if(showTrajectories){
+			for(PhysicsObject b : physicsSystem.objects){
+				int i = 0;
+				for(PhysicsObject a : physicsSystem.calculateTrajectory(b, 5000)){
+					if(i % 500 == 0 && i > 0){
+						Vector2 position = a.getPosition().copy();
+						position.subtract(physicsSystem.getCenter().position);
+						position.multiply(zoom);
+						Shape s = new Circle(position, a.getRadius() / 2);
+						if(b == physicsSystem.getChar())
+							s.color = new Vector4(0, 0.4, 0, 1);
+						else
+							s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
+						shapes.add(s);
+					}
+					i++;
 				}
-				i++;
 			}
 		}
-		
 		return shapes;
 	}
 	public static void main(String[] arg){
