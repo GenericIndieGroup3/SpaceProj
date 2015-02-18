@@ -9,7 +9,7 @@ public class PhysicsObject {
 	
 	
 	//Unfortunately, this is Java, so get/set methods for below vars
-	private Vector2 position;
+	public Vector2 position;
 	//I needed this public for a thing, which is inefficient so needs to be redone
 	public Vector2 velocity;
 	

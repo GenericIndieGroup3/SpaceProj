@@ -4,7 +4,7 @@ import java.util.*;
 import Structs.Vector2;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 0.0010;
+	private static final double GRAVITATIONAL_CONSTANT = 0.1;
 	
 	private ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(){
@@ -67,9 +67,22 @@ public class PhysicsSystem {
 		gravOut.multiply(gravForceMag);
 	}
 	
-
+	//TODO this can easily be improved with a collision quad-tree
+	private boolean checkCollision(PhysicsObject a, PhysicsObject b){
+		Vector2 distance = b.getPosition().copy();
+		distance.subtract(a.getPosition());
+		
+		double distanceMag = distance.getMagnitude();
+		double minDistance = a.getRadius() + b.getRadius();
+		
+		return distanceMag <= minDistance;
+		
+	}
 	
 	public void update(int frameNum){
+		List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
+		List<PhysicsObject> toAdd = new ArrayList<PhysicsObject>();
+		
 		Vector2 grav = new Vector2();
 		for(PhysicsObject p : objects){
 			
@@ -77,16 +90,48 @@ public class PhysicsSystem {
 			{
 				//p.force.clear();
 				Vector2 pForce = forceBuffer.get(p);
+				pForce.set(0, 0);
+				
 				for(PhysicsObject o: objects){
-					getGrav(p, o, grav);
-					pForce.add(grav);
+					
+					if(o == p){
+						
+					}
+					else{
+						
+						if(checkCollision(p, o) && !toRemove.contains(p) && !toRemove.contains(o)){
+							if(p.getInertialMass() > o.getInertialMass()){
+								toRemove.add(o);
+							}
+							else if(o.getInertialMass() > p.getInertialMass()){
+								toRemove.add(p);
+							}
+							else if(o.getInertialMass() == p.getInertialMass()){
+								toRemove.add(o);
+							}
+						}
+						else{
+							getGrav(p, o, grav);
+							pForce.add(grav);
+						}
+					}
 				}
 				p.updateAcceleration(pForce);
 			}
+		}
+		for(PhysicsObject p: toRemove)
+			objects.remove(p);
+		for(PhysicsObject p: toAdd)
+			objects.add(p);
+		for(PhysicsObject p: objects){
+			
+			p.position.subtract(getStar().position);
 			p.updatePosition();
 		}
 	}
-	
+	public PhysicsObject getStar(){
+		return objects.get(0);
+	}
 	/*
 	public void update(){
 		PhysicsObject curr;
