@@ -113,6 +113,8 @@ public class MainGame implements GameInterface{
 			change(2);
 		if(Keyboard.isKeyDown(Keyboard.KEY_3))
 			change(3);
+		if(Keyboard.isKeyDown(Keyboard.KEY_4))
+			change(4);
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_C))
 			mode = 1;

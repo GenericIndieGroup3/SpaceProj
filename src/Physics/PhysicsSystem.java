@@ -240,7 +240,7 @@ public class PhysicsSystem {
 	}
 	public PhysicsObject getCenter(){
 		if (centerNum >= objects.size()){
-			charNum -= 1;
+			centerNum -= 1;
 			return getCenter();
 		}
 		return objects.get(centerNum);
