@@ -239,9 +239,17 @@ public class PhysicsSystem {
 		return objects.get(0);
 	}
 	public PhysicsObject getChar(){
+		if (charNum >= objects.size()){
+			charNum -= 1;
+			return getChar();
+		}
 		return objects.get(charNum);
 	}
 	public PhysicsObject getCenter(){
+		if (centerNum >= objects.size()){
+			charNum -= 1;
+			return getCenter();
+		}
 		return objects.get(centerNum);
 	}
 	
