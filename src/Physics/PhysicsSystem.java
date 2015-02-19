@@ -201,11 +201,10 @@ public class PhysicsSystem {
 						s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
 					trajectories.add(s);
 				}
-			
 		}
-		
 		return trajectories;
 	}
+	
 	public List<PhysicsObject> calculateTrajectory(PhysicsObject p, int positions){
 		List<PhysicsObject> trajectory = new ArrayList<PhysicsObject>(positions);
 		PhysicsObject tmp = p.copy();
@@ -213,14 +212,8 @@ public class PhysicsSystem {
 		Vector2 buff = new Vector2();
 		
 		for(int i = 0; i < positions; i++){
-			//You forgot to reset the buffer!
 			buff.set(0, 0);
-			//This will be horribly inefficient
-			//That's fine
 			for(PhysicsObject o : objects){
-				
-				//THIS is the bug that I spent forever trying to locate
-				//the object who's path this is calculating was greatly influencing its own trajectory
 				if(o != tmp && o != p){
 					getGrav(tmp,o,out);
 					buff.add(out);
