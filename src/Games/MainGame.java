@@ -31,8 +31,10 @@ public class MainGame implements GameInterface{
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
+		//moon.accelerate(planet.velocity);
 		planet2.velocity = physicsSystem.velocityForCircularMotion(planet2, star, false);
 		moon2.velocity = physicsSystem.velocityForCircularMotion(moon2, planet2, true);
+		//moon2.accelerate(planet2.velocity);
 		
 		physicsSystem.addObj(star);
 		physicsSystem.addObj(planet);

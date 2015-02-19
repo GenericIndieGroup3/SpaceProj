@@ -233,6 +233,8 @@ public class PhysicsSystem {
 		return trajectory;
 	}
 	
+	
+	
 	public PhysicsObject getStar(){
 		return objects.get(0);
 	}

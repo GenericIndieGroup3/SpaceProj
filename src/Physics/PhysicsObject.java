@@ -55,5 +55,13 @@ public class PhysicsObject {
 	//TODO This is temporary, radius should be determined by density
 	public double getRadius(){return Math.sqrt(1000d * Math.sqrt(getGravitationalMass()));}
 	
+	public void accelerate(Vector2 accel){
+		velocity.add(accel);
+	}
+	
+	public void accelerate(double x, double y){
+		velocity.x += x;
+		velocity.y += y;
+	}
 	
 }
