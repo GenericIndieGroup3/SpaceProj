@@ -73,7 +73,7 @@ public class MainGame implements GameInterface{
 	double zoom = 1;
 	double zoomSpeed = 0.001;
 	
-	boolean showTrajectories = true;
+	int trajectoryMode = 0;
 	
 	public void update(int frameNum, double deltaTime){
 		physicsSystem.update(frameNum);
@@ -123,9 +123,11 @@ public class MainGame implements GameInterface{
 			zoom += zoomSpeed;
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_T))
-			showTrajectories = true;
+			trajectoryMode = 0;
 		if(Keyboard.isKeyDown(Keyboard.KEY_Y))
-			showTrajectories = false;
+			trajectoryMode = 1;
+		if(Keyboard.isKeyDown(Keyboard.KEY_U))
+			trajectoryMode = 2;
 	}
 	private void change(int num){
 		if(mode == 0)
@@ -147,21 +149,11 @@ public class MainGame implements GameInterface{
 				shapes.get(i).color = new Vector4(0, 1, 0, 1);
 			//break;
 		}
-		/*
-		int i = 0;
-		for(PhysicsObject a : physicsSystem.calculateTrajectory(physicsSystem.getChar(), 10000)){
-			if(i % 50 == 0 && i > 50){
-				Shape s = new Circle(a.getPosition(), a.getRadius());
-				s.color = new Vector4(0, 0.5, 0, 0.5);
-				shapes.add(s);
-			}
-			i++;
-		}*/
-		if(showTrajectories){
+		if(trajectoryMode == 1){
 			for(PhysicsObject b : physicsSystem.objects){
 				int i = 0;
 				for(PhysicsObject a : physicsSystem.calculateTrajectory(b, 5000)){
-					if(i % 500 == 0 && i > 0){
+					if(i % 50 == 0 && i > 0){
 						Vector2 position = a.getPosition().copy();
 						position.subtract(physicsSystem.getCenter().position);
 						position.multiply(zoom);
@@ -176,6 +168,8 @@ public class MainGame implements GameInterface{
 				}
 			}
 		}
+		if(trajectoryMode == 0)
+			shapes.addAll(physicsSystem.calculateTrajectory(7000, 50, zoom));
 		return shapes;
 	}
 	public static void main(String[] arg){

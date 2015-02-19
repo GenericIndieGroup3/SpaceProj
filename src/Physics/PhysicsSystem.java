@@ -1,19 +1,33 @@
 package Physics;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import Structs.Circle;
+import Structs.Shape;
 import Structs.Vector2;
+import Structs.Vector4;
 
 public class PhysicsSystem {
-	private static final double GRAVITATIONAL_CONSTANT = 0.001;
+	private static final double GRAVITATIONAL_CONSTANT = 0.005;
 	
 	public int charNum =2;
 	public int centerNum = 0;
 	
 	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
+	public PhysicsSystem(PhysicsSystem copyFrom){
+		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
+		for(PhysicsObject o: copyFrom.objects){
+			objects.add(o.copy());
+		}
+		charNum = copyFrom.charNum;
+		centerNum = copyFrom.centerNum;
+	}
+	
 	public PhysicsSystem(){
 		
 	}
-	
 	public PhysicsSystem(PhysicsObject[] obj){
 		for(int i = 0; i < obj.length; i++){
 			forceBuffer.put(obj[i], new Vector2());
@@ -129,7 +143,7 @@ public class PhysicsSystem {
 			p.updateAcceleration(force);
 			
 			//forceBuffer is currently not used for anything, but it might be later on
-			forceBuffer.get(p).set(force);
+			//forceBuffer.get(p).set(force);
 		}
 		
 		for(PhysicsObject p: toRemove)
@@ -168,6 +182,30 @@ public class PhysicsSystem {
 		
 	}
 	
+	public List<Shape> calculateTrajectory(int positions, int skip, double zoom){
+		
+		List<Shape> trajectories = new ArrayList<Shape>(positions * objects.size());
+		PhysicsSystem copy = new PhysicsSystem(this);
+		
+		for(int i = 0; i < positions; i++){
+			copy.update(i);
+			if(i % skip == 0 && i != 0)
+				for(PhysicsObject o: copy.objects){
+					Vector2 position = o.getPosition().copy();
+					position.subtract(copy.getCenter().position);
+					position.multiply(zoom);
+					Shape s = new Circle(position, o.getRadius() / 2);
+					if(o == copy.getChar())
+						s.color = new Vector4(0, 0.4, 0, 1);
+					else
+						s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
+					trajectories.add(s);
+				}
+			
+		}
+		
+		return trajectories;
+	}
 	public List<PhysicsObject> calculateTrajectory(PhysicsObject p, int positions){
 		List<PhysicsObject> trajectory = new ArrayList<PhysicsObject>(positions);
 		PhysicsObject tmp = p.copy();
