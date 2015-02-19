@@ -73,6 +73,8 @@ public class MainGame implements GameInterface{
 	double zoom = 1;
 	double zoomSpeed = 0.001;
 	
+	boolean showTrajectories = true;
+	
 	public void update(int frameNum, double deltaTime){
 		physicsSystem.update(frameNum);
 		
