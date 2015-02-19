@@ -194,7 +194,7 @@ public class PhysicsSystem {
 					Vector2 position = o.getPosition().copy();
 					position.subtract(copy.getCenter().position);
 					position.multiply(zoom);
-					Shape s = new Circle(position, o.getRadius() / 2);
+					Shape s = new Circle(position, o.getRadius() * zoom / 2);
 					if(o == copy.getChar())
 						s.color = new Vector4(0, 0.4, 0, 1);
 					else
