@@ -17,9 +17,7 @@ import Structs.Vector4;
 public class MainGame implements GameInterface{
 
 	public MainGame(){}
-	
 	private PhysicsSystem physicsSystem;
-	
 	private static ImplementationAbstract imp;
 	
 	public void setup(){
@@ -43,18 +41,14 @@ public class MainGame implements GameInterface{
 		physicsSystem.addObj(moon2);
 		
 		
-		
-		
-		/*
 		int a = 1;
 		int b = 1;
-		for(int x = 0; x < 20; x++){
-			for(int i = 0; i < 20; i++){
+		for(int x = 0; x < 5; x++){
+			for(int i = 0; i < 5; i++){
 				
 				int mass = (int)(Math.random() * 20);
 				if (mass == 0)
 					mass = 1;
-				
 				PhysicsObject o = (new PhysicsObject(
 					new Vector2(1000 + x * 200 , i * 200 * a),
 					new Vector2(0, 0),
@@ -67,7 +61,7 @@ public class MainGame implements GameInterface{
 				a*= -1;
 			}
 		}
-		*/
+		
 		
 	}
 	
@@ -173,7 +167,7 @@ public class MainGame implements GameInterface{
 			}
 		}
 		if(trajectoryMode == 0)
-			shapes.addAll(physicsSystem.calculateTrajectory(7000, 50, zoom));
+			shapes.addAll(physicsSystem.calculateTrajectory(5000, 100, zoom));
 		return shapes;
 	}
 	public static void main(String[] arg){

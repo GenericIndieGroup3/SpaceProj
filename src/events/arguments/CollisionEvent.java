@@ -2,15 +2,15 @@ package events.arguments;
 
 import Physics.PhysicsObject;
 
-public class collisionEventArgs {
+public class CollisionEvent {
 
 	PhysicsObject a;
 	PhysicsObject b;
 	
 	boolean isCanceled = false;
 	
-	public collisionEventArgs(){
-		
+	public CollisionEvent(PhysicsObject a, PhysicsObject b){
+		set(a, b);
 	}
 	
 	public void set(PhysicsObject a, PhysicsObject b){
@@ -18,5 +18,7 @@ public class collisionEventArgs {
 		this.b = b;
 	}
 	
-	public void setCanceled()
+	public void setCanceled(){
+		
+	}
 }
