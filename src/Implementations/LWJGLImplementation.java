@@ -15,7 +15,6 @@ import Structs.Polygon;
 import Structs.Vector2;
 import Structs.Vector4;
 
-
 public class LWJGLImplementation extends ImplementationAbstract {
 
 	
@@ -111,5 +110,11 @@ public class LWJGLImplementation extends ImplementationAbstract {
 	        }
 		GL11.glEnd();
 	}
+	
+	//public void type(String text,TrueTypeFont font){
+		
+	//}
 
+	
+	
 }

@@ -2,6 +2,8 @@ package Games;
 import java.util.ArrayList;
 import java.util.List;
 
+import obj.Station;
+
 import org.lwjgl.input.Keyboard;
 
 import Implementations.ImplementationAbstract;
@@ -27,11 +29,13 @@ public class MainGame implements GameInterface{
 		PhysicsObject moon = new PhysicsObject(new Vector2(-4500, 0), new Vector2(), 2, 2);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
+		Station station = new Station(new Vector2(2000,0),50,star,true);
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
 		//moon.accelerate(planet.velocity);
 		planet2.velocity = physicsSystem.velocityForCircularMotion(planet2, star, false);
 		moon2.velocity = physicsSystem.velocityForCircularMotion(moon2, planet2, true);
+		//station.velocity = physicsSystem.velocityForCircularMotion(station, star, true);
 		//moon2.accelerate(planet2.velocity);
 		
 		physicsSystem.addObj(star);
@@ -39,29 +43,29 @@ public class MainGame implements GameInterface{
 		physicsSystem.addObj(moon);
 		physicsSystem.addObj(planet2);
 		physicsSystem.addObj(moon2);
+		physicsSystem.addObj(station);
 		
 		
-		int a = 1;
-		int b = 1;
-		for(int x = 0; x < 5; x++){
-			for(int i = 0; i < 5; i++){
-				
-				int mass = (int)(Math.random() * 20);
-				if (mass == 0)
-					mass = 1;
-				PhysicsObject o = (new PhysicsObject(
-					new Vector2(1000 + x * 200 , i * 200 * a),
-					new Vector2(0, 0),
-					mass,
-					mass
-				));
-				o.velocity = physicsSystem.velocityForCircularMotion(o, star, true);
-				physicsSystem.addObj(o);
-				
-				a*= -1;
-			}
-		}
-		
+//		int a = 1;
+//		int b = 1;
+//		for(int x = 0; x < 5; x++){
+//			for(int i = 0; i < 5; i++){
+//				
+//				int mass = (int)(Math.random() * 20);
+//				if (mass == 0)
+//					mass = 1;
+//				PhysicsObject o = (new PhysicsObject(
+//					new Vector2(1000 + x * 200 , i * 200 * a),
+//					new Vector2(0, 0),
+//					mass,
+//					mass
+//				));
+//				o.velocity = physicsSystem.velocityForCircularMotion(o, star, true);
+//				physicsSystem.addObj(o);
+//				
+//				a*= -1;
+//			}
+//		}
 		
 	}
 	
@@ -109,6 +113,8 @@ public class MainGame implements GameInterface{
 			change(3);
 		if(Keyboard.isKeyDown(Keyboard.KEY_4))
 			change(4);
+		if(Keyboard.isKeyDown(Keyboard.KEY_5))
+			change(5);
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_C))
 			mode = 1;
@@ -170,7 +176,7 @@ public class MainGame implements GameInterface{
 			shapes.addAll(physicsSystem.calculateTrajectory(5000, 100, zoom));
 		return shapes;
 	}
-	public static void main(String[] arg){
+	public static void main(String[] args){
 		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
 		imp.beginUpdating();
 	}
