@@ -1,6 +1,8 @@
 package events;
 
-public interface Listener {
+public interface Listener<EventType extends Event> {
+	
+	public void invoke(EventType e);
 
-	public void onInvoke(EventInstance e);
+	
 }

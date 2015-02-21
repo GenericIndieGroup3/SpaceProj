@@ -40,7 +40,7 @@ public class MainGame implements GameInterface{
 		physicsSystem.addObj(planet2);
 		physicsSystem.addObj(moon2);
 		
-		
+		/*
 		int a = 1;
 		int b = 1;
 		for(int x = 0; x < 5; x++){
@@ -60,7 +60,7 @@ public class MainGame implements GameInterface{
 				
 				a*= -1;
 			}
-		}
+		}*/
 		
 		
 	}

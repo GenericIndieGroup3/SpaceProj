@@ -8,15 +8,23 @@ import Structs.Circle;
 import Structs.Shape;
 import Structs.Vector2;
 import Structs.Vector4;
+import events.CollisionEvent;
+import events.EventDistributor;
+import events.EventPriority;
+import events.Listener;
 
-public class PhysicsSystem {
+public class PhysicsSystem implements Listener<CollisionEvent> {
+	
 	private static final double GRAVITATIONAL_CONSTANT = 0.005;
 	
 	public int charNum =2;
 	public int centerNum = 0;
 	
+	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
+	
 	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(PhysicsSystem copyFrom){
+		this();
 		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
 		for(PhysicsObject o: copyFrom.objects){
 			objects.add(o.copy());
@@ -26,9 +34,10 @@ public class PhysicsSystem {
 	}
 	
 	public PhysicsSystem(){
-		
+		collisionEventDistributor.addListener(this, EventPriority.LOW);
 	}
 	public PhysicsSystem(PhysicsObject[] obj){
+		this();
 		for(int i = 0; i < obj.length; i++){
 			forceBuffer.put(obj[i], new Vector2());
 			objects.add(obj[i]);
@@ -99,11 +108,24 @@ public class PhysicsSystem {
 		
 	}
 	
+	@Override
+	public void invoke(CollisionEvent e){
+		
+		e.cancel();
+		int val = (int) (Math.random() * 200 + 0.5);
+		if(val == 55)
+			e.unCancel();
+	}
+	
+	List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
 	public void update(int frameNum){
 		
 		//These are used because you can't modify the List when you're iterating over it
-		List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
-		List<PhysicsObject> toAdd = new ArrayList<PhysicsObject>();
+
+		for(PhysicsObject p: toRemove)
+			objects.remove(p);
+		
+		toRemove.clear();
 		
 		//Vector2 instances to be re-used for calculating gravity and forces 
 		Vector2 grav = new Vector2();
@@ -118,18 +140,25 @@ public class PhysicsSystem {
 					if(checkCollision(p, o) && !toRemove.contains(p) && !toRemove.contains(o)){
 						//Objects collided and were not already checked
 						
+						CollisionEvent event = new CollisionEvent(p, o);
+						this.collisionEventDistributor.invoke(event);
+						
+						if(!event.isCanceled()){
+						
+							if(p.getInertialMass() > o.getInertialMass()){
+								toRemove.add(o);
+							}
+							else if(o.getInertialMass() > p.getInertialMass()){
+								toRemove.add(p);
+							}
+							else if(o.getInertialMass() == p.getInertialMass()){
+								//I just decided to remove o
+								toRemove.add(o);
+							}
+						}
 						//I think proper momentum calculations should be implemented, but
 						//currently it just uses your idea of destroying the smaller object
-						if(p.getInertialMass() > o.getInertialMass()){
-							toRemove.add(o);
-						}
-						else if(o.getInertialMass() > p.getInertialMass()){
-							toRemove.add(p);
-						}
-						else if(o.getInertialMass() == p.getInertialMass()){
-							//I just decided to remove o
-							toRemove.add(o);
-						}
+						
 					}
 					else{
 						//Objects did not collide
@@ -145,11 +174,6 @@ public class PhysicsSystem {
 			//forceBuffer is currently not used for anything, but it might be later on
 			//forceBuffer.get(p).set(force);
 		}
-		
-		for(PhysicsObject p: toRemove)
-			objects.remove(p);
-		for(PhysicsObject p: toAdd)
-			objects.add(p);
 		
 		for(PhysicsObject p: objects){
 			//This centers the star. It shouldn't be part of the physics system, but it was easiest to put it here.
