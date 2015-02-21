@@ -4,18 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.Vars;
 import Structs.Circle;
 import Structs.Shape;
 import Structs.Vector2;
 import Structs.Vector4;
-import events.CollisionEvent;
 import events.EventDistributor;
 import events.EventPriority;
 import events.Listener;
+import events.types.CollisionEvent;
 
 public class PhysicsSystem implements Listener<CollisionEvent> {
 	
-	private static final double GRAVITATIONAL_CONSTANT = 0.005;
+	private static final double GRAVITATIONAL_CONSTANT = Vars.GRAVITATIONAL_CONSTANT;
 	
 	public int charNum =2;
 	public int centerNum = 0;

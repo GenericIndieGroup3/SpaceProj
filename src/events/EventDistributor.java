@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import events.types.Event;
+
 public class EventDistributor<EventType extends Event> {
 
 	private Map<EventPriority, List<Listener>> listeners = new HashMap<EventPriority, List<Listener>>(5);
