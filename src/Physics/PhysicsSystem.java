@@ -112,10 +112,6 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	@Override
 	public void invoke(CollisionEvent e){
 		
-		e.cancel();
-		int val = (int) (Math.random() * 200 + 0.5);
-		if(val == 55)
-			e.unCancel();
 	}
 	
 	List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();

@@ -132,6 +132,9 @@ public class MainGame implements GameInterface{
 			trajectoryMode = 1;
 		if(Keyboard.isKeyDown(Keyboard.KEY_U))
 			trajectoryMode = 2;
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_8))
+			physicsSystem.collisionEventDistributor.removeListener(physicsSystem);
 	}
 	private void change(int num){
 		if(mode == 0)

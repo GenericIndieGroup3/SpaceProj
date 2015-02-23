@@ -60,7 +60,7 @@ public class Station extends Ship{
 	
 	public void updatePosition(){
 		this.getTargetVel();
-		this.velocity.set(targetVel);;
+		this.velocity.set(targetVel);
 		position.add(velocity);
 	}
 	
