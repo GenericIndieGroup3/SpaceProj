@@ -91,13 +91,13 @@ public class MainGame implements GameInterface{
 		if(Keyboard.isKeyDown(Keyboard.KEY_A) && physicsSystem.getChar().gravitationalMass > 1)
 			physicsSystem.getChar().gravitationalMass -= 1;
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP))
-			physicsSystem.getChar().updateAcceleration(0, 0.001);
+			physicsSystem.getChar().accelerateF(0, 0.001);
 		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-			physicsSystem.getChar().updateAcceleration(0, -0.001);
+			physicsSystem.getChar().accelerateF(0, -0.001);
 		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-			physicsSystem.getChar().updateAcceleration(-0.001, 0);
+			physicsSystem.getChar().accelerateF(-0.001, 0);
 		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			physicsSystem.getChar().updateAcceleration(0.001, 0);
+			physicsSystem.getChar().accelerateF(0.001, 0);
 		if(Keyboard.isKeyDown(Keyboard.KEY_F))
 			imp.keepUpdating = false;
 		if(Keyboard.isKeyDown(Keyboard.KEY_R))
@@ -157,23 +157,6 @@ public class MainGame implements GameInterface{
 			//break;
 		}
 		if(trajectoryMode == 1){
-			for(PhysicsObject b : physicsSystem.objects){
-				int i = 0;
-				for(PhysicsObject a : physicsSystem.calculateTrajectory(b, 5000)){
-					if(i % 50 == 0 && i > 0){
-						Vector2 position = a.getPosition().copy();
-						position.subtract(physicsSystem.getCenter().position);
-						position.multiply(zoom);
-						Shape s = new Circle(position, a.getRadius() / 2);
-						if(b == physicsSystem.getChar())
-							s.color = new Vector4(0, 0.4, 0, 1);
-						else
-							s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
-						shapes.add(s);
-					}
-					i++;
-				}
-			}
 		}
 		if(trajectoryMode == 0)
 			shapes.addAll(physicsSystem.calculateTrajectory(5000, 100, zoom));

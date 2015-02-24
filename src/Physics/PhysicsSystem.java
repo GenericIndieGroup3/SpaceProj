@@ -126,10 +126,9 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		
 		//Vector2 instances to be re-used for calculating gravity and forces 
 		Vector2 grav = new Vector2();
-		Vector2 force = new Vector2();
+		//Vector2 force = new Vector2();
 		
 		for(PhysicsObject p : objects){
-			force.set(0, 0);
 			for(PhysicsObject o: objects){
 				//TODO n^2 complexity is really bad and slow, once we get the basic mechanics
 				//we need to heavily optimize this using quad trees and such and centers of mass
@@ -162,11 +161,11 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 						
 						//this modifies the grav variable to be equal to the gravForce
 						getGrav(p, o, grav);
-						force.add(grav);
+						p.calculateAcceleration(grav, grav);
+						p.accelerateA(grav);
 					}
 				}
 			}
-			p.updateAcceleration(force);
 			
 			//forceBuffer is currently not used for anything, but it might be later on
 			//forceBuffer.get(p).set(force);
@@ -175,33 +174,15 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		for(PhysicsObject p: objects){
 			//This centers the star. It shouldn't be part of the physics system, but it was easiest to put it here.
 			//p.position.subtract(getStar().position);
+			p.updateVelocity();
 			p.updatePosition();
+			
+			p.resetAcceleration();
 		}
 		
 		
 	}
 	
-	//This is me re-adding the calcGrav function for individual objects
-	//This should be used in both the update() and calculateTrajectory() methods
-	//However, it needs to be extended for more general use before that
-	public void calc(PhysicsObject p){
-		
-		Vector2 grav = new Vector2();
-		Vector2 force = new Vector2();
-		//This was copy-pasta'd, so it doesn't make any contextual sense
-		force.set(0, 0);
-			
-		for(PhysicsObject o: objects){
-			if(o != p){
-				
-					getGrav(p, o, grav);
-					force.add(grav);
-			}
-		}
-		p.updateAcceleration(force);
-		p.updatePosition();
-		
-	}
 	
 	public List<Shape> calculateTrajectory(int positions, int skip, double zoom){
 		
@@ -225,29 +206,6 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		}
 		return trajectories;
 	}
-	
-	public List<PhysicsObject> calculateTrajectory(PhysicsObject p, int positions){
-		List<PhysicsObject> trajectory = new ArrayList<PhysicsObject>(positions);
-		PhysicsObject tmp = p.copy();
-		Vector2 out = new Vector2();
-		Vector2 buff = new Vector2();
-		
-		for(int i = 0; i < positions; i++){
-			buff.set(0, 0);
-			for(PhysicsObject o : objects){
-				if(o != tmp && o != p){
-					getGrav(tmp,o,out);
-					buff.add(out);
-				}
-			}
-			tmp.updateAcceleration(buff);
-			tmp.updatePosition();
-			trajectory.add(tmp.copy());
-		}
-		return trajectory;
-	}
-	
-	
 	
 	public PhysicsObject getStar(){
 		return objects.get(0);
