@@ -9,6 +9,8 @@ public class PhysicsObject {
 	public double gravitationalMass;
 	public double inertialMass;
 	
+	public boolean shouldBeRemoved = false;
+	
 	private Vector2 acceleration = new Vector2();
 	
 	public PhysicsObject(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass){

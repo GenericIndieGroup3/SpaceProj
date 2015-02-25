@@ -186,6 +186,9 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 			p.updatePosition();
 			
 			p.resetAcceleration();
+			
+			if(p.shouldBeRemoved)
+				removeObj(p);
 		}
 		
 		
