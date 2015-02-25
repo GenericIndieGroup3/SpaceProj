@@ -138,11 +138,11 @@ public class MainGame implements GameInterface{
 		if(Keyboard.isKeyDown(Keyboard.KEY_U))
 			trajectoryMode = 2;
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && frameNum % 5 == 0){
 			Gravitator grav = physicsSystem.getGravitator();
 			Vector2 vel = grav.velocity.copy();
-			vel.negate();
-			Missile missile = grav.shootMissile(2, 2, vel);
+			//vel.negate();
+			Missile missile = grav.shootMissile(1, 0.5, 0.2, vel);
 			physicsSystem.addObj(missile);
 		}
 	}

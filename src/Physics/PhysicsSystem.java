@@ -166,8 +166,9 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 						
 						//this modifies the grav variable to be equal to the gravForce
 						getGrav(p, o, grav);
-						p.calculateAcceleration(grav, grav);
-						p.accelerateA(grav);
+						Vector2 a = new Vector2();
+						p.calculateAcceleration(grav, a);
+						p.accelerateA(a);
 					}
 				}
 			}
