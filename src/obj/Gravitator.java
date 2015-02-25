@@ -25,7 +25,7 @@ public class Gravitator extends Ship {
 	}
 	public Missile shootMissile(double gMass, double iMass, double relVelocity, Vector2 direction){
 		Vector2 position = getPosition().copy();
-		direction.magnitude(getRadius() * 5);
+		direction.magnitude(getRadius() * 1.5);
 		position.add(direction);
 		
 		Vector2 vel = velocity.copy();

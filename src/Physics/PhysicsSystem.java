@@ -49,7 +49,9 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 			objects.add(obj[i]);
 		}
 	}
-	
+	public void removeObj(PhysicsObject o){
+		objects.remove(o);
+	}
 	public void addObj(PhysicsObject o){
 		objects.add(o);
 		forceBuffer.put(o, new Vector2());
