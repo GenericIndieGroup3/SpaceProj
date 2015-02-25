@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import obj.Gravitator;
 import util.Vars;
 import Structs.Circle;
 import Structs.Shape;
@@ -21,11 +22,14 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	public int charNum =2;
 	public int centerNum = 0;
 	
+	//This probably shouldn't be in physicsSystem
+	public Gravitator mainGravitator;
+	
 	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
 	
 	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	public PhysicsSystem(PhysicsSystem copyFrom){
-		this();
+		this(copyFrom.mainGravitator);
 		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
 		for(PhysicsObject o: copyFrom.objects){
 			objects.add(o.copy());
@@ -34,11 +38,12 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		centerNum = copyFrom.centerNum;
 	}
 	
-	public PhysicsSystem(){
+	public PhysicsSystem(Gravitator grav){
 		collisionEventDistributor.addListener(this, EventPriority.LOW);
+		mainGravitator = grav;
 	}
-	public PhysicsSystem(PhysicsObject[] obj){
-		this();
+	public PhysicsSystem(PhysicsObject[] obj, Gravitator grav){
+		this(grav);
 		for(int i = 0; i < obj.length; i++){
 			forceBuffer.put(obj[i], new Vector2());
 			objects.add(obj[i]);
@@ -216,6 +221,9 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 			return getChar();
 		}
 		return objects.get(charNum);
+	}
+	public Gravitator getGravitator(){
+		return mainGravitator;
 	}
 	public PhysicsObject getCenter(){
 		if (centerNum >= objects.size()){

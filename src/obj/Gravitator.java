@@ -21,4 +21,16 @@ public class Gravitator extends Ship {
 		this.gravitationalMass = m;
 	}
 	
+	public Missile shootMissile(double mass, double relVelocity, Vector2 direction){
+		Vector2 position = getPosition().copy();
+		direction.magnitude(getRadius() * 2);
+		position.add(direction);
+		
+		Vector2 vel = velocity.copy();
+		direction.magnitude(relVelocity);
+		vel.add(direction);
+		Missile m = new Missile(position, vel, mass);
+		return m;
+	}
+	
 }

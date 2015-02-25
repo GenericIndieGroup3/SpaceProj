@@ -2,6 +2,8 @@ package Games;
 import java.util.ArrayList;
 import java.util.List;
 
+import obj.Gravitator;
+import obj.Missile;
 import obj.Station;
 
 import org.lwjgl.input.Keyboard;
@@ -23,13 +25,16 @@ public class MainGame implements GameInterface{
 	private static ImplementationAbstract imp;
 	
 	public void setup(){
-		physicsSystem = new PhysicsSystem();
+		
 		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 1000);
 		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
-		PhysicsObject moon = new PhysicsObject(new Vector2(-4500, 0), new Vector2(), 2, 2);
+		Gravitator moon = new Gravitator(new Vector2(-4500, 0), new Vector2(), 2, 2);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
 		Station station = new Station(new Vector2(2000,0),50,star,true);
+		
+		physicsSystem = new PhysicsSystem(moon);
+		
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
 		//moon.accelerate(planet.velocity);
@@ -133,8 +138,13 @@ public class MainGame implements GameInterface{
 		if(Keyboard.isKeyDown(Keyboard.KEY_U))
 			trajectoryMode = 2;
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_8))
-			physicsSystem.collisionEventDistributor.removeListener(physicsSystem);
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			Gravitator grav = physicsSystem.getGravitator();
+			Vector2 vel = grav.velocity.copy();
+			vel.negate();
+			Missile missile = grav.shootMissile(2, 2, vel);
+			physicsSystem.addObj(missile);
+		}
 	}
 	private void change(int num){
 		if(mode == 0)
