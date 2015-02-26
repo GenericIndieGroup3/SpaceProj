@@ -21,7 +21,8 @@ import Structs.Vector4;
 public class MainGame implements GameInterface{
 
 	public MainGame(){}
-	private PhysicsSystem physicsSystem;
+	//TODO this is a bad
+	public static PhysicsSystem physicsSystem;
 	private static ImplementationAbstract imp;
 	
 	public void setup(){
@@ -158,7 +159,7 @@ public class MainGame implements GameInterface{
 		for(int i = 0; i < objects.size(); i++){
 			PhysicsObject o = objects.get(i);
 			Vector2 position = o.getPosition().copy();
-			position.subtract(physicsSystem.getCenter().position);
+			position.subtract(physicsSystem.center);
 			position.multiply(zoom);
 			shapes.add(new Circle(position, o.getRadius() * zoom));
 			if(i == physicsSystem.charNum)

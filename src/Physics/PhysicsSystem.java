@@ -25,9 +25,11 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	//This probably shouldn't be in physicsSystem
 	public Gravitator mainGravitator;
 	
-	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
+	public Vector2 center = new Vector2(-500, 0);
 	
+	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
 	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
+	
 	public PhysicsSystem(PhysicsSystem copyFrom){
 		this(copyFrom.mainGravitator);
 		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
@@ -42,19 +44,18 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		collisionEventDistributor.addListener(this, EventPriority.LOW);
 		mainGravitator = grav;
 	}
+	
 	public PhysicsSystem(PhysicsObject[] obj, Gravitator grav){
 		this(grav);
-		for(int i = 0; i < obj.length; i++){
-			forceBuffer.put(obj[i], new Vector2());
-			objects.add(obj[i]);
-		}
+		for(PhysicsObject o : obj)
+			objects.add(o);
 	}
+	
 	public void removeObj(PhysicsObject o){
-		objects.remove(o);
+		toRemove.add(o);
 	}
 	public void addObj(PhysicsObject o){
 		objects.add(o);
-		forceBuffer.put(o, new Vector2());
 	}
 	
 	public PhysicsObject[] explodify(PhysicsObject o){
@@ -82,9 +83,6 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		return distance;
 		
 	}
-	//Stores the forces sum 
-	Map<PhysicsObject,Vector2> forceBuffer = new HashMap<PhysicsObject,Vector2>();
-	
 	private void getGrav(PhysicsObject a, PhysicsObject b, Vector2 gravOut){
 		
 		Vector2 distance = b.getPosition().copy();
@@ -205,7 +203,7 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 			if(i % skip == 0 && i != 0)
 				for(PhysicsObject o: copy.objects){
 					Vector2 position = o.getPosition().copy();
-					position.subtract(copy.getCenter().position);
+					position.subtract(copy.center);
 					position.multiply(zoom);
 					Shape s = new Circle(position, o.getRadius() * zoom / 2);
 					if(o == copy.getChar())
@@ -231,13 +229,7 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	public Gravitator getGravitator(){
 		return mainGravitator;
 	}
-	public PhysicsObject getCenter(){
-		if (centerNum >= objects.size()){
-			centerNum -= 1;
-			return getCenter();
-		}
-		return objects.get(centerNum);
-	}
+	
 	
 	public List<PhysicsObject> getObj(){
 		return objects;
