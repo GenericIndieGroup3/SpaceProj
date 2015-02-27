@@ -185,8 +185,10 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 			
 			p.resetAcceleration();
 			
-			if(p.shouldBeRemoved)
+			if(p.shouldBeRemoved){
 				removeObj(p);
+				p.isRemoved = true;
+			}
 		}
 		
 		
@@ -232,8 +234,6 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	public Gravitator getGravitator(){
 		return mainGravitator;
 	}
-	
-	
 	public List<PhysicsObject> getObj(){
 		return objects;
 	}

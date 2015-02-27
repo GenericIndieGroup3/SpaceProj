@@ -10,6 +10,7 @@ public class PhysicsObject {
 	public double inertialMass;
 	
 	public boolean shouldBeRemoved = false;
+	public boolean isRemoved = false;
 	
 	private Vector2 acceleration = new Vector2();
 	
