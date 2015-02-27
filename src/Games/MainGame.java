@@ -186,8 +186,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
 	
 	public void update(int frameNum, double deltaTime){
-		Gravitator grav = physicsSystem.getGravitator();
-		physicsSystem.update(frameNum);
+		//Gravitator grav = physicsSystem.getGravitator();
+		if(trajectoryMode == 2){
+			physicsSystem.update(frameNum);
+		}
 		
 		while (Keyboard.next()) {
 			int key = Keyboard.getEventKey();
