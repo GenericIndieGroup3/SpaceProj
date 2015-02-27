@@ -43,13 +43,8 @@ public class LWJGLImplementation extends ImplementationAbstract {
 
 	@Override
 	public void input() {
-		
-		
 		//This shouldn't be in draw, but...
 		keepUpdating = !Display.isCloseRequested();
-		
-		
-		
 	}
 	
 	@Override

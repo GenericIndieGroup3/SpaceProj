@@ -26,9 +26,9 @@ import events.types.KeyEvent;
 import events.types.KeyEventType;
 
 
-public class MainGame implements GameInterface, Listener<KeyEvent>{
+public class test implements GameInterface, Listener<KeyEvent>{
 
-	public MainGame(){}
+	public test(){}
 	//TODO this is a bad
 	public static PhysicsSystem physicsSystem;
 	private static ImplementationAbstract imp;
@@ -94,7 +94,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	int trajectoryMode = 0;
 
 	int shootSpeed = 10;
-	int moveSpeed = 15;
+	int moveSpeed = 200;
 	public void invoke(KeyEvent e){
 		Gravitator grav = physicsSystem.getGravitator();
 		if(e.eventType == KeyEventType.PRESS){
@@ -150,19 +150,16 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				change(4);
 			if(e.key == Keyboard.KEY_5)
 				change(5);
+			
 			if(e.key == Keyboard.KEY_C)
 				mode = 1;
 			if(e.key == Keyboard.KEY_P)
 				mode = 0;
 			
-			if(e.key == Keyboard.KEY_V)
-				zoom -= zoomSpeed;
-			if(e.key == Keyboard.KEY_B)
-				zoom += zoomSpeed;
 			if(e.key == Keyboard.KEY_N)
-				zoom -= zoomSpeed * 10;
+				zoom -= zoomSpeed;
 			if(e.key == Keyboard.KEY_M)
-				zoom += zoomSpeed * 10;
+				zoom += zoomSpeed;
 			if(e.key == Keyboard.KEY_I)
 				physicsSystem.center.add(0, moveSpeed);
 			if(e.key == Keyboard.KEY_K)

@@ -203,7 +203,7 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 			if(i % skip == 0 && i != 0)
 				for(PhysicsObject o: copy.objects){
 					Vector2 position = o.getPosition().copy();
-					position.subtract(copy.center);
+					position.subtract(center);
 					position.multiply(zoom);
 					Shape s = new Circle(position, o.getRadius() * zoom / 2);
 					if(o == copy.getChar())
@@ -220,11 +220,14 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		return objects.get(0);
 	}
 	public PhysicsObject getChar(){
+		/*
 		if (charNum >= objects.size()){
 			charNum -= 1;
 			return getChar();
 		}
 		return objects.get(charNum);
+		*/
+		return getGravitator();
 	}
 	public Gravitator getGravitator(){
 		return mainGravitator;
