@@ -173,10 +173,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				physicsSystem.center.add(moveSpeed, 0);
 			if(e.key == Keyboard.KEY_T)
 				trajectoryMode = 0;
-			if(e.key == Keyboard.KEY_Y)
-				trajectoryMode = 1;
 			if(e.key == Keyboard.KEY_U)
-				trajectoryMode = 2;
+				trajectoryMode = 1;
+			//if(e.key == Keyboard.KEY_U)
+			//	trajectoryMode = 2;
 		}
 		
 		else if(e.eventType == KeyEventType.HOLD){
@@ -187,7 +187,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	
 	public void update(int frameNum, double deltaTime){
 		//Gravitator grav = physicsSystem.getGravitator();
-		if(trajectoryMode == 2){
+		if(trajectoryMode == 1){
 			physicsSystem.update(frameNum);
 		}
 		
@@ -227,8 +227,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				shapes.get(i).color = new Vector4(0, 1, 0, 1);
 			//break;
 		}
-		if(trajectoryMode == 1){
-		}
+		//if(trajectoryMode == 1){
+		//}
 		if(trajectoryMode == 0)
 			shapes.addAll(physicsSystem.calculateTrajectory(5000, 100, zoom));
 		return shapes;
