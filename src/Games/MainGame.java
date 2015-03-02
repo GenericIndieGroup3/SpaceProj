@@ -18,7 +18,6 @@ import Structs.Vector2;
 import events.EventDistributor;
 import events.EventPriority;
 import events.Listener;
-import events.types.AddObjectEvent;
 import events.types.KeyEvent;
 import events.types.KeyEventType;
 
@@ -166,27 +165,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				keyPressEventDistributor.invoke(new KeyEvent(entry.getKey().intValue(), KeyEventType.HOLD));
 		}
 	}
-	
-	Listener<AddObjectEvent> addObjectEventListener = new Listener<AddObjectEvent>(){
-		
-		@Override
-		public void invoke(AddObjectEvent e) {
-			
-			
-		}
-	};
-	
-	/*
-	public List<Shape> drawShapes(){
-		List<PhysicsObject> objects = physicsSystem.getObj();
-		List<Shape> shapes = new ArrayList<Shape>(objects.size() + 10);
-		
-		shapes.addAll(objectsToShapes(objects));
-		if(trajectoryMode == 0)
-			shapes.addAll(physicsSystem.calculateTrajectory(5000, 100, zoom));
-		return shapes;
-	}*/
-	
+
 	public void draw(){
 		Vector2 center = physicsSystem.getCenter();
 		
@@ -222,41 +201,6 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		}
 	}
 	
-	/*
-	public List<Shape> objectsToShapes(List<PhysicsObject> objects){
-		
-		PhysicsObject object;
-		Sprite sprite;
-		List<Shape> shapes = new ArrayList<Shape>(objects.size());
-		
-		for(Entry<PhysicsObject, Sprite> entry: spriteMap.entrySet()){
-			object = entry.getKey();
-			sprite = entry.getValue();
-			
-			if(object.isRemoved)
-				spriteMap.remove(object);
-			
-			else{
-				
-			}
-		}
-			
-			
-		
-		
-		for(PhysicsObject object : objects){
-			Vector2 position = object.getPosition().copy();
-			position.subtract(physicsSystem.getCenter());
-			position.multiply(zoom);
-			
-			Shape shape = new Circle(position, o.getRadius() * zoom));
-			if(object == physicsSystem.getGravitator())
-				shape.color = new Vector4(0, 1, 0, 1);
-			shapes.add(shape);
-		}
-		return shapes;
-	}
-	*/
 	public static void main(String[] args){
 		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.1);
 		imp.beginUpdating();
