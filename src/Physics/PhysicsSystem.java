@@ -33,7 +33,10 @@ public class PhysicsSystem{
 		this(copyFrom.mainGravitator);
 		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
 		for(PhysicsObject o: copyFrom.objects){
-			objects.add((PhysicsObject)o.copy());
+			PhysicsObject p = (PhysicsObject) o.copy();
+			objects.add(p);
+			if(copyFrom.toRemove.contains(o))
+				toRemove.add(p);
 		}
 		charNum = copyFrom.charNum;
 		centerNum = copyFrom.centerNum;
@@ -59,42 +62,6 @@ public class PhysicsSystem{
 			objects.add(o);
 	}
 	
-	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
-		Vector2 gravForce = new Vector2();
-		getGrav(planet, sun, gravForce);
-		Vector2 acceleration = new Vector2();
-		planet.calculateAcceleration(gravForce, acceleration);
-		Vector2 distance = sun.getPosition().copy();
-		distance.subtract(planet.getPosition());
-		double radius = distance.getMagnitude();
-		double speed = Math.sqrt(acceleration.getMagnitude() * radius);
-		if(clockwise)
-			//sets distance to the required velocities direction
-			distance = acceleration.createClockwisePerpendicular();
-		else
-			distance = acceleration.createClockwisePerpendicular();
-		//sets distance to the required velocity
-		distance.magnitude(speed);
-		//adds the other objects velocity so that it stays relative to it
-		distance.add(sun.velocity);
-		return distance;
-		
-	}
-	private void getGrav(PhysicsObject a, PhysicsObject b, Vector2 gravOut){
-		
-		Vector2 distance = b.getPosition().copy();
-		distance.subtract(a.getPosition());
-		
-		double distanceMag = distance.getMagnitude();
-		if(distanceMag == 0){
-			gravOut.set(0, 0);
-			return;
-		}
-		
-		double gravForceMag = GRAVITATIONAL_CONSTANT * a.getGravitationalMass() * b.getGravitationalMass() / (distanceMag * distanceMag); 
-		gravOut.set(distance);
-		gravOut.multiply(gravForceMag);
-	}
 	
 	//TODO this can easily be improved with a collision quad-tree
 	private boolean checkCollision(PhysicsObject a, PhysicsObject b){
@@ -160,17 +127,11 @@ public class PhysicsSystem{
 					}
 				}
 			}
-			
-			//forceBuffer is currently not used for anything, but it might be later on
-			//forceBuffer.get(p).set(force);
 		}
 		
 		for(PhysicsObject p: objects){
-			//This centers the star. It shouldn't be part of the physics system, but it was easiest to put it here.
-			//p.position.subtract(getStar().position);
 			p.updateVelocity();
 			p.updatePosition();
-			
 			p.resetAcceleration();
 			
 			if(p.shouldBeRemoved){
@@ -178,34 +139,45 @@ public class PhysicsSystem{
 				p.isRemoved = true;
 			}
 		}
+	}
+	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
+		Vector2 gravForce = new Vector2();
+		getGrav(planet, sun, gravForce);
+		Vector2 acceleration = new Vector2();
+		planet.calculateAcceleration(gravForce, acceleration);
+		Vector2 distance = sun.getPosition().copy();
+		distance.subtract(planet.getPosition());
+		double radius = distance.getMagnitude();
+		double speed = Math.sqrt(acceleration.getMagnitude() * radius);
+		if(clockwise)
+			//sets distance to the required velocities direction
+			distance = acceleration.createClockwisePerpendicular();
+		else
+			distance = acceleration.createClockwisePerpendicular();
+		//sets distance to the required velocity
+		distance.magnitude(speed);
+		//adds the other objects velocity so that it stays relative to it
+		distance.add(sun.velocity);
+		return distance;
 		
+	}
+	private void getGrav(PhysicsObject a, PhysicsObject b, Vector2 gravOut){
 		
+		Vector2 distance = b.getPosition().copy();
+		distance.subtract(a.getPosition());
+		
+		double distanceMag = distance.getMagnitude();
+		if(distanceMag == 0){
+			gravOut.set(0, 0);
+			return;
+		}
+		
+		double gravForceMag = GRAVITATIONAL_CONSTANT * a.getGravitationalMass() * b.getGravitationalMass() / (distanceMag * distanceMag); 
+		gravOut.set(distance);
+		gravOut.multiply(gravForceMag);
 	}
 	
-	/*
-	public List<Shape> calculateTrajectory(int positions, int skip, double zoom){
-		
-		List<Shape> trajectories = new ArrayList<Shape>(positions * objects.size());
-		PhysicsSystem copy = new PhysicsSystem(this);
-		
-		for(int i = 0; i < positions; i++){
-			copy.update(i);
-			if(i % skip == 0 && i != 0)
-				for(PhysicsObject o: copy.objects){
-					Vector2 position = o.getPosition().copy();
-					position.subtract(center);
-					position.multiply(zoom);
-					Shape s = new Circle(position, o.getRadius() * zoom / 2);
-					if(o == copy.getChar())
-						s.color = new Vector4(0, 0.4, 0, 1);
-					else
-						s.color = new Vector4(0.5, 0.5, 0.5, 0.2);
-					trajectories.add(s);
-				}
-		}
-		return trajectories;
-	}
-	*/
+	
 	Vector2 centerCache = new Vector2();
 	
 	public Vector2 getCenter(){
@@ -218,15 +190,7 @@ public class PhysicsSystem{
 		return centerCache;
 		
 	}
-	
 	public PhysicsObject getChar(){
-		/*
-		if (charNum >= objects.size()){
-			charNum -= 1;
-			return getChar();
-		}
-		return objects.get(charNum);
-		*/
 		return getGravitator();
 	}
 	public Gravitator getGravitator(){
