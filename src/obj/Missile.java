@@ -33,6 +33,11 @@ public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 		
 	}
 	
+	@Override
+	public Object copy(){
+		return new Missile(this.position.copy(), this.velocity.copy(), this.gravitationalMass, this.inertialMass);
+	}
+	
 	
 	
 	

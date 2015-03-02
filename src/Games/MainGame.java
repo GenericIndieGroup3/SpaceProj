@@ -36,7 +36,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		keyPressEventDistributor.addListener(this, EventPriority.LOW);
 		
-		PhysicsObject star = new PhysicsObject(new Vector2(-500, 0), 1000);
+		
+		PhysicsObject star = new PhysicsObject(new Vector2(0, 0), 10000);
 		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
 		Gravitator moon = new Gravitator(new Vector2(-4500, 0), new Vector2(), 2, 2);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
@@ -69,7 +70,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	int trajectoryMode = 0;
 
 	int shootSpeed = 10;
-	int moveSpeed = 15;
+	int moveSpeed = 5;
 	
 	public void invoke(KeyEvent e){
 		Gravitator grav = physicsSystem.getGravitator();
@@ -115,21 +116,21 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				this.setup();
 
 			if(e.key == Keyboard.KEY_V)
-				zoom -= zoomSpeed;
+				zoom /= 1 + zoomSpeed;
 			if(e.key == Keyboard.KEY_B)
-				zoom += zoomSpeed;
+				zoom *= 1 + zoomSpeed;
 			if(e.key == Keyboard.KEY_N)
-				zoom -= zoomSpeed * 10;
+				zoom /= 1 + zoomSpeed * 10;
 			if(e.key == Keyboard.KEY_M)
-				zoom += zoomSpeed * 10;
+				zoom *= 1 + zoomSpeed * 10;
 			if(e.key == Keyboard.KEY_I)
-				physicsSystem.centerVector.add(0, moveSpeed);
+				physicsSystem.centerVector.add(0, moveSpeed / zoom);
 			if(e.key == Keyboard.KEY_K)
-				physicsSystem.centerVector.add(0, -moveSpeed);
+				physicsSystem.centerVector.add(0, -moveSpeed / zoom);
 			if(e.key == Keyboard.KEY_J)
-				physicsSystem.centerVector.add(-moveSpeed, 0);
+				physicsSystem.centerVector.add(-moveSpeed / zoom, 0);
 			if(e.key == Keyboard.KEY_L)
-				physicsSystem.centerVector.add(moveSpeed, 0);
+				physicsSystem.centerVector.add(moveSpeed / zoom, 0);
 			if(e.key == Keyboard.KEY_T)
 				trajectoryMode = 0;
 			if(e.key == Keyboard.KEY_Y)
@@ -241,7 +242,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	}
 	*/
 	public static void main(String[] args){
-		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
+		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.1);
 		imp.beginUpdating();
 	}
 }

@@ -30,7 +30,7 @@ public class PhysicsObject {
 		this(position, new Vector2(), mass, mass);
 	}
 	
-	public PhysicsObject copy(){
+	public Object copy(){
 		return new PhysicsObject(this.position.copy(),this.velocity.copy(),this.gravitationalMass,this.inertialMass);
 	}
 	public boolean equals(PhysicsObject o){

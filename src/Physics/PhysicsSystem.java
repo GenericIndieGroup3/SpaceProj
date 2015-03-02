@@ -33,7 +33,7 @@ public class PhysicsSystem{
 		this(copyFrom.mainGravitator);
 		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
 		for(PhysicsObject o: copyFrom.objects){
-			objects.add(o.copy());
+			objects.add((PhysicsObject)o.copy());
 		}
 		charNum = copyFrom.charNum;
 		centerNum = copyFrom.centerNum;

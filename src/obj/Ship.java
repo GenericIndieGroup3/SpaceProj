@@ -33,4 +33,9 @@ public class Ship extends PhysicsObject{
 		return m;
 	}
 	
+	@Override
+	public Object copy(){
+		return new Ship(this.position.copy(), this.velocity.copy(), this.gravitationalMass, this.inertialMass);
+	}
+	
 }

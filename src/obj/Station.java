@@ -64,4 +64,9 @@ public class Station extends Ship{
 		position.add(velocity);
 	}
 	
+	@Override
+	public Object copy(){
+		return new Station(this.position.copy(), this.velocity.copy(), this.gravitationalMass, this.inertialMass, star, clockwise);
+	}
+	
 }

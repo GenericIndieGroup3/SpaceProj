@@ -55,7 +55,7 @@ public class LWJGLImplementation extends ImplementationAbstract {
 	@Override
 	public void clear(){
 		GL11.glLoadIdentity();
-		GL11.glOrtho(-w/2, w, -h/2, h, -1, 1);
+		GL11.glOrtho(-w/2, w/2, -h/2, h/2, -1, 1);
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	@Override

@@ -20,4 +20,9 @@ public class Gravitator extends Ship {
 		this.gravitationalMass = m;
 	}
 	
+	@Override
+	public Object copy(){
+		return new Gravitator(this.position.copy(), this.velocity.copy(), this.gravitationalMass, this.inertialMass);
+	}
+	
 }
