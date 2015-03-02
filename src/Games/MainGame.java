@@ -192,8 +192,23 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		GL11.glScaled(zoom, zoom, 1);
 		GL11.glTranslated(-center.x, -center.y, 1);
 		
-		for(PhysicsObject object : physicsSystem.getObj()){
-			if(object == physicsSystem.getGravitator())
+		drawPhysicsSystem(physicsSystem);
+		
+		
+		
+		if(trajectoryMode == 1){
+			PhysicsSystem copy = new PhysicsSystem(physicsSystem);
+			for(int i = 0; i < 5000; i ++){
+				copy = new PhysicsSystem(copy);
+				copy.update();
+				if(i % 200 == 0)
+					drawPhysicsSystem(copy);
+			}
+		}
+	}
+	public void drawPhysicsSystem(PhysicsSystem system){
+		for(PhysicsObject object : system.getObj()){
+			if(object == system.getGravitator())
 				GL11.glColor3d(0, 1, 0);
 			else if(object instanceof Missile)
 				GL11.glColor3d(.5, .5, 0.5);
@@ -203,7 +218,6 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				GL11.glColor3d(1, 1, 1);
 			object.draw();
 		}
-		
 	}
 	
 	/*
