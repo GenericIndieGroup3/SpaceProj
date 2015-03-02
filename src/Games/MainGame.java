@@ -199,7 +199,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 			else if(object instanceof Station)
 				GL11.glColor3d(0, 0.2, 0.8);
 			else
-				GL11.glColor3d(0, 0, 0);
+				GL11.glColor3d(1, 1, 1);
 			object.draw();
 		}
 		
