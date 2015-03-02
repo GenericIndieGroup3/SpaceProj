@@ -7,8 +7,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import Games.GameInterface;
-import Games.MainGame;
-import Physics.PhysicsObject;
 import Structs.Circle;
 import Structs.Point;
 import Structs.Polygon;
@@ -17,6 +15,8 @@ import Structs.Vector4;
 
 public class LWJGLImplementation extends ImplementationAbstract {
 
+	double w;
+	double h;
 	
 	public LWJGLImplementation(GameInterface game, Vector2 screenDimensions, double unitToPixelRatio) {
 		super(game, screenDimensions, unitToPixelRatio);
@@ -34,9 +34,9 @@ public class LWJGLImplementation extends ImplementationAbstract {
 		}
 		
 		//GL11.glLoadIdentity();
-		double w = screenDimensions.x / unitToPixelRatio;
-		double h = screenDimensions.y / unitToPixelRatio;
-	    GL11.glOrtho(-w, w, -h, h, 1, -1);
+		w = screenDimensions.x / unitToPixelRatio;
+		h = screenDimensions.y / unitToPixelRatio;
+	    clear();
 	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 	}
@@ -54,6 +54,8 @@ public class LWJGLImplementation extends ImplementationAbstract {
 	}
 	@Override
 	public void clear(){
+		GL11.glLoadIdentity();
+		GL11.glOrtho(-w/2, w, -h/2, h, -1, 1);
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	@Override

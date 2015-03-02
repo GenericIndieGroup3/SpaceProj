@@ -1,5 +1,10 @@
 package Physics;
+import org.lwjgl.opengl.GL11;
+
+import Structs.Circle;
+import Structs.Shape;
 import Structs.Vector2;
+import Structs.Vector4;
 
 public class PhysicsObject {
 	
@@ -65,6 +70,15 @@ public class PhysicsObject {
 	public void updatePosition(){
 		position.add(velocity);
 	}
-
 	
+	public void draw(){
+		int segments = 20;	
+		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+			for( int n = 0; n <= segments; ++n ) {
+	            double t = 2 * Math.PI * n / segments;
+	            GL11.glVertex2d(position.x + Math.sin(t)* getRadius(), position.y + Math.cos(t)* getRadius());
+	        }
+		GL11.glEnd();
+	}
+
 }

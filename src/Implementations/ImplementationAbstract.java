@@ -1,11 +1,8 @@
 package Implementations;
-import java.util.List;
-
 import Games.GameInterface;
 import Structs.Circle;
 import Structs.Point;
 import Structs.Polygon;
-import Structs.Shape;
 import Structs.Vector2;
 
 
@@ -35,12 +32,11 @@ public abstract class ImplementationAbstract {
 	public void beginUpdating(){
 		while(keepUpdating){
 			update();
-			//TODO add logic to skip draw cycles every now and then if lagging
-			draw(this.game.drawShapes());
+			game.draw();
+			flip();
 		}
 		remove();
 	}
-	//If this is overriden, make sure to call it in the override method
 	public void update(){
 		frameNum++;
 		//TODO calculate deltaTime
@@ -49,23 +45,6 @@ public abstract class ImplementationAbstract {
 		game.update(frameNum, deltaTime);
 	}
 	
-	public void draw(List<Shape> shapes){
-		clear();
-		
-		for(Shape s : shapes){
-			if( s instanceof Circle )
-				circle((Circle) s);
-			else if(s instanceof Polygon)
-				polygon((Polygon) s);
-			else if(s instanceof Point)
-				point((Point) s);
-			else{
-				//unimplemented shape
-			}
-		}
-		
-		flip();
-	}
 	
 	public abstract void create();
 	//Somehowreaddata from this

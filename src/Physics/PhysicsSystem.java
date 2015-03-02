@@ -1,33 +1,32 @@
 package Physics;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import obj.Gravitator;
 import util.Vars;
-import Structs.Circle;
-import Structs.Shape;
 import Structs.Vector2;
-import Structs.Vector4;
 import events.EventDistributor;
-import events.EventPriority;
-import events.Listener;
+import events.types.AddObjectEvent;
 import events.types.CollisionEvent;
+import events.types.RemoveObjectEvent;
 
-public class PhysicsSystem implements Listener<CollisionEvent> {
+public class PhysicsSystem{
 	
 	private static final double GRAVITATIONAL_CONSTANT = Vars.GRAVITATIONAL_CONSTANT;
 	
-	public int charNum =2;
+	public int charNum = 2;
 	public int centerNum = 0;
 	
 	//This probably shouldn't be in physicsSystem
 	public Gravitator mainGravitator;
 	
-	public Vector2 center = new Vector2(-500, 0);
+	public Vector2 centerVector = new Vector2(-500, 0);
+	private PhysicsObject centerObject = null;
 	
 	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
+	public EventDistributor<AddObjectEvent> addObjectEventDistributor = new EventDistributor<AddObjectEvent>();
+	public EventDistributor<RemoveObjectEvent> removeObjectEventDistributor = new EventDistributor<RemoveObjectEvent>();
+	
 	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	
 	public PhysicsSystem(PhysicsSystem copyFrom){
@@ -41,7 +40,6 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	}
 	
 	public PhysicsSystem(Gravitator grav){
-		collisionEventDistributor.addListener(this, EventPriority.LOW);
 		mainGravitator = grav;
 	}
 	
@@ -55,11 +53,10 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		toRemove.add(o);
 	}
 	public void addObj(PhysicsObject o){
-		objects.add(o);
-	}
-	
-	public PhysicsObject[] explodify(PhysicsObject o){
-		return null;
+		AddObjectEvent event = new AddObjectEvent(o);
+		addObjectEventDistributor.invoke(event);
+		if(!event.isCanceled())
+			objects.add(o);
 	}
 	
 	public Vector2 velocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise){
@@ -101,9 +98,7 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 	
 	//TODO this can easily be improved with a collision quad-tree
 	private boolean checkCollision(PhysicsObject a, PhysicsObject b){
-		
-		//These exact calculations are done in getGrav(), maybe we can reuse them somehow by
-		//merging into 1 function
+	
 		Vector2 distance = b.getPosition().copy();
 		distance.subtract(a.getPosition());
 		
@@ -111,38 +106,31 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		double minDistance = a.getRadius() + b.getRadius();
 		
 		return distanceMag <= minDistance;
-		
-	}
-	
-	@Override
-	public void invoke(CollisionEvent e){
-		
 	}
 	
 	List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
-	public void update(int frameNum){
-		
-		//These are used because you can't modify the List when you're iterating over it
+	public void update(){
 
-		for(PhysicsObject p: toRemove)
-			objects.remove(p);
-		
+		for(PhysicsObject p: toRemove){
+			RemoveObjectEvent event = new RemoveObjectEvent(p);
+			removeObjectEventDistributor.invoke(event);
+			if(!event.isCanceled())
+				objects.remove(p);
+			
+		}
 		toRemove.clear();
 		
-		//Vector2 instances to be re-used for calculating gravity and forces 
-		Vector2 grav = new Vector2();
-		//Vector2 force = new Vector2();
 		
+		Vector2 grav = new Vector2();
 		for(PhysicsObject p : objects){
 			for(PhysicsObject o: objects){
 				//TODO n^2 complexity is really bad and slow, once we get the basic mechanics
 				//we need to heavily optimize this using quad trees and such and centers of mass
 				if(o != p){
 					if(checkCollision(p, o) && !toRemove.contains(p) && !toRemove.contains(o)){
-						//Objects collided and were not already checked
 						
 						CollisionEvent event = new CollisionEvent(p, o);
-						this.collisionEventDistributor.invoke(event);
+						this.collisionEventDistributor.invoke(new CollisionEvent(p, o));
 						
 						if(!event.isCanceled()){
 						
@@ -194,7 +182,7 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		
 	}
 	
-	
+	/*
 	public List<Shape> calculateTrajectory(int positions, int skip, double zoom){
 		
 		List<Shape> trajectories = new ArrayList<Shape>(positions * objects.size());
@@ -217,10 +205,20 @@ public class PhysicsSystem implements Listener<CollisionEvent> {
 		}
 		return trajectories;
 	}
+	*/
+	Vector2 centerCache = new Vector2();
 	
-	public PhysicsObject getStar(){
-		return objects.get(0);
+	public Vector2 getCenter(){
+		if(centerObject != null)
+			centerCache.set(centerObject.position);
+		else
+			centerCache.set(0, 0);
+		centerCache.add(centerVector);
+		
+		return centerCache;
+		
 	}
+	
 	public PhysicsObject getChar(){
 		/*
 		if (charNum >= objects.size()){

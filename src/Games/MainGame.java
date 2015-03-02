@@ -1,7 +1,5 @@
 package Games;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -10,18 +8,17 @@ import obj.Missile;
 import obj.Station;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import Implementations.ImplementationAbstract;
 import Implementations.LWJGLImplementation;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
-import Structs.Circle;
-import Structs.Shape;
 import Structs.Vector2;
-import Structs.Vector4;
 import events.EventDistributor;
 import events.EventPriority;
 import events.Listener;
+import events.types.AddObjectEvent;
 import events.types.KeyEvent;
 import events.types.KeyEventType;
 
@@ -63,28 +60,6 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		physicsSystem.addObj(moon2);
 		physicsSystem.addObj(station);
 		
-		/*
-		int a = 1;
-		int b = 1;
-		for(int x = 0; x < 5; x++){
-			for(int i = 0; i < 5; i++){
-				
-				int mass = (int)(Math.random() * 20);
-				if (mass == 0)
-					mass = 1;
-				PhysicsObject o = (new PhysicsObject(
-					new Vector2(1000 + x * 200 , i * 200 * a),
-					new Vector2(0, 0),
-					mass,
-					mass
-				));
-				o.velocity = physicsSystem.velocityForCircularMotion(o, star, true);
-				physicsSystem.addObj(o);
-				
-				a*= -1;
-			}
-		}*/
-		
 	}
 	
 	int mode = 0;
@@ -95,6 +70,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 
 	int shootSpeed = 10;
 	int moveSpeed = 15;
+	
 	public void invoke(KeyEvent e){
 		Gravitator grav = physicsSystem.getGravitator();
 		if(e.eventType == KeyEventType.PRESS){
@@ -137,24 +113,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				imp.keepUpdating = false;
 			if(e.key == Keyboard.KEY_R)
 				this.setup();
-			if(e.key == Keyboard.KEY_0){
-				change(0);
-			}
-			if(e.key == Keyboard.KEY_1)
-				change(1);
-			if(e.key == Keyboard.KEY_2)
-				change(2);
-			if(e.key == Keyboard.KEY_3)
-				change(3);
-			if(e.key == Keyboard.KEY_4)
-				change(4);
-			if(e.key == Keyboard.KEY_5)
-				change(5);
-			if(e.key == Keyboard.KEY_C)
-				mode = 1;
-			if(e.key == Keyboard.KEY_P)
-				mode = 0;
-			
+
 			if(e.key == Keyboard.KEY_V)
 				zoom -= zoomSpeed;
 			if(e.key == Keyboard.KEY_B)
@@ -164,13 +123,13 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 			if(e.key == Keyboard.KEY_M)
 				zoom += zoomSpeed * 10;
 			if(e.key == Keyboard.KEY_I)
-				physicsSystem.center.add(0, moveSpeed);
+				physicsSystem.centerVector.add(0, moveSpeed);
 			if(e.key == Keyboard.KEY_K)
-				physicsSystem.center.add(0, -moveSpeed);
+				physicsSystem.centerVector.add(0, -moveSpeed);
 			if(e.key == Keyboard.KEY_J)
-				physicsSystem.center.add(-moveSpeed, 0);
+				physicsSystem.centerVector.add(-moveSpeed, 0);
 			if(e.key == Keyboard.KEY_L)
-				physicsSystem.center.add(moveSpeed, 0);
+				physicsSystem.centerVector.add(moveSpeed, 0);
 			if(e.key == Keyboard.KEY_T)
 				trajectoryMode = 0;
 			if(e.key == Keyboard.KEY_Y)
@@ -186,8 +145,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
 	
 	public void update(int frameNum, double deltaTime){
-		Gravitator grav = physicsSystem.getGravitator();
-		physicsSystem.update(frameNum);
+		physicsSystem.update();
 		
 		while (Keyboard.next()) {
 			int key = Keyboard.getEventKey();
@@ -205,32 +163,83 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				keyPressEventDistributor.invoke(new KeyEvent(entry.getKey().intValue(), KeyEventType.HOLD));
 		}
 	}
-	private void change(int num){
-		if(mode == 0)
-			physicsSystem.charNum = num;
-		else if(mode == 1)
-			physicsSystem.centerNum = num;
-	}
+	
+	Listener<AddObjectEvent> addObjectEventListener = new Listener<AddObjectEvent>(){
+		
+		@Override
+		public void invoke(AddObjectEvent e) {
+			
+			
+		}
+	};
+	
+	/*
 	public List<Shape> drawShapes(){
 		List<PhysicsObject> objects = physicsSystem.getObj();
 		List<Shape> shapes = new ArrayList<Shape>(objects.size() + 10);
 		
-		for(int i = 0; i < objects.size(); i++){
-			PhysicsObject o = objects.get(i);
-			Vector2 position = o.getPosition().copy();
-			position.subtract(physicsSystem.center);
-			position.multiply(zoom);
-			shapes.add(new Circle(position, o.getRadius() * zoom));
-			if(i == physicsSystem.charNum)
-				shapes.get(i).color = new Vector4(0, 1, 0, 1);
-			//break;
-		}
-		if(trajectoryMode == 1){
-		}
+		shapes.addAll(objectsToShapes(objects));
 		if(trajectoryMode == 0)
 			shapes.addAll(physicsSystem.calculateTrajectory(5000, 100, zoom));
 		return shapes;
+	}*/
+	
+	public void draw(){
+		Vector2 center = physicsSystem.getCenter();
+		
+		imp.clear();
+		GL11.glScaled(zoom, zoom, 1);
+		GL11.glTranslated(-center.x, -center.y, 1);
+		
+		for(PhysicsObject object : physicsSystem.getObj()){
+			if(object == physicsSystem.getGravitator())
+				GL11.glColor3d(0, 1, 0);
+			else if(object instanceof Missile)
+				GL11.glColor3d(.5, .5, 0.5);
+			else if(object instanceof Station)
+				GL11.glColor3d(0, 0.2, 0.8);
+			else
+				GL11.glColor3d(0, 0, 0);
+			object.draw();
+		}
+		
 	}
+	
+	/*
+	public List<Shape> objectsToShapes(List<PhysicsObject> objects){
+		
+		PhysicsObject object;
+		Sprite sprite;
+		List<Shape> shapes = new ArrayList<Shape>(objects.size());
+		
+		for(Entry<PhysicsObject, Sprite> entry: spriteMap.entrySet()){
+			object = entry.getKey();
+			sprite = entry.getValue();
+			
+			if(object.isRemoved)
+				spriteMap.remove(object);
+			
+			else{
+				
+			}
+		}
+			
+			
+		
+		
+		for(PhysicsObject object : objects){
+			Vector2 position = object.getPosition().copy();
+			position.subtract(physicsSystem.getCenter());
+			position.multiply(zoom);
+			
+			Shape shape = new Circle(position, o.getRadius() * zoom));
+			if(object == physicsSystem.getGravitator())
+				shape.color = new Vector4(0, 1, 0, 1);
+			shapes.add(shape);
+		}
+		return shapes;
+	}
+	*/
 	public static void main(String[] args){
 		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.2);
 		imp.beginUpdating();

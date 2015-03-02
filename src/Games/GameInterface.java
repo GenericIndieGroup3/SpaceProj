@@ -8,6 +8,6 @@ public interface GameInterface {
 	
 	public void setup();
 	public void update(int frameNum, double deltaTime);
-	public List<Shape> drawShapes();
+	public void draw();
 	
 }

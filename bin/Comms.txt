@@ -1,6 +1,0 @@
-Official Comms
-For graphics -- everything is a circle for now. Probably different colors to tell what is what.
-Alright.
-
-We need to add an event system. Events for key presses, collisions, and whatnot.
-Also targeted and artificial gravity was discussed.
