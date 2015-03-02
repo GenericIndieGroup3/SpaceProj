@@ -130,11 +130,11 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				physicsSystem.centerVector.add(-moveSpeed / zoom, 0);
 			if(e.key == Keyboard.KEY_L)
 				physicsSystem.centerVector.add(moveSpeed / zoom, 0);
-			if(e.key == Keyboard.KEY_T)
-				trajectoryMode = 0;
-			if(e.key == Keyboard.KEY_Y)
-				trajectoryMode = 1;
 			if(e.key == Keyboard.KEY_U)
+				trajectoryMode = 0;
+			if(e.key == Keyboard.KEY_T)
+				trajectoryMode = 1;
+			if(e.key == Keyboard.KEY_Y)
 				trajectoryMode = 2;
 		}
 		
