@@ -59,10 +59,6 @@ public class LWJGLImplementation extends ImplementationAbstract {
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	@Override
-	public void flip(){
-		Display.update();
-	}
-	@Override
 	public void point(Point p){
 		GL11.glBegin(GL11.GL_POINT);
 			Vector4 color = p.color();

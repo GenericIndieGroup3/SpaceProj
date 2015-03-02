@@ -1,6 +1,7 @@
 package Physics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import obj.Gravitator;
 import util.Vars;
@@ -17,9 +18,6 @@ public class PhysicsSystem{
 	public int charNum = 2;
 	public int centerNum = 0;
 	
-	//This probably shouldn't be in physicsSystem
-	public Gravitator mainGravitator;
-	
 	public Vector2 centerVector = new Vector2(-500, 0);
 	private PhysicsObject centerObject = null;
 	
@@ -30,7 +28,7 @@ public class PhysicsSystem{
 	public ArrayList<PhysicsObject> objects = new ArrayList<PhysicsObject>();
 	
 	public PhysicsSystem(PhysicsSystem copyFrom){
-		this(copyFrom.mainGravitator);
+		this();
 		objects = new ArrayList<PhysicsObject>(copyFrom.objects.size());
 		for(PhysicsObject o: copyFrom.objects){
 			PhysicsObject p = (PhysicsObject) o.copy();
@@ -41,17 +39,14 @@ public class PhysicsSystem{
 		charNum = copyFrom.charNum;
 		centerNum = copyFrom.centerNum;
 	}
-	
-	public PhysicsSystem(Gravitator grav){
-		mainGravitator = grav;
+	public PhysicsSystem(){
 	}
 	
-	public PhysicsSystem(PhysicsObject[] obj, Gravitator grav){
-		this(grav);
+	public PhysicsSystem(PhysicsObject[] obj){
+		this();
 		for(PhysicsObject o : obj)
 			objects.add(o);
 	}
-	
 	public void removeObj(PhysicsObject o){
 		toRemove.add(o);
 	}
@@ -61,7 +56,13 @@ public class PhysicsSystem{
 		if(!event.isCanceled())
 			objects.add(o);
 	}
-	
+	public PhysicsObject getObject(UUID uuid){
+		for(PhysicsObject o : objects){
+			if(o.getUUID().equals(uuid))
+				return o;
+		}
+		return null;
+	}
 	
 	//TODO this can easily be improved with a collision quad-tree
 	private boolean checkCollision(PhysicsObject a, PhysicsObject b){
@@ -189,12 +190,6 @@ public class PhysicsSystem{
 		
 		return centerCache;
 		
-	}
-	public PhysicsObject getChar(){
-		return getGravitator();
-	}
-	public Gravitator getGravitator(){
-		return mainGravitator;
 	}
 	public List<PhysicsObject> getObj(){
 		return objects;

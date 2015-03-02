@@ -9,12 +9,21 @@ import events.types.CollisionEvent;
 
 public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 
+	public Missile(){
+		super();
+		registerListener();
+	}
 	public Missile(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass) {
 		super(position, velocity, gravitationalMass, inertialMass);
-		MainGame.physicsSystem.collisionEventDistributor.addListener(this, EventPriority.HIGH);
+		registerListener();
 	}
 	public Missile(Vector2 position, Vector2 velocity, double mass){
 		super(position, velocity, mass, mass);
+		registerListener();
+	}
+	
+	void registerListener(){
+		MainGame.physicsSystem.collisionEventDistributor.addListener(this, EventPriority.HIGH);
 	}
 	
 	@Override
@@ -34,10 +43,15 @@ public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 	}
 	
 	@Override
-	public Object copy(){
-		return new Missile(this.position.copy(), this.velocity.copy(), this.gravitationalMass, this.inertialMass);
+	public PhysicsObject copy(){
+		Missile o = new Missile();
+		o.set(this);
+		return o;
 	}
 	
+	public void set(Missile a){
+		super.set(a);
+	}
 	
 	
 	

@@ -1,33 +1,39 @@
 package obj;
 
+import java.util.UUID;
+
 import util.Vars;
+import Games.MainGame;
 import Physics.PhysicsObject;
 import Structs.Vector2;
 
 public class Station extends Ship{
 	private static final double GRAVITATIONAL_CONSTANT = Vars.GRAVITATIONAL_CONSTANT;
 	
-	private PhysicsObject star;
+	private UUID starUUID;
 	private Vector2 targetVel = new Vector2();
 	private Vector2 gravPull = new Vector2();
 	private boolean clockwise;
 	private Vector2 acceleration = new Vector2();
 	private Vector2 distance = new Vector2();
 	
-	public Station(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass, PhysicsObject star, boolean clockwise){
+	public Station(){
+		super();
+	}
+	public Station(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass, UUID starUUID, boolean clockwise){
 		super(position, velocity, gravitationalMass, inertialMass);
-		this.star = star;
+		this.starUUID = starUUID;
 		this.clockwise = clockwise;
 	}
 	
-	public Station(Vector2 position, double mass, PhysicsObject star, boolean clockwise){
+	public Station(Vector2 position, double mass, UUID starUUID, boolean clockwise){
 		super(position, mass);
-		this.star = star;
+		this.starUUID = starUUID;
 		this.clockwise = clockwise;
 	}
 	
 	private void getGrav(){
-		distance.set(star.getPosition().copy());
+		distance.set(getStar().getPosition().copy());
 		distance.subtract(this.getPosition());
 		
 		double distanceMag = distance.getMagnitude();
@@ -36,16 +42,20 @@ public class Station extends Ship{
 			return;
 		}
 		
-		double gravForceMag = GRAVITATIONAL_CONSTANT * this.getGravitationalMass() * star.getGravitationalMass() / (distanceMag * distanceMag); 
+		double gravForceMag = GRAVITATIONAL_CONSTANT * getGravitationalMass() * getStar().getGravitationalMass() / (distanceMag * distanceMag); 
 		gravPull.set(distance);
 		gravPull.multiply(gravForceMag);
+	}
+	
+	private PhysicsObject getStar(){
+		return MainGame.physicsSystem.getObject(starUUID);
 	}
 	
 	private void getTargetVel(){
 		gravPull.clear();
 		getGrav();
 		this.calculateAcceleration(gravPull, acceleration);
-		distance.set(star.getPosition().copy());
+		distance.set(getStar().getPosition().copy());
 		distance.subtract(this.getPosition());
 		double radius = distance.getMagnitude();
 		double speed = Math.sqrt(acceleration.getMagnitude() * radius);
@@ -54,19 +64,29 @@ public class Station extends Ship{
 		else
 			distance = acceleration.createCounterClockwisePerpendicular();
 		distance.magnitude(speed);
-		distance.add(star.velocity);
+		distance.add(getStar().velocity);
 		targetVel.set(distance);
 	}
 	
 	public void updatePosition(){
-		this.getTargetVel();
-		this.velocity.set(targetVel);
+		if(getStar() != null){
+			this.getTargetVel();
+			this.velocity.set(targetVel);
+		}
 		position.add(velocity);
 	}
 	
 	@Override
-	public Object copy(){
-		return new Station(this.position.copy(), this.velocity.copy(), this.gravitationalMass, this.inertialMass, star, clockwise);
+	public PhysicsObject copy(){
+		Station o = new Station();
+		o.set(this);
+		return o;
+	}
+	
+	public void set(Station a){
+		super.set(a);
+		this.starUUID = a.starUUID;
+		this.clockwise = a.clockwise;
 	}
 	
 }

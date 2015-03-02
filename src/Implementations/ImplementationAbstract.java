@@ -33,13 +33,11 @@ public abstract class ImplementationAbstract {
 		while(keepUpdating){
 			update();
 			game.draw();
-			flip();
 		}
 		remove();
 	}
 	public void update(){
 		frameNum++;
-		//TODO calculate deltaTime
 		deltaTime = 0.0001;
 		input();
 		game.update(frameNum, deltaTime);
@@ -55,6 +53,5 @@ public abstract class ImplementationAbstract {
 	public abstract void point(Point p);
 	public abstract void polygon(Polygon p);
 	public abstract void circle(Circle c);
-	public abstract void flip();
 	
 }

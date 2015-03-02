@@ -1,10 +1,9 @@
 package Physics;
+import java.util.UUID;
+
 import org.lwjgl.opengl.GL11;
 
-import Structs.Circle;
-import Structs.Shape;
 import Structs.Vector2;
-import Structs.Vector4;
 
 public class PhysicsObject {
 	
@@ -17,21 +16,37 @@ public class PhysicsObject {
 	public boolean shouldBeRemoved = false;
 	public boolean isRemoved = false;
 	
+	private UUID uuid;
+	
 	private Vector2 acceleration = new Vector2();
 	
+	public PhysicsObject(){
+		set(new Vector2(), new Vector2(), 1, 1);
+	}
 	public PhysicsObject(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass){
+		set(position, velocity, gravitationalMass, inertialMass);
+	}
+	public PhysicsObject(Vector2 position, double mass){
+		set(position, new Vector2(), mass, mass);
+	}
+	public void set(PhysicsObject a){
+		this.position = a.position.copy();
+		this.velocity = a.velocity.copy();
+		this.gravitationalMass = a.gravitationalMass;
+		this.inertialMass = a.inertialMass;
+		this.uuid = a.uuid;
+	}
+	public void set(Vector2 position, Vector2 velocity, double gMass, double iMass){
 		this.position = position;
 		this.velocity = velocity;
-		this.gravitationalMass  = gravitationalMass;
-		this.inertialMass = inertialMass;
+		this.gravitationalMass = gMass;
+		this.inertialMass = iMass;
+		this.uuid = UUID.randomUUID();
 	}
-	
-	public PhysicsObject(Vector2 position, double mass){
-		this(position, new Vector2(), mass, mass);
-	}
-	
-	public Object copy(){
-		return new PhysicsObject(this.position.copy(),this.velocity.copy(),this.gravitationalMass,this.inertialMass);
+	public PhysicsObject copy(){
+		PhysicsObject o = new PhysicsObject();
+		o.set(this);
+		return o;
 	}
 	public boolean equals(PhysicsObject o){
 		return (this.position.equals(o.position) && this.velocity.equals(o.velocity) &&
@@ -42,6 +57,7 @@ public class PhysicsObject {
 	public double getInertialMass(){return inertialMass;}
 	public double getGravitationalMass(){return gravitationalMass;}
 	public double getRadius(){return Math.sqrt(1000d * Math.sqrt(getGravitationalMass()));}
+	public UUID getUUID(){return uuid;}
 	
 	public void calculateAcceleration(Vector2 force, Vector2 accelerationOut){
 		accelerationOut.set(force);

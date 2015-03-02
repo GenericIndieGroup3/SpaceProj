@@ -2,12 +2,14 @@ package Games;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import obj.Gravitator;
 import obj.Missile;
 import obj.Station;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import Implementations.ImplementationAbstract;
@@ -29,6 +31,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	public static PhysicsSystem physicsSystem;
 	private static ImplementationAbstract imp;
 	
+	private UUID gravUUID;
+	
 	public EventDistributor<KeyEvent> keyPressEventDistributor = new EventDistributor<KeyEvent>();
 	
 	public void setup(){
@@ -41,9 +45,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		Gravitator moon = new Gravitator(new Vector2(-4500, 0), new Vector2(), 2, 2);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
-		Station station = new Station(new Vector2(2000,0),50,star,true);
+		Station station = new Station(new Vector2(2000,0),50,star.getUUID(),true);
 		
-		physicsSystem = new PhysicsSystem(moon);
+		gravUUID = moon.getUUID();
+		physicsSystem = new PhysicsSystem();
 		
 		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
 		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
@@ -72,43 +77,47 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	int moveSpeed = 5;
 	
 	public void invoke(KeyEvent e){
-		Gravitator grav = physicsSystem.getGravitator();
+		Gravitator grav = (Gravitator) physicsSystem.getObject(gravUUID);
 		if(e.eventType == KeyEventType.PRESS){
-			if(e.key == Keyboard.KEY_LEFT){
-				Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(-shootSpeed, 0));
-				physicsSystem.addObj(missile);
-			}
-			if(e.key == Keyboard.KEY_DOWN){
-				Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(0, -shootSpeed));
-				physicsSystem.addObj(missile);
-			}
-			if(e.key == Keyboard.KEY_UP){
-				Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(0, shootSpeed));
-				physicsSystem.addObj(missile);
-			}
-			if(e.key == Keyboard.KEY_RIGHT){
-				Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(shootSpeed, 0));
-				physicsSystem.addObj(missile);
-			}
-			if(e.key == Keyboard.KEY_SPACE){
-				Missile missile = grav.shootMissile(1, 0.5, shootSpeed, grav.velocity.copy());
-				physicsSystem.addObj(missile);
+			if(grav != null){
+				if(e.key == Keyboard.KEY_LEFT){
+					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(-shootSpeed, 0));
+					physicsSystem.addObj(missile);
+				}
+				if(e.key == Keyboard.KEY_DOWN){
+					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(0, -shootSpeed));
+					physicsSystem.addObj(missile);
+				}
+				if(e.key == Keyboard.KEY_UP){
+					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(0, shootSpeed));
+					physicsSystem.addObj(missile);
+				}
+				if(e.key == Keyboard.KEY_RIGHT){
+					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(shootSpeed, 0));
+					physicsSystem.addObj(missile);
+				}
+				if(e.key == Keyboard.KEY_SPACE){
+					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, grav.velocity.copy());
+					physicsSystem.addObj(missile);
+				}
 			}
 		}
 		if(e.eventType == KeyEventType.HOLD){
 			
-			if(e.key == Keyboard.KEY_W)
-				physicsSystem.getChar().gravitationalMass += 0.01;
-			if(e.key == Keyboard.KEY_S && physicsSystem.getChar().gravitationalMass > 0.01)
-				physicsSystem.getChar().gravitationalMass -= 0.01;
-			if(e.key == Keyboard.KEY_E)
-				physicsSystem.getChar().gravitationalMass += 0.1;
-			if(e.key == Keyboard.KEY_D && physicsSystem.getChar().gravitationalMass > 0.1)
-				physicsSystem.getChar().gravitationalMass -= 0.1;
-			if(e.key == Keyboard.KEY_Q)
-				physicsSystem.getChar().gravitationalMass += 1;
-			if(e.key == Keyboard.KEY_A && physicsSystem.getChar().gravitationalMass > 1)
-				physicsSystem.getChar().gravitationalMass -= 1;
+			if(grav != null){
+				if(e.key == Keyboard.KEY_W)
+					grav.addMass(0.01);
+				if(e.key == Keyboard.KEY_S)
+					grav.addMass(-0.01);
+				if(e.key == Keyboard.KEY_E)
+					grav.addMass(0.1);
+				if(e.key == Keyboard.KEY_D)
+					grav.addMass(-0.1);
+				if(e.key == Keyboard.KEY_Q)
+					grav.addMass(1);
+				if(e.key == Keyboard.KEY_A)
+					grav.addMass(-1);
+			}
 			if(e.key == Keyboard.KEY_F)
 				imp.keepUpdating = false;
 			if(e.key == Keyboard.KEY_R)
@@ -143,9 +152,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		}
 	}
 	Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
-	
+	public int f = 0;
 	public void update(int frameNum, double deltaTime){
-		if(trajectoryMode == 0){
+		f = frameNum;
+		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
 		}
 			
@@ -167,29 +177,31 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	}
 
 	public void draw(){
-		Vector2 center = physicsSystem.getCenter();
 		
-		imp.clear();
-		GL11.glScaled(zoom, zoom, 1);
-		GL11.glTranslated(-center.x, -center.y, 1);
-		
-		drawPhysicsSystem(physicsSystem);
-		
-		
-		
-		if(trajectoryMode == 1){
-			PhysicsSystem copy = new PhysicsSystem(physicsSystem);
-			for(int i = 0; i < 500; i ++){
-				copy = new PhysicsSystem(copy);
-				copy.update();
-				if(i % 50 == 0)
-					drawPhysicsSystem(copy);
+		if(f % 3 == 0){
+			Vector2 center = physicsSystem.getCenter();
+			
+			imp.clear();
+			GL11.glScaled(zoom, zoom, 1);
+			GL11.glTranslated(-center.x, -center.y, 1);
+			
+			drawPhysicsSystem(physicsSystem);
+			
+			if(trajectoryMode == 1){
+				PhysicsSystem copy = new PhysicsSystem(physicsSystem);
+				for(int i = 0; i < 5000; i ++){
+				
+					copy.update();
+					if(i % 200 == 0)
+						drawPhysicsSystem(copy);
+				}
 			}
+			Display.update();
 		}
 	}
 	public void drawPhysicsSystem(PhysicsSystem system){
 		for(PhysicsObject object : system.getObj()){
-			if(object == system.getGravitator())
+			if(object.getUUID().equals(gravUUID))
 				GL11.glColor3d(0, 1, 0);
 			else if(object instanceof Missile)
 				GL11.glColor3d(.5, .5, 0.5);
