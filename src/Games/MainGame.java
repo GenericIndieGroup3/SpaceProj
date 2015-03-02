@@ -146,8 +146,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
 	
 	public void update(int frameNum, double deltaTime){
-		physicsSystem.update();
-		
+		if(trajectoryMode == 0){
+			physicsSystem.update();
+		}
+			
 		while (Keyboard.next()) {
 			int key = Keyboard.getEventKey();
 		    if (Keyboard.getEventKeyState()){
@@ -198,10 +200,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		if(trajectoryMode == 1){
 			PhysicsSystem copy = new PhysicsSystem(physicsSystem);
-			for(int i = 0; i < 5000; i ++){
+			for(int i = 0; i < 500; i ++){
 				copy = new PhysicsSystem(copy);
 				copy.update();
-				if(i % 200 == 0)
+				if(i % 50 == 0)
 					drawPhysicsSystem(copy);
 			}
 		}
