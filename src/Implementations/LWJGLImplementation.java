@@ -7,8 +7,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import Games.GameInterface;
-import Games.MainGame;
-import Physics.PhysicsObject;
 import Structs.Circle;
 import Structs.Point;
 import Structs.Polygon;

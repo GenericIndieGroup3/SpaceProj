@@ -1,8 +1,6 @@
 package Physics;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import obj.Gravitator;
 import util.Vars;
