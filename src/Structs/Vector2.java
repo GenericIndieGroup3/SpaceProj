@@ -83,15 +83,12 @@ public class Vector2{
 		multiply(-1);
 	}
 	
-	//TODO do in place and chose number of rotations
-	//TODO rotate by number of degrees?
-	public Vector2 createClockwisePerpendicular(){
-		return new Vector2(y, -x);
+	public Vector2 constructPerpendicular(boolean clockwise){
+		if(clockwise)
+			return new Vector2(-y, x);
+		else
+			return new Vector2(y, -x);
 	}
-	public Vector2 createCounterClockwisePerpendicular(){
-		return new Vector2(-y, x);
-	}
-	
 	
 	public static Vector2 addVectors(Vector2[] forces){
 		Vector2 netForce = new Vector2();

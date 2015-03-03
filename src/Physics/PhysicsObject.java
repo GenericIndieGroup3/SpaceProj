@@ -56,18 +56,22 @@ public class PhysicsObject {
 		this.gravitationalMass == o.gravitationalMass && this.inertialMass == o.inertialMass);
 	}
 
+	public Vector2 getVelocity(){return velocity;}
 	public Vector2 getPosition(){return position;}
-	public double getInertialMass(){return inertialMass;}
-	public double getGravitationalMass(){return gravitationalMass;}
-	public double getRadius(){return Math.sqrt(1000d * Math.sqrt(getGravitationalMass()));}
+	public double getIMass(){return inertialMass;}
+	public double getGMass(){return gravitationalMass;}
+	public double getRadius(){
+		return Math.cbrt(getGMass() * 10000);
+	}
+	//public double getRadius(){return Math.sqrt(2000d * Math.sqrt(gravitationalMass));}
 	public UUID getUUID(){return uuid;}
 	
 	public void calculateAcceleration(Vector2 force, Vector2 accelerationOut){
 		accelerationOut.set(force);
-		accelerationOut.multiply( 1 / getInertialMass());
+		accelerationOut.multiply( 1 / getIMass());
 	}
 	public double calculateAcceleration(double forceX){
-		return forceX * (1/ getInertialMass());
+		return forceX * (1/ getIMass());
 	}
 	public void resetAcceleration(){
 		acceleration.set(0, 0);
@@ -83,7 +87,13 @@ public class PhysicsObject {
 		accelerateA(calculateAcceleration(x), calculateAcceleration(y));
 	}
 	
-	public void updateVelocity(){
+	/**
+	 * Updates the velocity of the object. In most cases, this just means adding its acceleration to
+	 * its velocity, but complicated objects such as stations have to calculate a required velocity,
+	 * and need their parentSystem for that.<br>
+	 * @param parentSystem The parent system of the object
+	 */
+	public void updateVelocity(PhysicsSystem parentSystem){
 		velocity.add(acceleration);
 	}
 	public void updatePosition(){

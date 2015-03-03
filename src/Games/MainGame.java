@@ -54,20 +54,25 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		physicsSystem = new PhysicsSystem();
 		activeSystem = physicsSystem;
 	
-		PhysicsObject star = new PhysicsObject(new Vector2(0, 0), 10000);
-		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 200, 200);
-		Gravitator moon = new Gravitator(new Vector2(-4500, 0), new Vector2(), 2, 2);
-		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
-		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
+		PhysicsObject star = new PhysicsObject(new Vector2(0, 0), 5000);
+		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 50, 50);
+		Gravitator moon = new Gravitator(new Vector2(-4500, 0), new Vector2(), 5, 5);
+		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 50);
+		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 5, 5);
 		Station station = new Station(new Vector2(2000,0),50,star.getUUID(),true);
-		//Missile test = new Missile(new Vector2(2000,100),new Vector2(),1);
 		
 		moon.setUUID(gravUUID);
 
-		planet.velocity = physicsSystem.velocityForCircularMotion(planet, star, false);
-		moon.velocity = physicsSystem.velocityForCircularMotion(moon, planet, true);
-		planet2.velocity = physicsSystem.velocityForCircularMotion(planet2, star, false);
-		moon2.velocity = physicsSystem.velocityForCircularMotion(moon2, planet2, true);
+
+		Vector2 velocityCache = new Vector2();
+		physicsSystem.calculateVelocityForCircularMotion(planet, star, false, velocityCache);
+		planet.velocity.set(velocityCache);
+		physicsSystem.calculateVelocityForCircularMotion(moon, planet, true, velocityCache);
+		moon.velocity.set(velocityCache);
+		physicsSystem.calculateVelocityForCircularMotion(planet2, star, false, velocityCache);
+		planet2.velocity.set(velocityCache);
+		physicsSystem.calculateVelocityForCircularMotion(moon2, planet2, true, velocityCache);
+		moon2.velocity.set(velocityCache);
 		
 		physicsSystem.addObj(star);
 		physicsSystem.addObj(planet);
@@ -75,9 +80,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		physicsSystem.addObj(planet2);
 		physicsSystem.addObj(moon2);
 		physicsSystem.addObj(station);
-		//physicsSystem.addObj(test);
 		
-		displayManager.setCenterObject(star);
+	//	displayManager.setCenterObject(star);
 	}
 	
 	public void invoke(KeyEvent e){
@@ -144,13 +148,13 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	public void draw(){
 		displayManager.clearScreen();
 		if(f % 1 == 0){
-			displayManager.drawPhysicsSystem(imp, activeSystem);
+			displayManager.drawPhysicsSystem(imp, activeSystem, 1);
 			if(trajectoryMode == 1){
 				PhysicsSystem copy = new PhysicsSystem(activeSystem);
 				for(int i = 0; i < trajectoryDistance; i ++){
 					copy.update();
-					if(i % 200 == 0)
-						displayManager.drawPhysicsSystem(imp, copy);
+					if(i % 150 == 0 && i != 0)
+						displayManager.drawPhysicsSystem(imp, copy, 0.6);
 				}
 			}
 		}

@@ -1,5 +1,7 @@
 package Games;
 
+import static org.lwjgl.opengl.GL11.glClear;
+
 import java.util.UUID;
 
 import obj.Gravitator;
@@ -25,13 +27,18 @@ public class DisplayManager {
 	public void draw(ImplementationAbstract imp, PhysicsSystem... physicsSystems){
 		
 		clearScreen();
+		boolean first = true;
 		for(PhysicsSystem physicsSystem : physicsSystems){
-			drawPhysicsSystem(imp, physicsSystem);
+			if(first)
+				drawPhysicsSystem(imp, physicsSystem, 1);
+			else
+				drawPhysicsSystem(imp, physicsSystem, 0.6);
+			first = false;
 		}
 		updateDisplay();
 	}
 	
-	public void drawPhysicsSystem(ImplementationAbstract imp, PhysicsSystem system){
+	public void drawPhysicsSystem(ImplementationAbstract imp, PhysicsSystem system, double alpha){
 		
 		imp.loadIdentity();
 		GL11.glScaled(zoom, zoom, 1);
@@ -41,14 +48,15 @@ public class DisplayManager {
 		for(PhysicsObject object : system.getObj()){
 			//TODO we need an actual color-coding system
 			//maybe a map between object uuids and colors or types of objects and colors
+
 			if(object instanceof Gravitator)//.getUUID().equals(MainGame.mainGame.gravUUID))
 				GL11.glColor3d(0, 1, 0);
 			else if(object instanceof Missile)
-				GL11.glColor3d(.5, .5, 0.5);
+				GL11.glColor3d(.5 * alpha, .5 * alpha, 0.5 * alpha);
 			else if(object instanceof Station)
-				GL11.glColor3d(0, 0.2, 0.8);
+				GL11.glColor3d(0 * alpha, 0.2 * alpha, 0.8 * alpha);
 			else
-				GL11.glColor3d(1, 1, 1);
+				GL11.glColor3d(1 * alpha, 1 * alpha, 1 * alpha);
 			object.draw();
 		}
 	}
@@ -86,7 +94,7 @@ public class DisplayManager {
 		zoom *= z;
 	}
 	public void clearScreen(){
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
+		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	public void updateDisplay(){
 		Display.update();

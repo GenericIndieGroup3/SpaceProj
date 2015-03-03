@@ -1,5 +1,6 @@
 package events.types;
 
+import Physics.PhysicsObject;
 
 public class KeyEvent extends Event {
 	//TODO

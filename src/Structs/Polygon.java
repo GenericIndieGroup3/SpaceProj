@@ -1,5 +1,6 @@
 package Structs;
 
+import java.util.List;
 
 public class Polygon extends Shape {
 
