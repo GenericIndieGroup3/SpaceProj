@@ -1,8 +1,5 @@
 package Games;
 
-import java.util.List;
-
-import Structs.Shape;
 
 public interface GameInterface {
 	

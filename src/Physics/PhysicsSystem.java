@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import obj.Gravitator;
 import util.Vars;
 import Structs.Vector2;
 import events.EventDistributor;

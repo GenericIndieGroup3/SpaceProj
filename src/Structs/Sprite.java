@@ -1,7 +1,5 @@
 package Structs;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Sprite {
 

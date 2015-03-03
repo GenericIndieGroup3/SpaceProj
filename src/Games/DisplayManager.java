@@ -1,7 +1,5 @@
 package Games;
 
-import static org.lwjgl.opengl.GL11.glClear;
-
 import java.util.UUID;
 
 import obj.Gravitator;
@@ -88,7 +86,7 @@ public class DisplayManager {
 		zoom *= z;
 	}
 	public void clearScreen(){
-		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	public void updateDisplay(){
 		Display.update();

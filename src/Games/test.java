@@ -1,29 +1,20 @@
 package Games;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import obj.Gravitator;
-import obj.Missile;
-import obj.Station;
-
-import org.lwjgl.input.Keyboard;
-
-import Implementations.ImplementationAbstract;
-import Implementations.LWJGLImplementation;
-import Physics.PhysicsObject;
-import Physics.PhysicsSystem;
-import Structs.Circle;
-import Structs.Shape;
-import Structs.Vector2;
-import Structs.Vector4;
-import events.EventDistributor;
-import events.EventPriority;
-import events.Listener;
-import events.types.KeyEvent;
-import events.types.KeyEventType;
+import src.Implementations.ImplementationAbstract;
+import src.Implementations.LWJGLImplementation;
+import src.Physics.PhysicsObject;
+import src.Physics.PhysicsSystem;
+import src.Structs.Circle;
+import src.Structs.Shape;
+import src.Structs.Vector2;
+import src.Structs.Vector4;
+import src.events.EventDistributor;
+import src.events.EventPriority;
+import src.events.Listener;
+import src.events.types.KeyEvent;
+import src.events.types.KeyEventType;
+import src.obj.Gravitator;
+import src.obj.Missile;
+import src.obj.Station;
 
 
 public class test implements GameInterface, Listener<KeyEvent>{

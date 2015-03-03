@@ -1,6 +1,4 @@
 package Implementations;
-import static org.lwjgl.opengl.GL11.glClear;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -55,7 +53,7 @@ public class LWJGLImplementation extends ImplementationAbstract {
 	}
 	@Override
 	public void clearScreen(){
-		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	public void loadIdentity(){
 		GL11.glLoadIdentity();

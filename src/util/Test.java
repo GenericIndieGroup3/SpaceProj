@@ -1,6 +1,6 @@
 package util;
-import Structs.Vector2;
-import Physics.PhysicsObject;
+import src.Physics.PhysicsObject;
+import src.Structs.Vector2;
 
 public class Test {
 	public static void main(String[] args){

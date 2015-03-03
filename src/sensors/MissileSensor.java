@@ -7,7 +7,6 @@ import java.util.UUID;
 import obj.Missile;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
-import Games.MainGame;
 
 public class MissileSensor implements Sensor<Missile> {
 
