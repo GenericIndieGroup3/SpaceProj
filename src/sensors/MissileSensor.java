@@ -7,6 +7,7 @@ import java.util.UUID;
 import obj.Missile;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
+import Structs.Vector2;
 import Games.MainGame;
 
 public class MissileSensor implements Sensor<Missile> {
@@ -16,8 +17,7 @@ public class MissileSensor implements Sensor<Missile> {
 	
 	private PhysicsObject target;
 	public UUID targetId;
-	private double x;
-	private double y;
+	private Vector2 pos;
 	private double radius;
 	
 	public MissileSensor(PhysicsObject target, double radius){//, PhysicsSystem system){
@@ -27,9 +27,8 @@ public class MissileSensor implements Sensor<Missile> {
 		//currentSystem = system;
 	}
 	
-	public MissileSensor(double x, double y, double radius){//, PhysicsSystem system){
-		this.x = x;
-		this.y = y;
+	public MissileSensor(Vector2 pos, double radius){//, PhysicsSystem system){
+		this.pos = pos;
 		this.radius = radius;
 		//currentSystem = system;
 	}
@@ -59,9 +58,10 @@ public class MissileSensor implements Sensor<Missile> {
 	public void update() {
 		triggers.clear();
 		isTriggered = false;
+		
 		for(PhysicsObject p : MainGame.mainGame.getActiveSystem().objects){
 			if(p instanceof Missile){
-				if((target != null && MainGame.mainGame.getActiveSystem().distanceTo(target, p) <= radius) || MainGame.mainGame.getActiveSystem().distanceTo(x,y,p) <= radius){
+				if((target != null && MainGame.mainGame.getActiveSystem().distanceTo(target, p) <= radius) || MainGame.mainGame.getActiveSystem().distanceTo(pos,p) <= radius){
 					isTriggered = true;
 					triggers.add((Missile)p);
 				}

@@ -61,7 +61,6 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		moon.setUUID(gravUUID);
 
-
 		Vector2 velocityCache = new Vector2();
 		physicsSystem.calculateVelocityForCircularMotion(planet, star, false, velocityCache);
 		planet.velocity.set(velocityCache);
