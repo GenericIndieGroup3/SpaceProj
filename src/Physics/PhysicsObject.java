@@ -96,5 +96,12 @@ public class PhysicsObject {
 	        }
 		GL11.glEnd();
 	}
-
+	
+	//TODO This will be really slow, but since it's only for debugging, no one will know...
+	@Override
+	public String toString(){
+		String ans = "Physics Object with inert mass " + this.inertialMass + ", gravitational mass " + this.gravitationalMass + ", at position" + this.position + ", and velocity" + this.velocity;
+		
+		return ans;
+	}
 }

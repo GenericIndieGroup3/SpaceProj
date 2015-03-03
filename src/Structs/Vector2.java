@@ -101,6 +101,9 @@ public class Vector2{
 		return netForce;
 	}
 	
-	
-	
+	@Override
+	public String toString(){
+		String ans = '(' + String.valueOf(x) + ',' + ' ' + String.valueOf(y) + ')';
+		return ans;
+	}
 }

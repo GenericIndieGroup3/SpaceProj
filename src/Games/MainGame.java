@@ -178,6 +178,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 
 	public void draw(){
 		
+<<<<<<< Updated upstream
 		if(f % 3 == 0){
 			Vector2 center = physicsSystem.getCenter();
 			
@@ -195,6 +196,23 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 					if(i % 200 == 0)
 						drawPhysicsSystem(copy);
 				}
+=======
+		imp.clear();
+		GL11.glScaled(zoom, zoom, 1);
+		GL11.glTranslated(-center.x, -center.y, 1);
+		
+		drawPhysicsSystem(physicsSystem);
+		
+		
+		
+		if(trajectoryMode == 1){
+			PhysicsSystem copy = new PhysicsSystem(physicsSystem);
+			for(int i = 0; i < 500; i ++){
+			//	copy = new PhysicsSystem(copy);
+				copy.update();
+				if(i % 50 == 0)
+					drawPhysicsSystem(copy);
+>>>>>>> Stashed changes
 			}
 			Display.update();
 		}
