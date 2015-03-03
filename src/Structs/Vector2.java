@@ -85,9 +85,9 @@ public class Vector2{
 	
 	public Vector2 constructPerpendicular(boolean clockwise){
 		if(clockwise)
-			return new Vector2(-y, x);
-		else
 			return new Vector2(y, -x);
+		else
+			return new Vector2(-y, x);
 	}
 	
 	public static Vector2 addVectors(Vector2[] forces){

@@ -61,9 +61,6 @@ public class PhysicsSystem{
 		return null;
 	}
 	
-	//TODO this can easily be improved with a collision quad-tree
-
-	
 	List<PhysicsObject> toRemove = new ArrayList<PhysicsObject>();
 	public void update(){
 
@@ -163,9 +160,10 @@ public class PhysicsSystem{
 		return distance;
 		
 	}
+	/*
 	public void calculateVelocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise, Vector2 velocityOut){
 		velocityOut.set(velocityForCircularMotion(planet, sun, clockwise));
-	}
+	}*/
 	Vector2 calcVelDistCache = new Vector2();
 	/**<p>
 	 * Calculates the required velocity for circular motion around the sun,<br>
@@ -179,7 +177,7 @@ public class PhysicsSystem{
 	 * @param clockwise whether or not the velocity should be pointing clockwise
 	 * @param velocityOut object to be modified to the required velocity for circular motion
 	 */
-	public void calculate2VelocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise, Vector2 velocityOut){
+	public void calculateVelocityForCircularMotion(PhysicsObject planet, PhysicsObject sun, boolean clockwise, Vector2 velocityOut){
 		
 		getDistance(sun, planet, calcVelDistCache);
 

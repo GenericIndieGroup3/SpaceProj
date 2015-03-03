@@ -48,8 +48,6 @@ public class Station extends Ship{
 		}
 		else
 			super.updateVelocity(parentSystem);
-		
-		
 	}
 	
 	@Override

@@ -23,11 +23,9 @@ import events.types.KeyEventType;
 
 public class MainGame implements GameInterface, Listener<KeyEvent>{
 
-	//TODO this is a bad
 	public static MainGame mainGame;
 	private PhysicsSystem physicsSystem;
 	public static ImplementationAbstract imp;
-	
 	public EventDistributor<KeyEvent> keyPressEventDistributor;
 	public DisplayManager displayManager;
 	public GameController gameController;
@@ -147,7 +145,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	private int trajectoryDistance = 2000;
 	public void draw(){
 		
-		if(f % 2 == 0){
+		if(f % 1 == 0){
 			displayManager.clearScreen();
 			displayManager.drawPhysicsSystem(imp, activeSystem, 1);
 			if(trajectoryMode == 1){
