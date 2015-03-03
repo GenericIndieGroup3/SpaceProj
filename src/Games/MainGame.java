@@ -146,8 +146,9 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	
 	private int trajectoryDistance = 2000;
 	public void draw(){
-		displayManager.clearScreen();
-		if(f % 1 == 0){
+		
+		if(f % 2 == 0){
+			displayManager.clearScreen();
 			displayManager.drawPhysicsSystem(imp, activeSystem, 1);
 			if(trajectoryMode == 1){
 				PhysicsSystem copy = new PhysicsSystem(activeSystem);
@@ -157,8 +158,9 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 						displayManager.drawPhysicsSystem(imp, copy, 0.6);
 				}
 			}
+			displayManager.updateDisplay();
 		}
-		displayManager.updateDisplay();
+		
 	}
 	public static void main(String[] args){
 		imp = new LWJGLImplementation(new MainGame(), new Vector2(1280, 800), 0.1);
