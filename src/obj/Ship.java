@@ -14,16 +14,8 @@ public class Ship extends PhysicsObject{
 	public Ship(Vector2 position, double mass){
 		super(position,mass);
 	}
-	
-	public void thrust(Vector2 thrust){
-		thrust.multiply(1/this.inertialMass);
-<<<<<<< Updated upstream
-		this.accelerateA(thrust);
-=======
-		//this.accelerate(thrust);
->>>>>>> Stashed changes
-	}
-	
+
+		
 	public Missile shootMissile(double mass, double relVelocity, Vector2 direction){
 		return shootMissile(mass, mass, relVelocity, direction);
 	}

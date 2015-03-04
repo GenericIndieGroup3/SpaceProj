@@ -117,6 +117,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 					grav.addMass(1);
 				if(e.key == Keyboard.KEY_A)
 					grav.addMass(-1);
+				if(e.key == Keyboard.KEY_Z)
+					grav.addMass(-0.001);
 			}
 			if(e.key == Keyboard.KEY_F)
 				imp.keepUpdating = false;
@@ -155,7 +157,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	public int f = 0;
 	public void update(int frameNum, double deltaTime){
 		f = frameNum;
-		if(trajectoryMode == 0 && frameNum % 1 == 0){
+		if(trajectoryMode == 0 && frameNum % 5 == 0){
 			physicsSystem.update();
 		}
 			
@@ -178,8 +180,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 
 	public void draw(){
 		
-<<<<<<< Updated upstream
-		if(f % 3 == 0){
+		if(f % 1 == 0){
 			Vector2 center = physicsSystem.getCenter();
 			
 			imp.clear();
@@ -190,32 +191,16 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 			
 			if(trajectoryMode == 1){
 				PhysicsSystem copy = new PhysicsSystem(physicsSystem);
-				for(int i = 0; i < 5000; i ++){
+				for(int i = 0; i < 200; i ++){
 				
 					copy.update();
-					if(i % 200 == 0)
+					if(i % 10 == 0)
 						drawPhysicsSystem(copy);
 				}
-//=======
-		imp.clear();
-		GL11.glScaled(zoom, zoom, 1);
-		GL11.glTranslated(-center.x, -center.y, 1);
+
+		Display.update();
 		
-		drawPhysicsSystem(physicsSystem);
-		
-		
-		
-		if(trajectoryMode == 1){
-			PhysicsSystem copy = new PhysicsSystem(physicsSystem);
-			for(int i = 0; i < 500; i ++){
-			//	copy = new PhysicsSystem(copy);
-				copy.update();
-				if(i % 50 == 0)
-					drawPhysicsSystem(copy);
-//>>>>>>> Stashed changes
-			}
-			Display.update();
-		}
+			}}
 	}
 	public void drawPhysicsSystem(PhysicsSystem system){
 		for(PhysicsObject object : system.getObj()){
