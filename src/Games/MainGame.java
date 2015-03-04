@@ -157,7 +157,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	public int f = 0;
 	public void update(int frameNum, double deltaTime){
 		f = frameNum;
-		if(trajectoryMode == 0 && frameNum % 500 == 0){
+		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
 		}
 			
@@ -197,10 +197,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 					if(i % 10 == 0)
 						drawPhysicsSystem(copy);
 				}
+			}
 
-		Display.update();
-		
-			}}
+		Display.update();	
+		}
 	}
 	public void drawPhysicsSystem(PhysicsSystem system){
 		for(PhysicsObject object : system.getObj()){
