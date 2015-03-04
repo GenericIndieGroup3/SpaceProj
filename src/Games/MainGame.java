@@ -157,7 +157,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	public int f = 0;
 	public void update(int frameNum, double deltaTime){
 		f = frameNum;
-		if(trajectoryMode == 0 && frameNum % 5 == 0){
+		if(trajectoryMode == 0 && frameNum % 500 == 0){
 			physicsSystem.update();
 		}
 			
