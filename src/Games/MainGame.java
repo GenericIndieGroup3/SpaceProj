@@ -196,7 +196,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 					if(i % 200 == 0)
 						drawPhysicsSystem(copy);
 				}
-=======
+//=======
 		imp.clear();
 		GL11.glScaled(zoom, zoom, 1);
 		GL11.glTranslated(-center.x, -center.y, 1);
@@ -212,7 +212,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				copy.update();
 				if(i % 50 == 0)
 					drawPhysicsSystem(copy);
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 			}
 			Display.update();
 		}
