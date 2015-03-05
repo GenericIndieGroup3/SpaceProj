@@ -180,5 +180,24 @@ public class PhysicsSystem{
 	public List<PhysicsObject> getObj(){
 		return objects;
 	}
+
+	public PhysicsObject searchById(UUID id){
+		for(PhysicsObject p: objects){
+			if(p.getUUID() == id){
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	public double distanceTo(PhysicsObject p, PhysicsObject q){
+		return distanceTo(p.position.x, p.position.y, q);
+	}
+	
+	public double distanceTo(double x, double y, PhysicsObject q){
+		double dx = x - q.position.x;
+		double dy = y - q.position.y;
+		return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+	}
 	
 }
