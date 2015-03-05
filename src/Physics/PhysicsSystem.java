@@ -18,8 +18,7 @@ public class PhysicsSystem{
 	public int charNum = 2;
 	public int centerNum = 0;
 	
-	public Vector2 centerVector = new Vector2(-500, 0);
-	private PhysicsObject centerObject = null;
+	
 	
 	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
 	public EventDistributor<AddObjectEvent> addObjectEventDistributor = new EventDistributor<AddObjectEvent>();
@@ -178,19 +177,6 @@ public class PhysicsSystem{
 		gravOut.multiply(gravForceMag);
 	}
 	
-	
-	Vector2 centerCache = new Vector2();
-	
-	public Vector2 getCenter(){
-		if(centerObject != null)
-			centerCache.set(centerObject.position);
-		else
-			centerCache.set(0, 0);
-		centerCache.add(centerVector);
-		
-		return centerCache;
-		
-	}
 	public List<PhysicsObject> getObj(){
 		return objects;
 	}

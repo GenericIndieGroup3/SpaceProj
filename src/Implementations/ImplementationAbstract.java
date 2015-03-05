@@ -49,7 +49,8 @@ public abstract class ImplementationAbstract {
 	public abstract void input();
 	public abstract void remove();
 	
-	public abstract void clear();
+	public abstract void clearScreen();
+	public abstract void loadIdentity();
 	public abstract void point(Point p);
 	public abstract void polygon(Polygon p);
 	public abstract void circle(Circle c);

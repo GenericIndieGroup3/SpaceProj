@@ -36,7 +36,8 @@ public class LWJGLImplementation extends ImplementationAbstract {
 		//GL11.glLoadIdentity();
 		w = screenDimensions.x / unitToPixelRatio;
 		h = screenDimensions.y / unitToPixelRatio;
-	    clear();
+	    clearScreen();
+	    loadIdentity();
 	    GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 	}
@@ -53,10 +54,12 @@ public class LWJGLImplementation extends ImplementationAbstract {
 		
 	}
 	@Override
-	public void clear(){
+	public void clearScreen(){
+		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
+	}
+	public void loadIdentity(){
 		GL11.glLoadIdentity();
 		GL11.glOrtho(-w/2, w/2, -h/2, h/2, -1, 1);
-		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
 	}
 	@Override
 	public void point(Point p){

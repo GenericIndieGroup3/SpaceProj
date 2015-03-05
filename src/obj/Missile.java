@@ -23,7 +23,7 @@ public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 	}
 	
 	void registerListener(){
-		MainGame.physicsSystem.collisionEventDistributor.addListener(this, EventPriority.HIGH);
+		MainGame.mainGame.getActiveSystem().collisionEventDistributor.addListener(this, EventPriority.HIGH);
 	}
 	
 	@Override

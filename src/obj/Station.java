@@ -48,7 +48,7 @@ public class Station extends Ship{
 	}
 	
 	private PhysicsObject getStar(){
-		return MainGame.physicsSystem.getObject(starUUID);
+		return MainGame.mainGame.getActiveSystem().getObject(starUUID);
 	}
 	
 	private void getTargetVel(){

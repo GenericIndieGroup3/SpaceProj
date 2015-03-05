@@ -48,6 +48,9 @@ public class PhysicsObject {
 		o.set(this);
 		return o;
 	}
+	public void setUUID(UUID uuid){
+		this.uuid = uuid;
+	}
 	public boolean equals(PhysicsObject o){
 		return (this.position.equals(o.position) && this.velocity.equals(o.velocity) &&
 		this.gravitationalMass == o.gravitationalMass && this.inertialMass == o.inertialMass);
