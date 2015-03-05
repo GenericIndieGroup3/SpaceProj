@@ -2,6 +2,8 @@ package obj;
 
 import java.util.UUID;
 
+import sensors.MissileSensor;
+import sensors.Sensor;
 import util.Vars;
 import Games.MainGame;
 import Physics.PhysicsObject;
@@ -16,20 +18,21 @@ public class Station extends Ship{
 	private boolean clockwise;
 	private Vector2 acceleration = new Vector2();
 	private Vector2 distance = new Vector2();
+	private Sensor<Missile> attackSensor;
 	
 	public Station(){
 		super();
+		this.attackSensor = new MissileSensor(this,5*getRadius(),MainGame.mainGame.getActiveSystem());
 	}
 	public Station(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass, UUID starUUID, boolean clockwise){
 		super(position, velocity, gravitationalMass, inertialMass);
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
+		this.attackSensor = new MissileSensor(this,5*getRadius(),MainGame.mainGame.getActiveSystem());
 	}
 	
 	public Station(Vector2 position, double mass, UUID starUUID, boolean clockwise){
-		super(position, mass);
-		this.starUUID = starUUID;
-		this.clockwise = clockwise;
+		this(position,new Vector2(),mass,mass,starUUID,clockwise);
 	}
 	
 	private void getGrav(){
@@ -74,6 +77,7 @@ public class Station extends Ship{
 			this.velocity.set(targetVel);
 		}
 		position.add(velocity);
+		attackSensor.update();
 	}
 	
 	@Override
