@@ -1,12 +1,11 @@
 package sensors;
 
 import java.util.UUID;
-import Physics.PhysicsObject;
 
-public interface Sensor<ObjectType extends PhysicsObject> {
+public interface Sensor {
 	
 	public boolean isTriggered();
-	public ObjectType[] getTriggers();
+	public UUID[] getTriggers();
 	public void update();
 	
 }
