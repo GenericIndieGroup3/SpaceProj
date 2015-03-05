@@ -261,5 +261,16 @@ public class PhysicsSystem{
 		distanceOut.set(objectB.getPosition());
 		distanceOut.subtract(objectA.getPosition());
 	}
+	Vector2 ansCache = new Vector2();
+	public double distanceTo(PhysicsObject p, PhysicsObject q){
+		getDistance(p,q,ansCache);
+		return ansCache.getMagnitude();
+	}
+	Vector2 distCache = new Vector2();
+	public double distanceTo(Vector2 pos, PhysicsObject q){
+		distCache.set(pos);
+		distCache.subtract(q.getPosition());
+		return distCache.getMagnitude();
+	}
 	
 }

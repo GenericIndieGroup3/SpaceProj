@@ -5,28 +5,25 @@ import java.util.UUID;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
 import Structs.Vector2;
+import sensors.MissileSensor;
+import sensors.Sensor;
 
 public class Station extends Ship{
 	
 	private UUID starUUID;
 	private Vector2 targetVel = new Vector2();
 	private boolean clockwise;
+	private Sensor<Missile> attackSensor;
 	
 	public Station(){
 		super();
-<<<<<<< HEAD
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
-=======
->>>>>>> FETCH_HEAD
 	}
 	public Station(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass, UUID starUUID, boolean clockwise){
 		super(position, velocity, gravitationalMass, inertialMass);
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
-<<<<<<< HEAD
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
-=======
->>>>>>> FETCH_HEAD
 	}
 	
 	public Station(Vector2 position, double mass, UUID starUUID, boolean clockwise){
