@@ -81,8 +81,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	public void invoke(KeyEvent e){
 		
 		if(e.eventType == KeyEventType.PRESS){
-			if(e.key == Keyboard.KEY_U)
-				trajectoryMode = 0;
+			//if(e.key == Keyboard.KEY_U)
+				//trajectoryMode = 0;
 			if(e.key == Keyboard.KEY_T && trajectoryMode == 0){
 				sandboxSystem = new PhysicsSystem(physicsSystem);
 				activeSystem = sandboxSystem;
@@ -99,8 +99,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 				sandboxSystem = null;
 				trajectoryMode = 0;
 			}
-			if(e.key == Keyboard.KEY_Y)
-				trajectoryMode = 2;
+			//if(e.key == Keyboard.KEY_Y)
+				//trajectoryMode = 2;
 		}
 	}
 	PhysicsSystem activeSystem;

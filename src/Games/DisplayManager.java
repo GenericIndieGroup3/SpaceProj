@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 
 import java.util.UUID;
 
+import obj.Gravitator;
 import obj.Missile;
 import obj.Station;
 
@@ -42,7 +43,7 @@ public class DisplayManager {
 		for(PhysicsObject object : system.getObj()){
 			//TODO we need an actual color-coding system
 			//maybe a map between object uuids and colors or types of objects and colors
-			if(object.getUUID().equals(MainGame.mainGame.gravUUID))
+			if(object instanceof Gravitator)//.getUUID().equals(MainGame.mainGame.gravUUID))
 				GL11.glColor3d(0, 1, 0);
 			else if(object instanceof Missile)
 				GL11.glColor3d(.5, .5, 0.5);
