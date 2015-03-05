@@ -61,7 +61,12 @@ public class MissileSensor implements Sensor<Missile> {
 		
 		for(PhysicsObject p : MainGame.mainGame.getActiveSystem().objects){
 			if(p instanceof Missile){
-				if((target != null && MainGame.mainGame.getActiveSystem().distanceTo(target, p) <= radius) || MainGame.mainGame.getActiveSystem().distanceTo(pos,p) <= radius){
+				if(target != null){
+					if(MainGame.mainGame.getActiveSystem().distanceTo(target, p) <= radius){
+						isTriggered = true;
+						triggers.add((Missile)p);
+					}
+				} else if(MainGame.mainGame.getActiveSystem().distanceTo(pos,p) <= radius){
 					isTriggered = true;
 					triggers.add((Missile)p);
 				}

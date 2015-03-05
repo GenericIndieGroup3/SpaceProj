@@ -11,7 +11,7 @@ import events.types.RemoveObjectEvent;
 
 public class PhysicsSystem{
 	
-	private static final double GRAVITATIONAL_CONSTANT = 1;
+	private static final double GRAVITATIONAL_CONSTANT = 5;
 	
 	public int charNum = 2;
 	public int centerNum = 0;

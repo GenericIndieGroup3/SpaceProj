@@ -28,6 +28,7 @@ public class Station extends Ship{
 	
 	public Station(Vector2 position, double mass, UUID starUUID, boolean clockwise){
 		super(position, mass);
+		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
 	}
@@ -45,6 +46,7 @@ public class Station extends Ship{
 		}
 		else
 			super.updateVelocity(parentSystem);
+		attackSensor.update();
 	}
 	
 	@Override
