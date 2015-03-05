@@ -27,7 +27,7 @@ public class Ship extends PhysicsObject{
 		Vector2 vel = velocity.copy();
 		direction.magnitude(relVelocity);
 		vel.add(direction);
-		Missile m = new Missile(position, vel, gMass, iMass);
+		Missile m = new Missile(position, vel, gMass, iMass,this.getUUID());
 		return m;
 	}
 	

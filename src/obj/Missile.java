@@ -1,5 +1,7 @@
 package obj;
 
+import java.util.UUID;
+
 import Games.MainGame;
 import Physics.PhysicsObject;
 import Structs.Vector2;
@@ -9,17 +11,21 @@ import events.types.CollisionEvent;
 
 public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 
+	private UUID shooterID;
+	
 	public Missile(){
 		super();
 		registerListener();
 	}
-	public Missile(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass) {
+	public Missile(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass,UUID id) {
 		super(position, velocity, gravitationalMass, inertialMass);
 		registerListener();
+		shooterID = id;
 	}
-	public Missile(Vector2 position, Vector2 velocity, double mass){
+	public Missile(Vector2 position, Vector2 velocity, double mass,UUID id){
 		super(position, velocity, mass, mass);
 		registerListener();
+		shooterID = id;
 	}
 	
 	void registerListener(){
@@ -38,7 +44,9 @@ public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 		
 		e.cancel();
 		shouldBeRemoved = true;
-		other.shouldBeRemoved = true;
+		if(!(other instanceof Station)){
+			other.shouldBeRemoved = true;
+		}
 		
 	}
 	

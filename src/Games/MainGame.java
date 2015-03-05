@@ -61,7 +61,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 200);
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(4500, 0), new Vector2(), 2, 2);
 		Station station = new Station(new Vector2(2000,0),50,star.getUUID(),true);
-		Missile test = new Missile(new Vector2(2000,100),new Vector2(),1);
+		//Missile test = new Missile(new Vector2(2000,100),new Vector2(),1);
 		
 		moon.setUUID(gravUUID);
 
@@ -76,7 +76,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		physicsSystem.addObj(planet2);
 		physicsSystem.addObj(moon2);
 		physicsSystem.addObj(station);
-		physicsSystem.addObj(test);
+		//physicsSystem.addObj(test);
 		
 		displayManager.setCenterObject(star);
 	}
