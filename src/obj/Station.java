@@ -36,7 +36,7 @@ public class Station extends Ship{
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
-		this.dockingSensor = new OrbitSensor(this,4*getAltRadius(),300);
+		this.dockingSensor = new OrbitSensor(this,4*getAltRadius(),60);
 	}
 	
 	private PhysicsObject getStar(PhysicsSystem parentSystem){

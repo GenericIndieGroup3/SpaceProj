@@ -21,7 +21,7 @@ public class OrbitSensor implements Sensor<Ship> {
 	private Vector2 pos;
 	private List<Ship> triggers = new ArrayList<Ship>();
 	private List<Integer> triggerData = new ArrayList<Integer>();
-	private PhysicsSystem sys = MainGame.mainGame.getActiveSystem();
+	//private PhysicsSystem sys = MainGame.mainGame.getActiveSystem();
 	
 	public OrbitSensor(PhysicsObject target, double radius, int time){
 		this.target = target;
@@ -32,7 +32,7 @@ public class OrbitSensor implements Sensor<Ship> {
 	
 	public OrbitSensor(UUID id, double radius, int time){
 		targetId = id;
-		target = sys.getObject(id);
+		target = MainGame.mainGame.physicsSystem.getObject(id);
 		this.radius = radius;
 		this.time = time;
 	}
@@ -68,13 +68,14 @@ public class OrbitSensor implements Sensor<Ship> {
 	@Override
 	public void update() {
 		isTriggered = false;
-		sys = MainGame.mainGame.getActiveSystem();
-		for(PhysicsObject p : sys.objects){
+		//sys = MainGame.mainGame.getActiveSystem();
+		for(PhysicsObject p : MainGame.mainGame.physicsSystem.objects){
 			if(p != target && !(p instanceof Station) && p instanceof Ship){
-				if((target != null && sys.distanceTo(target, p) <= radius) || (pos != null && sys.distanceTo(pos,p) <= radius)){
+				if((target != null && MainGame.mainGame.physicsSystem.distanceTo(target, p) <= radius) || (pos != null && MainGame.mainGame.physicsSystem.distanceTo(pos,p) <= radius)){
 					if(triggers.contains(p)){
 						tmp = triggerData.get(triggers.indexOf(p));
 						tmp++;
+						triggerData.set(triggers.indexOf(p), tmp);
 					} else{
 						triggers.add((Ship)p);
 						triggerData.add(0);

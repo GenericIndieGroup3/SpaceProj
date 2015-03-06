@@ -25,7 +25,7 @@ import events.types.KeyEventType;
 public class MainGame implements GameInterface, Listener<KeyEvent>{
 
 	public static MainGame mainGame;
-	private PhysicsSystem physicsSystem;
+	public PhysicsSystem physicsSystem;
 	public static ImplementationAbstract imp;
 	public EventDistributor<KeyEvent> keyPressEventDistributor;
 	public DisplayManager displayManager;
@@ -55,7 +55,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 	
 		PhysicsObject star = new PhysicsObject(new Vector2(0, 0), 5000);
 		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 50);
-		Gravitator moon = new Gravitator(new Vector2(-5000, 0), new Vector2(), 5, 5);
+		Gravitator moon = new Gravitator(new Vector2(8500, 0), new Vector2(), 5, 5);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 50);
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(5000, 0), new Vector2(), 5);
 		Station station = new Station(new Vector2(8000,0),50,star.getUUID(),true);
