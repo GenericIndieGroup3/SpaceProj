@@ -50,7 +50,7 @@ public class DisplayManager {
 			//maybe a map between object uuids and colors or types of objects and colors
 
 			if(object instanceof Gravitator)//.getUUID().equals(MainGame.mainGame.gravUUID))
-				GL11.glColor3d(0, 1, 0);
+				GL11.glColor3d(0, 0.5, 0);
 			else if(object instanceof Missile)
 				GL11.glColor3d(.5 * alpha, .5 * alpha, 0.5 * alpha);
 			else if(object instanceof Station)

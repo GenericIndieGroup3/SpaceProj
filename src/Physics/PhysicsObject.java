@@ -61,7 +61,10 @@ public class PhysicsObject {
 	public double getIMass(){return inertialMass;}
 	public double getGMass(){return gravitationalMass;}
 	public double getRadius(){
-		return Math.cbrt(getGMass() * 10000);
+		return Math.cbrt(getIMass() * 10000);
+	}
+	public double getAltRadius(){
+		return getGMass() * 3;
 	}
 	//public double getRadius(){return Math.sqrt(2000d * Math.sqrt(gravitationalMass));}
 	public UUID getUUID(){return uuid;}
