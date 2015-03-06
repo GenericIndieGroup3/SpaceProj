@@ -13,12 +13,8 @@ public class Missile extends PhysicsObject implements Listener<CollisionEvent> {
 		super();
 		registerListener();
 	}
-	public Missile(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass) {
-		super(position, velocity, gravitationalMass, inertialMass);
-		registerListener();
-	}
-	public Missile(Vector2 position, Vector2 velocity, double mass){
-		super(position, velocity, mass, mass);
+	public Missile(Vector2 position, Vector2 velocity, double mass) {
+		super(position, velocity, mass);
 		registerListener();
 	}
 	

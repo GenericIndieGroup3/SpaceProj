@@ -20,8 +20,8 @@ public class Station extends Ship{
 		super();
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
 	}
-	public Station(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass, UUID starUUID, boolean clockwise){
-		super(position, velocity, gravitationalMass, inertialMass);
+	public Station(Vector2 position, Vector2 velocity, double mass, UUID starUUID, boolean clockwise){
+		super(position, velocity, mass);
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());

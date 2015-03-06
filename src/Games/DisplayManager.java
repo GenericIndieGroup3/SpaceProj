@@ -22,23 +22,12 @@ public class DisplayManager {
 	UUID centerObjectUUID;
 	Vector2 centerDisplacement = new Vector2(-500, 0);
 	
-	public DisplayManager(){}
-	
-	public void draw(ImplementationAbstract imp, PhysicsSystem... physicsSystems){
+	public DisplayManager(){
 		
-		clearScreen();
-		boolean first = true;
-		for(PhysicsSystem physicsSystem : physicsSystems){
-			if(first)
-				drawPhysicsSystem(imp, physicsSystem, 1);
-			else
-				drawPhysicsSystem(imp, physicsSystem, 0.6);
-			first = false;
-		}
-		updateDisplay();
 	}
 	
-	public void drawPhysicsSystem(ImplementationAbstract imp, PhysicsSystem system, double alpha){
+	
+	public void drawPhysicsSystem(ImplementationAbstract imp, PhysicsSystem system, double alpha, boolean gravitationalInfluence){
 		
 		imp.loadIdentity();
 		GL11.glScaled(zoom, zoom, 1);
@@ -50,14 +39,17 @@ public class DisplayManager {
 			//maybe a map between object uuids and colors or types of objects and colors
 
 			if(object instanceof Gravitator)//.getUUID().equals(MainGame.mainGame.gravUUID))
-				GL11.glColor3d(0, 0.5, 0);
+				GL11.glColor4d(0, 1, 0, alpha);
 			else if(object instanceof Missile)
-				GL11.glColor3d(.5 * alpha, .5 * alpha, 0.5 * alpha);
+				GL11.glColor4d(.5, .5, 0.5, alpha);
 			else if(object instanceof Station)
-				GL11.glColor3d(0 * alpha, 0.2 * alpha, 0.8 * alpha);
+				GL11.glColor4d(0, 0.2, 0.8, alpha);
 			else
-				GL11.glColor3d(1 * alpha, 1 * alpha, 1 * alpha);
-			object.draw();
+				GL11.glColor4d(1, 1, 1, alpha);
+			if(gravitationalInfluence)
+				object.drawGravitationalInfluence();
+			else
+				object.draw();
 		}
 	}
 	

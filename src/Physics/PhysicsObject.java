@@ -10,8 +10,7 @@ public class PhysicsObject {
 	public Vector2 position;
 	public Vector2 velocity;
 	
-	public double gravitationalMass;
-	public double inertialMass;
+	private double mass;
 	
 	public boolean shouldBeRemoved = false;
 	public boolean isRemoved = false;
@@ -21,26 +20,24 @@ public class PhysicsObject {
 	private Vector2 acceleration = new Vector2();
 	
 	public PhysicsObject(){
-		set(new Vector2(), new Vector2(), 1, 1);
+		set(new Vector2(), new Vector2(), 1);
 	}
-	public PhysicsObject(Vector2 position, Vector2 velocity, double gravitationalMass, double inertialMass){
-		set(position, velocity, gravitationalMass, inertialMass);
+	public PhysicsObject(Vector2 position, Vector2 velocity, double mass){
+		set(position, velocity, mass);
 	}
 	public PhysicsObject(Vector2 position, double mass){
-		set(position, new Vector2(), mass, mass);
+		set(position, new Vector2(), mass);
 	}
 	public void set(PhysicsObject a){
 		this.position = a.position.copy();
 		this.velocity = a.velocity.copy();
-		this.gravitationalMass = a.gravitationalMass;
-		this.inertialMass = a.inertialMass;
+		this.mass = a.mass;
 		this.uuid = a.uuid;
 	}
-	public void set(Vector2 position, Vector2 velocity, double gMass, double iMass){
+	public void set(Vector2 position, Vector2 velocity, double mass){
 		this.position = position;
 		this.velocity = velocity;
-		this.gravitationalMass = gMass;
-		this.inertialMass = iMass;
+		this.mass = mass;
 		this.uuid = UUID.randomUUID();
 	}
 	public PhysicsObject copy(){
@@ -51,20 +48,19 @@ public class PhysicsObject {
 	public void setUUID(UUID uuid){
 		this.uuid = uuid;
 	}
-	public boolean equals(PhysicsObject o){
-		return (this.position.equals(o.position) && this.velocity.equals(o.velocity) &&
-		this.gravitationalMass == o.gravitationalMass && this.inertialMass == o.inertialMass);
-	}
 
 	public Vector2 getVelocity(){return velocity;}
 	public Vector2 getPosition(){return position;}
-	public double getIMass(){return inertialMass;}
-	public double getGMass(){return gravitationalMass;}
+	public double getIMass(){return mass;}
+	public double getGMass(){return mass;}
 	public double getRadius(){
 		return Math.cbrt(getIMass() * 10000);
 	}
 	public double getAltRadius(){
-		return getGMass() * 3;
+		//return getGMass() * 3;
+		//return getGMass() * 100 / getRadius();
+		//return getRadius() * 3;
+		return 10 * Math.cbrt(getGMass() * 10000);
 	}
 	//public double getRadius(){return Math.sqrt(2000d * Math.sqrt(gravitationalMass));}
 	public UUID getUUID(){return uuid;}
@@ -112,11 +108,19 @@ public class PhysicsObject {
 	        }
 		GL11.glEnd();
 	}
-	
-	//TODO This will be really slow, but since it's only for debugging, no one will know...
+	public void drawGravitationalInfluence(){
+		int segments = 20;
+		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+			for( int n = 0; n <= segments; ++n ) {
+	            double t = 2 * Math.PI * n / segments;
+	            GL11.glVertex2d(position.x + Math.sin(t)* getAltRadius(), position.y + Math.cos(t)* getAltRadius());
+	        }
+		GL11.glEnd();
+	}
+
 	@Override
 	public String toString(){
-		String ans = "Physics Object with inert mass " + this.inertialMass + ", gravitational mass " + this.gravitationalMass + ", at position" + this.position + ", and velocity" + this.velocity;
+		String ans = "Physics Object with inert mass " + this.getIMass() + ", gravitational mass " + this.getGMass() + ", at position" + this.position + ", and velocity" + this.velocity;
 		
 		return ans;
 	}

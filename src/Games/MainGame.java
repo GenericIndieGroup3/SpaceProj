@@ -54,13 +54,11 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		activeSystem = physicsSystem;
 	
 		PhysicsObject star = new PhysicsObject(new Vector2(0, 0), 5000);
-		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 50, 50);
+		PhysicsObject planet = new PhysicsObject(new Vector2(-4000, 0), new Vector2(0, -0.3), 50);
 		Gravitator moon = new Gravitator(new Vector2(-5000, 0), new Vector2(), 5, 5);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 50);
-		PhysicsObject moon2 = new PhysicsObject(new Vector2(5000, 0), new Vector2(), 5, 5);
+		PhysicsObject moon2 = new PhysicsObject(new Vector2(5000, 0), new Vector2(), 5);
 		Station station = new Station(new Vector2(2000,0),50,star.getUUID(),true);
-		
-		
 		
 		moon.setUUID(gravUUID);
 
@@ -154,13 +152,14 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		if(f % 1 == 0){
 			displayManager.clearScreen();
-			displayManager.drawPhysicsSystem(imp, activeSystem, 1);
+			displayManager.drawPhysicsSystem(imp, activeSystem, 0.2, true);
+			displayManager.drawPhysicsSystem(imp, activeSystem, 1, false);
 			if(trajectoryMode == 1){
 				PhysicsSystem copy = new PhysicsSystem(activeSystem);
 				for(int i = 0; i < trajectoryDistance; i ++){
 					copy.update();
 					if(i % 150 == 0 && i != 0)
-						displayManager.drawPhysicsSystem(imp, copy, 0.6);
+						displayManager.drawPhysicsSystem(imp, copy, 0.6, false);
 				}
 			}
 			displayManager.updateDisplay();

@@ -37,23 +37,23 @@ public class PlayerController implements Listener<KeyEvent> {
 		if(e.eventType == KeyEventType.PRESS){
 			if(grav != null && activeSystem != null){
 				if(e.key == Keyboard.KEY_LEFT){
-					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(-shootSpeed, 0));
+					Missile missile = grav.shootMissile(1, shootSpeed, new Vector2(-shootSpeed, 0));
 					activeSystem.addObj(missile);
 				}
 				if(e.key == Keyboard.KEY_DOWN){
-					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(0, -shootSpeed));
+					Missile missile = grav.shootMissile(1, shootSpeed, new Vector2(0, -shootSpeed));
 					activeSystem.addObj(missile);
 				}
 				if(e.key == Keyboard.KEY_UP){
-					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(0, shootSpeed));
+					Missile missile = grav.shootMissile(1, shootSpeed, new Vector2(0, shootSpeed));
 					activeSystem.addObj(missile);
 				}
 				if(e.key == Keyboard.KEY_RIGHT){
-					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, new Vector2(shootSpeed, 0));
+					Missile missile = grav.shootMissile(1, shootSpeed, new Vector2(shootSpeed, 0));
 					activeSystem.addObj(missile);
 				}
 				if(e.key == Keyboard.KEY_SPACE){
-					Missile missile = grav.shootMissile(1, 0.5, shootSpeed, grav.velocity.copy());
+					Missile missile = grav.shootMissile(1, shootSpeed, grav.velocity.copy());
 					activeSystem.addObj(missile);
 				}
 			}
