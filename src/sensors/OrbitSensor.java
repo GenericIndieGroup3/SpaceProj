@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import obj.Missile;
 import obj.Ship;
+import obj.Station;
 import Games.MainGame;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
@@ -70,7 +70,7 @@ public class OrbitSensor implements Sensor<Ship> {
 		isTriggered = false;
 		sys = MainGame.mainGame.getActiveSystem();
 		for(PhysicsObject p : sys.objects){
-			if(p != target && p instanceof Ship){
+			if(p != target && !(p instanceof Station) && p instanceof Ship){
 				if((target != null && sys.distanceTo(target, p) <= radius) || (pos != null && sys.distanceTo(pos,p) <= radius)){
 					if(triggers.contains(p)){
 						tmp = triggerData.get(triggers.indexOf(p));

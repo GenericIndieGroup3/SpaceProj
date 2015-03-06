@@ -58,7 +58,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		Gravitator moon = new Gravitator(new Vector2(-5000, 0), new Vector2(), 5, 5);
 		PhysicsObject planet2 = new PhysicsObject(new Vector2(4000,0), 50);
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(5000, 0), new Vector2(), 5);
-		Station station = new Station(new Vector2(2000,0),50,star.getUUID(),true);
+		Station station = new Station(new Vector2(8000,0),50,star.getUUID(),true);
 		
 		moon.setUUID(gravUUID);
 
@@ -138,7 +138,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
 			if(frameNum%100 == 0){
-				physicsSystem.cleanup(6000);
+				physicsSystem.cleanup(10000);
 			}
 		}
 	}
