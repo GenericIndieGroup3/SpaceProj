@@ -16,7 +16,7 @@ public class PhysicsSystem{
 	public int charNum = 2;
 	public int centerNum = 0;
 	
-	
+	public PhysicsObject star;
 	
 	public EventDistributor<CollisionEvent> collisionEventDistributor = new EventDistributor<CollisionEvent>();
 	public EventDistributor<AddObjectEvent> addObjectEventDistributor = new EventDistributor<AddObjectEvent>();
@@ -271,6 +271,16 @@ public class PhysicsSystem{
 		distCache.set(pos);
 		distCache.subtract(q.getPosition());
 		return distCache.getMagnitude();
+	}
+	
+	public void cleanup(double range){
+		if(this.star != null){
+			for(PhysicsObject p : objects){
+				if(distanceTo(p,this.star) > range){
+					p.shouldBeRemoved = true;
+				}
+			}
+		}
 	}
 	
 }

@@ -78,6 +78,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		physicsSystem.addObj(moon2);
 		physicsSystem.addObj(station);
 		
+		physicsSystem.star = star;
+		
 		displayManager.setCenterObject(star);
 	}
 	
@@ -134,6 +136,9 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		f = frameNum;
 		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
+			if(frameNum%500 == 0){
+				physicsSystem.cleanup(8000);
+			}
 		}
 	}
 
