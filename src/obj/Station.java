@@ -2,12 +2,13 @@ package obj;
 
 import java.util.UUID;
 
+import sensors.OrbitSensor;
 import sensors.MissileSensor;
+import sensors.Sensor;
 import Games.MainGame;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
 import Structs.Vector2;
-import sensors.Sensor;
 
 public class Station extends Ship{
 	
@@ -15,16 +16,19 @@ public class Station extends Ship{
 	private Vector2 targetVel = new Vector2();
 	private boolean clockwise;
 	private Sensor<Missile> attackSensor;
+	private Sensor<Ship> dockingSensor;
 	
 	public Station(){
 		super();
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
+		this.dockingSensor = new OrbitSensor(this,20*getRadius(),300);
 	}
 	public Station(Vector2 position, Vector2 velocity, double mass, UUID starUUID, boolean clockwise){
 		super(position, velocity, mass);
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
+		this.dockingSensor = new OrbitSensor(this,20*getRadius(),300);
 	}
 	
 	public Station(Vector2 position, double mass, UUID starUUID, boolean clockwise){
@@ -32,6 +36,7 @@ public class Station extends Ship{
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
+		this.dockingSensor = new OrbitSensor(this,20*getRadius(),300);
 	}
 	
 	private PhysicsObject getStar(PhysicsSystem parentSystem){
@@ -48,8 +53,12 @@ public class Station extends Ship{
 		else
 			super.updateVelocity(parentSystem);
 		attackSensor.update();
+		dockingSensor.update();
 		if(attackSensor.isTriggered()){
 			MainGame.mainGame.setup();
+		}
+		if(dockingSensor.isTriggered()){
+			MainGame.mainGame.imp.keepUpdating = false;
 		}
 	}
 	
@@ -64,6 +73,8 @@ public class Station extends Ship{
 		super.set(a);
 		this.starUUID = a.starUUID;
 		this.clockwise = a.clockwise;
+		this.attackSensor = a.attackSensor;
+		this.dockingSensor = a.dockingSensor;
 	}
 	
 }

@@ -11,7 +11,7 @@ import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
 import Structs.Vector2;
 
-public class CloseOrbitSensor implements Sensor<Ship> {
+public class OrbitSensor implements Sensor<Ship> {
 
 	private boolean isTriggered = false;
 	private double radius;
@@ -23,21 +23,21 @@ public class CloseOrbitSensor implements Sensor<Ship> {
 	private List<Integer> triggerData = new ArrayList<Integer>();
 	private PhysicsSystem sys = MainGame.mainGame.getActiveSystem();
 	
-	public CloseOrbitSensor(PhysicsObject target, double radius, int time){
+	public OrbitSensor(PhysicsObject target, double radius, int time){
 		this.target = target;
 		this.radius = radius;
 		this.time = time;
 		targetId = target.getUUID();
 	}
 	
-	public CloseOrbitSensor(UUID id, double radius, int time){
+	public OrbitSensor(UUID id, double radius, int time){
 		targetId = id;
 		target = sys.getObject(id);
 		this.radius = radius;
 		this.time = time;
 	}
 	
-	public CloseOrbitSensor(double x, double y, double radius, int time){
+	public OrbitSensor(double x, double y, double radius, int time){
 		pos = new Vector2(x,y);
 		this.radius = radius;
 		this.time = time;
@@ -48,23 +48,47 @@ public class CloseOrbitSensor implements Sensor<Ship> {
 		return isTriggered;
 	}
 
+	List<Ship >ansBuffer = new ArrayList<Ship>();
 	@Override
 	public Ship[] getTriggers() {
-		Ship[] ans = new Ship[triggers.size()];
-		for(int i = 0; i < ans.length; i++){
-			ans[i] = triggers.get(i);
+		ansBuffer.clear();
+		for(int i = 0; i < triggers.size(); i++){
+			if(triggerData.get(i) >= time){
+				ansBuffer.add(triggers.get(i));
+			}
+		}
+		Ship[] ans = new Ship[ansBuffer.size()];
+		for(int i = 0; i < ans.length; i++){	
+			ans[i] = ansBuffer.get(i);
 		}
 		return ans;
 	}
 	
+	Integer tmp;
 	@Override
 	public void update() {
+		isTriggered = false;
 		sys = MainGame.mainGame.getActiveSystem();
 		for(PhysicsObject p : sys.objects){
-			if(p instanceof Ship){
+			if(p != target && p instanceof Ship){
 				if((target != null && sys.distanceTo(target, p) <= radius) || (pos != null && sys.distanceTo(pos,p) <= radius)){
-					
+					if(triggers.contains(p)){
+						tmp = triggerData.get(triggers.indexOf(p));
+						tmp++;
+					} else{
+						triggers.add((Ship)p);
+						triggerData.add(0);
+					}
+				} else if(triggers.contains(p)){
+					int i = triggers.indexOf(p);
+					triggers.remove(p);
+					triggerData.remove(i);
 				}
+			}
+		}
+		for(Ship s : triggers){
+			if(triggerData.get(triggers.indexOf(s)) >= time){
+				isTriggered = true;
 			}
 		}
 	}
