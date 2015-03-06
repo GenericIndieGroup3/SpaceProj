@@ -81,7 +81,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		physicsSystem.star = star;
 		
-		displayManager.setCenterObject(moon);
+		displayManager.setCenterObject(station);
 	}
 	
 	public void invoke(KeyEvent e){
