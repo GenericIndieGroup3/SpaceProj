@@ -138,7 +138,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
 			if(frameNum%100 == 0){
-				physicsSystem.cleanup(10000);
+				activeSystem.cleanup(10000);
 			}
 		}
 	}

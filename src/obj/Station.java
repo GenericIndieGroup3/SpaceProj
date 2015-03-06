@@ -21,14 +21,14 @@ public class Station extends Ship{
 	public Station(){
 		super();
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
-		this.dockingSensor = new OrbitSensor(this,3*getAltRadius(),300);
+		this.dockingSensor = new OrbitSensor(this,3*getAltRadius(),100);
 	}
 	public Station(Vector2 position, Vector2 velocity, double mass, UUID starUUID, boolean clockwise){
 		super(position, velocity, mass);
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
-		this.dockingSensor = new OrbitSensor(this,3*getAltRadius(),300);
+		this.dockingSensor = new OrbitSensor(this,3*getAltRadius(),100);
 	}
 	
 	public Station(Vector2 position, double mass, UUID starUUID, boolean clockwise){
@@ -36,7 +36,7 @@ public class Station extends Ship{
 		this.attackSensor = new MissileSensor(this,10*getRadius());//,MainGame.mainGame.getActiveSystem());
 		this.starUUID = starUUID;
 		this.clockwise = clockwise;
-		this.dockingSensor = new OrbitSensor(this,4*getAltRadius(),60);
+		this.dockingSensor = new OrbitSensor(this,4*getAltRadius(),100);
 	}
 	
 	private PhysicsObject getStar(PhysicsSystem parentSystem){
@@ -73,8 +73,8 @@ public class Station extends Ship{
 		super.set(a);
 		this.starUUID = a.starUUID;
 		this.clockwise = a.clockwise;
-		this.attackSensor = a.attackSensor;
-		this.dockingSensor = a.dockingSensor;
+		this.attackSensor = new MissileSensor(a,0*getRadius());
+		this.dockingSensor = new OrbitSensor(a,0*getAltRadius(),300);
 	}
 	
 }
