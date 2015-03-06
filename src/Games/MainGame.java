@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import obj.Gravitator;
+import obj.Missile;
 import obj.Station;
 
 import org.lwjgl.input.Keyboard;
@@ -59,6 +60,8 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		PhysicsObject moon2 = new PhysicsObject(new Vector2(5000, 0), new Vector2(), 5, 5);
 		Station station = new Station(new Vector2(2000,0),50,star.getUUID(),true);
 		
+		
+		
 		moon.setUUID(gravUUID);
 
 		Vector2 velocityCache = new Vector2();
@@ -80,7 +83,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		physicsSystem.star = star;
 		
-		displayManager.setCenterObject(star);
+		displayManager.setCenterObject(moon);
 	}
 	
 	public void invoke(KeyEvent e){
@@ -136,7 +139,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		f = frameNum;
 		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
-			if(frameNum%500 == 0){
+			if(frameNum%100 == 0){
 				physicsSystem.cleanup(8000);
 			}
 		}
