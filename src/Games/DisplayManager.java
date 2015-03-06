@@ -38,16 +38,28 @@ public class DisplayManager {
 			//TODO we need an actual color-coding system
 			//maybe a map between object uuids and colors or types of objects and colors
 
+			double r = 0;
+			double g = 0;
+			double b = 0;
+			
 			if(object instanceof Gravitator)//.getUUID().equals(MainGame.mainGame.gravUUID))
-				GL11.glColor4d(0, 1, 0, alpha);
-			else if(object instanceof Missile)
-				GL11.glColor4d(.5, .5, 0.5, alpha);
-			else if(object instanceof Station)
-				GL11.glColor4d(0, 0.2, 0.8, alpha);
-			else
-				GL11.glColor4d(1, 1, 1, alpha);
+				g = 1;
+			else if(object instanceof Missile){
+				r = 0.5; g = 0.5; b = 0.5;
+			}
+			else if(object instanceof Station){
+				g = 0.2;
+				b = 0.8;
+			}
+			else{
+				r = 1;
+				g = 1;
+				b = 1;
+			}
+			
+			GL11.glColor4d(r, g, b, alpha);
 			if(gravitationalInfluence)
-				object.drawGravitationalInfluence();
+				object.drawGravitationalInfluence(r, g, b);
 			else
 				object.draw();
 		}

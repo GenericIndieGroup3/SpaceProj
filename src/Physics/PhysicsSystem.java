@@ -69,10 +69,8 @@ public class PhysicsSystem{
 			removeObjectEventDistributor.invoke(event);
 			if(!event.isCanceled())
 				objects.remove(p);
-			
 		}
 		toRemove.clear();
-		
 		
 		Vector2 grav = new Vector2();
 		for(PhysicsObject p : objects){

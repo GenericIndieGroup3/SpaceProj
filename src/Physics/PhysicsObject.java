@@ -60,7 +60,7 @@ public class PhysicsObject {
 		//return getGMass() * 3;
 		//return getGMass() * 100 / getRadius();
 		//return getRadius() * 3;
-		return 10 * Math.cbrt(getGMass() * 10000);
+		return 20 * Math.cbrt(getGMass() * 10000);
 	}
 	//public double getRadius(){return Math.sqrt(2000d * Math.sqrt(gravitationalMass));}
 	public UUID getUUID(){return uuid;}
@@ -108,10 +108,14 @@ public class PhysicsObject {
 	        }
 		GL11.glEnd();
 	}
-	public void drawGravitationalInfluence(){
+	public void drawGravitationalInfluence(double r, double g, double b){
+		
 		int segments = 20;
 		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+		GL11.glColor4d(r, g, b, 0.2);
+		GL11.glVertex2d(position.x, position.y);
 			for( int n = 0; n <= segments; ++n ) {
+				GL11.glColor4d(r, g, b, 0.001);
 	            double t = 2 * Math.PI * n / segments;
 	            GL11.glVertex2d(position.x + Math.sin(t)* getAltRadius(), position.y + Math.cos(t)* getAltRadius());
 	        }

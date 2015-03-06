@@ -152,7 +152,10 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		if(f % 1 == 0){
 			displayManager.clearScreen();
-			displayManager.drawPhysicsSystem(imp, activeSystem, 0.2, true);
+			displayManager.drawPhysicsSystem(imp, activeSystem, 1, true);
+			//for(double i = 0.5; i < 1; i += 0.1){
+				//displayManager.drawPhysicsSystem(imp, activeSystem, 1 - i, true, i- 0.5);
+			//}
 			displayManager.drawPhysicsSystem(imp, activeSystem, 1, false);
 			if(trajectoryMode == 1){
 				PhysicsSystem copy = new PhysicsSystem(activeSystem);
