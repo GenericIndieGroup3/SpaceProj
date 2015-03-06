@@ -81,7 +81,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		
 		physicsSystem.star = star;
 		
-		displayManager.setCenterObject(star);
+		displayManager.setCenterObject(moon);
 	}
 	
 	public void invoke(KeyEvent e){
@@ -138,7 +138,7 @@ public class MainGame implements GameInterface, Listener<KeyEvent>{
 		if(trajectoryMode == 0 && frameNum % 1 == 0){
 			physicsSystem.update();
 			if(frameNum%100 == 0){
-				physicsSystem.cleanup(8000);
+				physicsSystem.cleanup(6000);
 			}
 		}
 	}
