@@ -3,6 +3,7 @@ package obj;
 import java.util.UUID;
 
 import sensors.MissileSensor;
+import Games.MainGame;
 import Physics.PhysicsObject;
 import Physics.PhysicsSystem;
 import Structs.Vector2;
@@ -47,6 +48,9 @@ public class Station extends Ship{
 		else
 			super.updateVelocity(parentSystem);
 		attackSensor.update();
+		if(attackSensor.isTriggered()){
+			MainGame.mainGame.setup();
+		}
 	}
 	
 	@Override
